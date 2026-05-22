@@ -46,7 +46,7 @@
     letter-spacing: 0.3px;
   }
 
-  .header-title p {
+  .header-title .subtitle {
     font-size: 12px;
     color: #34d399;
     margin-top: 3px;
@@ -55,13 +55,21 @@
     gap: 6px;
   }
 
-  .header-title p::before {
+  .header-title .subtitle::before {
     content: '';
     width: 8px;
     height: 8px;
     background: #34d399;
     border-radius: 50%;
     animation: pulse 2s infinite;
+    flex-shrink: 0;
+  }
+
+  .header-title .updated-time {
+    font-size: 11px;
+    color: #94a3b8;
+    margin-top: 4px;
+    padding-left: 14px;
   }
 
   @keyframes pulse {
@@ -257,7 +265,8 @@
   <div class="logo">🗺️</div>
   <div class="header-title">
     <h1>Thời Tiết Các Tỉnh Thành by Nguyễn Văn Tín</h1>
-    <p>Cập nhật realtime từ Open-Meteo API</p>
+    <p class="subtitle">Cập nhật realtime từ Open-Meteo API</p>
+    <p class="updated-time">🕐 Lần cập nhật: <span id="live-clock"></span></p>
   </div>
   <div class="header-right">
     <div class="stat-badge">
@@ -269,7 +278,7 @@
 </div>
 
 <div class="container">
-  <p class="updated-at">Cập nhật lúc: 22/05/2026 11:41 | Nguồn dữ liệu: Open-Meteo API (openmeteo.com)</p>
+  <p class="updated-at">Nguồn dữ liệu: Open-Meteo API (openmeteo.com) | Dữ liệu lấy lúc: 22/05/2026 11:47</p>
   <div class="grid" id="grid">
     
         <div class="card" data-name="an giang">
@@ -287,7 +296,7 @@
             <div class="card-desc">Giông</div>
             <div class="card-footer">
                 <span class="precip">💧 0.0 mm</span>
-                <span class="wind">💨 10 km/h</span>
+                <span class="wind">💨 11 km/h</span>
             </div>
         </div>
 
@@ -325,7 +334,7 @@
             <div class="card-desc">Mưa phùn nhẹ</div>
             <div class="card-footer">
                 <span class="precip">💧 0.1 mm</span>
-                <span class="wind">💨 9 km/h</span>
+                <span class="wind">💨 11 km/h</span>
             </div>
         </div>
 
@@ -360,10 +369,10 @@
                     <span class="temp-max">34°</span>
                 </div>
             </div>
-            <div class="card-desc">Ít mây</div>
+            <div class="card-desc">Trời quang</div>
             <div class="card-footer">
                 <span class="precip">💧 0.0 mm</span>
-                <span class="wind">💨 15 km/h</span>
+                <span class="wind">💨 14 km/h</span>
             </div>
         </div>
 
@@ -430,13 +439,13 @@
                 <span class="star">☆</span>
             </div>
             <div class="card-body">
-                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M8 26 Q4 23 4 18 Q4 10 12 8 Q12 2 20 2 Q28 2 30 9 Q36 9 36 18 Q36 24 30 26Z" fill="#607d9e"/><polygon points="22,28 16,38 22,36 18,46 30,33 23,35" fill="#FFB800"/></svg></div>
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/><path d="M18 38 Q14 36 14 31 Q14 26 19 25 Q20 21 26 21 Q32 21 33 26 Q37 26 37 31 Q37 36 33 38Z" fill="#a8c4dc"/></svg></div>
                 <div class="temps">
                     <span class="temp-min">25°</span>
                     <span class="temp-max">33°</span>
                 </div>
             </div>
-            <div class="card-desc">Giông</div>
+            <div class="card-desc">Nhiều mây</div>
             <div class="card-footer">
                 <span class="precip">💧 0.0 mm</span>
                 <span class="wind">💨 6 km/h</span>
@@ -458,7 +467,7 @@
             <div class="card-desc">Nhiều mây</div>
             <div class="card-footer">
                 <span class="precip">💧 0.0 mm</span>
-                <span class="wind">💨 10 km/h</span>
+                <span class="wind">💨 11 km/h</span>
             </div>
         </div>
 
@@ -496,7 +505,7 @@
             <div class="card-desc">Giông</div>
             <div class="card-footer">
                 <span class="precip">💧 0.0 mm</span>
-                <span class="wind">💨 15 km/h</span>
+                <span class="wind">💨 14 km/h</span>
             </div>
         </div>
 
@@ -610,7 +619,7 @@
             <div class="card-desc">Mưa phùn nhẹ</div>
             <div class="card-footer">
                 <span class="precip">💧 0.1 mm</span>
-                <span class="wind">💨 7 km/h</span>
+                <span class="wind">💨 4 km/h</span>
             </div>
         </div>
 
@@ -667,7 +676,7 @@
             <div class="card-desc">Nhiều mây</div>
             <div class="card-footer">
                 <span class="precip">💧 0.0 mm</span>
-                <span class="wind">💨 7 km/h</span>
+                <span class="wind">💨 6 km/h</span>
             </div>
         </div>
 
@@ -686,7 +695,7 @@
             <div class="card-desc">Giông</div>
             <div class="card-footer">
                 <span class="precip">💧 0.0 mm</span>
-                <span class="wind">💨 21 km/h</span>
+                <span class="wind">💨 20 km/h</span>
             </div>
         </div>
 
@@ -705,7 +714,7 @@
             <div class="card-desc">Nhiều mây</div>
             <div class="card-footer">
                 <span class="precip">💧 0.0 mm</span>
-                <span class="wind">💨 2 km/h</span>
+                <span class="wind">💨 3 km/h</span>
             </div>
         </div>
 
@@ -743,7 +752,7 @@
             <div class="card-desc">Ít mây</div>
             <div class="card-footer">
                 <span class="precip">💧 0.0 mm</span>
-                <span class="wind">💨 7 km/h</span>
+                <span class="wind">💨 8 km/h</span>
             </div>
         </div>
 
@@ -800,7 +809,7 @@
             <div class="card-desc">Nhiều mây</div>
             <div class="card-footer">
                 <span class="precip">💧 0.0 mm</span>
-                <span class="wind">💨 9 km/h</span>
+                <span class="wind">💨 11 km/h</span>
             </div>
         </div>
 
@@ -873,10 +882,10 @@
                     <span class="temp-max">34°</span>
                 </div>
             </div>
-            <div class="card-desc">Nhiều mây</div>
+            <div class="card-desc">Có mây</div>
             <div class="card-footer">
                 <span class="precip">💧 0.0 mm</span>
-                <span class="wind">💨 15 km/h</span>
+                <span class="wind">💨 14 km/h</span>
             </div>
         </div>
 
@@ -934,6 +943,18 @@ function filterCards(q) {
   });
   document.getElementById('noResult').style.display = found === 0 ? 'block' : 'none';
 }
+
+// Đồng hồ realtime trong header
+function updateClock() {
+  const now = new Date();
+  const pad = n => String(n).padStart(2, '0');
+  const str = pad(now.getDate()) + '/' + pad(now.getMonth()+1) + '/' + now.getFullYear()
+            + ' ' + pad(now.getHours()) + ':' + pad(now.getMinutes()) + ':' + pad(now.getSeconds());
+  const el = document.getElementById('live-clock');
+  if (el) el.textContent = str;
+}
+updateClock();
+setInterval(updateClock, 1000);
 </script>
 
 </body>

@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Thời Tiết Các Tỉnh Thành Việt Nam</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   
@@ -17,246 +18,144 @@
   /* HEADER */
   .header {
     background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%);
-    color: white;
-    padding: 18px 32px;
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+    color: white; padding: 18px 32px; display: flex; align-items: center; gap: 20px;
+    position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 20px rgba(0,0,0,0.3);
   }
 
   .logo {
-    background: #1d4ed8;
-    border-radius: 12px;
-    width: 52px;
-    height: 52px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    flex-shrink: 0;
+    background: #1d4ed8; border-radius: 12px; width: 52px; height: 52px;
+    display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0;
   }
 
-  .header-title h1 {
-    font-size: 20px;
-    font-weight: 700;
-    letter-spacing: 0.3px;
-  }
-
-  .header-title .subtitle {
-    font-size: 12px;
-    color: #34d399;
-    margin-top: 3px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .header-title .subtitle::before {
-    content: '';
-    width: 8px;
-    height: 8px;
-    background: #34d399;
-    border-radius: 50%;
-    animation: pulse 2s infinite;
-    flex-shrink: 0;
-  }
-
-  .header-title .updated-time {
-    font-size: 11px;
-    color: #94a3b8;
-    margin-top: 4px;
-    padding-left: 14px;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.6; transform: scale(1.3); }
-  }
-
-  .header-right {
-    margin-left: auto;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-
-  .stat-badge {
-    text-align: center;
-    background: rgba(255,255,255,0.1);
-    padding: 8px 16px;
-    border-radius: 10px;
-    border: 1px solid rgba(255,255,255,0.15);
-  }
-
-  .stat-badge .num {
-    font-size: 28px;
-    font-weight: 800;
-    color: white;
-    line-height: 1;
-  }
-
-  .stat-badge .label {
-    font-size: 10px;
-    color: #94a3b8;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
+  .header-title h1 { font-size: 20px; font-weight: 700; letter-spacing: 0.3px; }
+  .header-title .subtitle { font-size: 12px; color: #34d399; margin-top: 3px; display: flex; align-items: center; gap: 6px; }
+  .header-title .updated-time { font-size: 11px; color: #94a3b8; margin-top: 4px; }
+  .header-right { margin-left: auto; display: flex; align-items: center; gap: 16px; }
 
   .search-box {
-    background: rgba(255,255,255,0.1);
-    border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 10px;
-    padding: 10px 16px;
-    color: white;
-    font-size: 14px;
-    width: 220px;
-    outline: none;
-    transition: all 0.2s;
+    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 10px; padding: 10px 16px; color: white; font-size: 14px; width: 250px; outline: none; transition: all 0.2s;
   }
-
   .search-box::placeholder { color: rgba(255,255,255,0.45); }
   .search-box:focus { background: rgba(255,255,255,0.18); border-color: rgba(255,255,255,0.4); }
 
-  .updated-at {
-    font-size: 11px;
-    color: #64748b;
-    text-align: center;
-    padding: 10px;
-    margin-top: 4px;
+  /* TABS MENU TỈNH */
+  .tabs-container { max-width: 1600px; margin: 20px auto 10px auto; padding: 0 16px; display: flex; gap: 10px; flex-wrap: wrap; }
+  .tab-btn {
+    background: white; color: #475569; border: 1px solid #cbd5e1; padding: 10px 20px;
+    border-radius: 20px; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.2s ease;
   }
+  .tab-btn.active { background: #1d4ed8; color: white; border-color: #1d4ed8; box-shadow: 0 4px 12px rgba(29, 78, 216, 0.3); }
 
-  /* GRID */
-  .container {
-    max-width: 1600px;
-    margin: 0 auto;
-    padding: 20px 16px;
-  }
+  /* GRID CONTAINER */
+  .container { max-width: 1600px; margin: 0 auto; padding: 10px 16px 40px 16px; }
+  .updated-at { font-size: 11px; color: #64748b; margin-bottom: 15px; }
+  .grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
 
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 12px;
-  }
-
-  @media (max-width: 900px)  { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-  @media (max-width: 620px)  { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-  @media (max-width: 400px)  { .grid { grid-template-columns: 1fr; } }
+  @media (max-width: 1100px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (max-width: 768px)  { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 480px)  { .grid { grid-template-columns: 1fr; } }
 
   /* CARD */
-  .card {
-    background: white;
-    border-radius: 14px;
-    padding: 14px 16px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 2px 10px rgba(0,0,0,0.04);
-    transition: transform 0.2s, box-shadow 0.2s;
-    border: 1px solid #e8eef4;
-  }
+  .card { background: white; border-radius: 14px; padding: 16px; border: 1px solid #e8eef4; cursor: pointer; transition: transform 0.2s; }
+  .card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.09); }
+  .card.has-rain { border: 1px solid #bae6fd; background: linear-gradient(to bottom right, #ffffff, #f0f9ff); }
+  .card.hidden-tab, .card.hidden-search { display: none; }
 
-  .card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.09);
-  }
-
-  .card.hidden { display: none; }
-
-  .card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-
-  .province-name {
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    color: #334155;
-    text-transform: uppercase;
-  }
-
-  .star {
-    font-size: 16px;
-    color: #cbd5e1;
-    cursor: pointer;
-    transition: color 0.2s;
-  }
-  .star:hover { color: #f59e0b; }
-
-  .card-body {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
-  }
-
-  .icon-wrap { width: 44px; height: 44px; flex-shrink: 0; }
+  .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .province-name { font-size: 14px; font-weight: 700; color: #1e293b; }
+  .province-subname { font-size: 11px; color: #64748b; font-weight: 500; text-transform: uppercase; }
+  .star { font-size: 16px; color: #cbd5e1; }
+  .card-body { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .icon-wrap { width: 46px; height: 46px; flex-shrink: 0; }
   .weather-icon { width: 100%; height: 100%; }
+  .temps { display: flex; flex-direction: column; align-items: flex-end; }
+  .temp-min { font-size: 14px; font-weight: 600; color: #2563eb; }
+  .temp-max { font-size: 26px; font-weight: 800; color: #e11d48; line-height: 1; }
+  .card-desc { background: #f1f5f9; border-radius: 7px; padding: 6px 10px; font-size: 12px; color: #475569; text-align: center; margin-bottom: 12px; }
+  .card-footer { display: flex; justify-content: space-between; font-size: 12px; color: #64748b; }
+  .no-result { display: none; text-align: center; padding: 60px 20px; color: #94a3b8; font-size: 16px; grid-column: 1/-1; }
 
-  .temps {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 0;
+  /* ====================================================
+     CẤU TRÚC MODAL TIMELINE BIỂU ĐỒ NGANG CHUẨN NANGMUA.VN
+     ==================================================== */
+  .modal {
+    display: none; position: fixed; z-index: 200; left: 0; top: 0; width: 100%; height: 100%;
+    background-color: rgba(15, 23, 42, 0.4); backdrop-filter: blur(5px);
+    justify-content: center; align-items: center; padding: 20px;
+  }
+  
+  .modal-content {
+    background-color: white; border-radius: 24px; width: 100%; max-width: 900px;
+    box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); display: flex; flex-direction: column;
+    animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1); overflow: hidden; border: 1px solid #e2e8f0;
+  }
+  
+  @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  
+  .modal-header {
+    padding: 20px 24px; border-bottom: 1px solid #f1f5f9;
+    display: flex; justify-content: space-between; align-items: center; background: #ffffff;
+  }
+  
+  .modal-title h3 { font-size: 18px; color: #0f172a; font-weight: 700; }
+  .modal-title p { font-size: 12px; color: #64748b; margin-top: 3px; }
+  .close-btn { font-size: 24px; font-weight: 700; color: #94a3b8; cursor: pointer; }
+  .close-btn:hover { color: #ef4444; }
+  
+  .modal-body { padding: 20px 24px; background: #ffffff; display: flex; flex-direction: column; gap: 16px; }
+
+  /* KHUNG CUỘN NGANG ĐỒNG BỘ CẢ BIỂU ĐỒ VÀ CỌT SỐ LIỆU */
+  .timeline-dashboard-scroll {
+    width: 100%; overflow-x: auto; position: relative; padding-bottom: 10px;
+  }
+  .timeline-dashboard-scroll::-webkit-scrollbar { height: 6px; }
+  .timeline-dashboard-scroll::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 10px; }
+  .timeline-dashboard-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+
+  /* Độ rộng cố định cho 24 giờ cuộn ngang không bị co ép */
+  .timeline-canvas-wrapper {
+    width: 1680px; position: relative; display: flex; flex-direction: column;
   }
 
-  .temp-min {
-    font-size: 15px;
-    font-weight: 600;
-    color: #2563eb;
+  /* Hàng chứa Icon và Giờ trên đỉnh khớp tọa độ Chart */
+  .timeline-top-meta-row {
+    display: flex; width: 100%; justify-content: space-around; padding: 6px 0;
+    border-bottom: 1px dashed #e2e8f0; margin-bottom: 5px;
   }
+  .meta-cell {
+    width: 70px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 4px;
+  }
+  .meta-cell .m-time { font-size: 12px; font-weight: 700; color: #475569; }
+  .meta-cell .m-date { font-size: 9px; color: #94a3b8; margin-top: -3px; }
+  .meta-cell .m-icon { font-size: 20px; }
 
-  .temp-max {
-    font-size: 28px;
-    font-weight: 800;
-    color: #e11d48;
-    line-height: 1;
+  /* Hàng cột lượng mưa phía dưới chart */
+  .timeline-bottom-rain-row {
+    display: flex; width: 100%; justify-content: space-around; margin-top: 15px;
+    background: #f8fafc; padding: 10px 0; border-radius: 12px;
   }
+  .rain-cell {
+    width: 70px; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 4px;
+  }
+  .rain-bar {
+    width: 16px; background: linear-gradient(to top, #38bdf8, #0284c7); border-radius: 4px 4px 1px 1px;
+    min-height: 2px; transition: height 0.3s;
+  }
+  .rain-txt { font-size: 11px; font-weight: 700; color: #0369a1; }
+  .wind-txt { font-size: 10px; color: #64748b; font-weight: 500; margin-top: 2px; }
 
-  .card-desc {
-    background: #f1f5f9;
-    border-radius: 7px;
-    padding: 5px 10px;
-    font-size: 12px;
-    color: #475569;
-    text-align: center;
-    margin-bottom: 10px;
-    font-weight: 500;
+  /* HỘP THÔNG TIN TÓM TẮT ĐÁY CHUYỂN ĐỔI THEO ĐIỂM CHỌN CHUẨN MẪU */
+  .detail-summary-box {
+    background: #f8fafc; border-radius: 16px; padding: 16px 20px;
+    border: 1px solid #e2e8f0; display: flex; justify-content: space-around; flex-wrap: wrap; gap: 14px;
   }
+  .summary-item { display: flex; align-items: center; gap: 12px; min-width: 140px; }
+  .summary-item .sum-icon { font-size: 22px; background: white; width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.03); }
+  .summary-item .sum-text h4 { font-size: 12px; color: #64748b; font-weight: 500; }
+  .summary-item .sum-text p { font-size: 15px; color: #0f172a; font-weight: 700; }
 
-  .card-footer {
-    display: flex;
-    justify-content: space-between;
-    font-size: 12px;
-    color: #64748b;
-  }
-
-  .precip, .wind {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-
-  /* NO RESULT */
-  .no-result {
-    display: none;
-    text-align: center;
-    padding: 60px 20px;
-    color: #94a3b8;
-    font-size: 16px;
-    grid-column: 1/-1;
-  }
-
-  /* RESPONSIVE */
-  @media (max-width: 600px) {
-    .header { flex-wrap: wrap; padding: 14px 16px; }
-    .header-right { width: 100%; }
-    .search-box { width: 100%; }
-    .stat-badge .num { font-size: 22px; }
-  }
+  .loading-box { text-align: center; padding: 50px; font-weight: 500; color: #64748b; }
 </style>
 </head>
 <body>
@@ -269,291 +168,688 @@
     <p class="updated-time">🕐 Lần cập nhật: <span id="live-clock"></span></p>
   </div>
   <div class="header-right">
-    <div class="stat-badge">
-      <div class="num">34</div>
-      <div class="label">Tỉnh Thành</div>
-    </div>
-    <input class="search-box" type="text" id="search" placeholder="Tìm tỉnh thành..." oninput="filterCards(this.value)">
+    <input class="search-box" type="text" id="search" placeholder="Tìm xã hoặc tỉnh..." oninput="filterSearch(this.value)">
   </div>
 </div>
 
+<div class="tabs-container">
+  <button class="tab-btn active" onclick="selectProvince('all')">🌍 Tất Cả</button><button class="tab-btn" onclick="selectProvince('An Giang')">📍 An Giang</button><button class="tab-btn" onclick="selectProvince('Cà Mau')">📍 Cà Mau</button><button class="tab-btn" onclick="selectProvince('Cần Thơ')">📍 Cần Thơ</button><button class="tab-btn" onclick="selectProvince('TP. Hồ Chí Minh')">📍 TP. Hồ Chí Minh</button><button class="tab-btn" onclick="selectProvince('Tây Ninh')">📍 Tây Ninh</button><button class="tab-btn" onclick="selectProvince('Vĩnh Long')">📍 Vĩnh Long</button><button class="tab-btn" onclick="selectProvince('Đồng Nai')">📍 Đồng Nai</button><button class="tab-btn" onclick="selectProvince('Đồng Tháp')">📍 Đồng Tháp</button>
+</div>
+
 <div class="container">
-  <p class="updated-at">Nguồn dữ liệu: Open-Meteo API (openmeteo.com) | Dữ liệu lấy lúc: 22/05/2026 19:32</p>
+  <p class="updated-at">Nguồn dữ liệu: Open-Meteo API | Khởi tạo lúc: 22/05/2026 19:37</p>
   <div class="grid" id="grid">
     
-        <div class="card" data-name="an giang">
+        <div class="card has-rain" data-province="Đồng Nai" data-rain="0.1" data-name="an lộc đồng nai" onclick="openHourlyChartDashboard('An Lộc', 'Đồng Nai', 11.70209228, 106.5819982)">
             <div class="card-header">
-                <span class="province-name">An Giang</span>
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">An Lộc</span>
+                    <span class="province-subname">Đồng Nai</span>
+                </div>
                 <span class="star">☆</span>
             </div>
             <div class="card-body">
-                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/><line x1="9" y1="9" x2="13.5" y2="13.5"/><line x1="34.5" y1="34.5" x2="39" y2="39"/><line x1="39" y1="9" x2="34.5" y2="13.5"/><line x1="13.5" y1="34.5" x2="9" y2="39"/></g></svg></div>
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 30 Q8 27 8 22 Q8 14 16 12 Q16 6 24 6 Q32 6 34 13 Q40 13 40 22 Q40 28 34 30Z" fill="#5b9bd5"/><line x1="24" y1="36" x2="22" y2="42" stroke="#5b9bd5" stroke-width="2.5" stroke-linecap="round"/></svg></div>
+                <div class="temps">
+                    <span class="temp-min">25°</span>
+                    <span class="temp-max">33°</span>
+                </div>
+            </div>
+            <div class="card-desc">Mưa phùn nhẹ</div>
+            <div class="card-footer">
+                <span class="precip" style="color: #0284c7; font-weight: 700;">💧 0.1 mm</span>
+                <span class="wind">💨 7 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="Đồng Nai" data-rain="0.0" data-name="an phước đồng nai" onclick="openHourlyChartDashboard('An Phước', 'Đồng Nai', 10.81797212, 106.9260746)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">An Phước</span>
+                    <span class="province-subname">Đồng Nai</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/></svg></div>
+                <div class="temps">
+                    <span class="temp-min">26°</span>
+                    <span class="temp-max">35°</span>
+                </div>
+            </div>
+            <div class="card-desc">Có mây</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 9 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="Đồng Nai" data-rain="0.0" data-name="an viễn đồng nai" onclick="openHourlyChartDashboard('An Viễn', 'Đồng Nai', 10.90103226, 107.0154427)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">An Viễn</span>
+                    <span class="province-subname">Đồng Nai</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/></svg></div>
+                <div class="temps">
+                    <span class="temp-min">26°</span>
+                    <span class="temp-max">35°</span>
+                </div>
+            </div>
+            <div class="card-desc">Có mây</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 9 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="Đồng Nai" data-rain="0.0" data-name="bảo vinh đồng nai" onclick="openHourlyChartDashboard('Bảo Vinh', 'Đồng Nai', 10.96831698, 107.2779605)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Bảo Vinh</span>
+                    <span class="province-subname">Đồng Nai</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/></svg></div>
+                <div class="temps">
+                    <span class="temp-min">24°</span>
+                    <span class="temp-max">33°</span>
+                </div>
+            </div>
+            <div class="card-desc">Có mây</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 7 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="Đồng Nai" data-rain="0.0" data-name="bàu hàm đồng nai" onclick="openHourlyChartDashboard('Bàu Hàm', 'Đồng Nai', 11.02553433, 107.0847547)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Bàu Hàm</span>
+                    <span class="province-subname">Đồng Nai</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/></svg></div>
+                <div class="temps">
+                    <span class="temp-min">25°</span>
+                    <span class="temp-max">34°</span>
+                </div>
+            </div>
+            <div class="card-desc">Có mây</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 8 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="TP. Hồ Chí Minh" data-rain="0.0" data-name="trừ văn thố tp. hồ chí minh" onclick="openHourlyChartDashboard('Trừ Văn Thố', 'TP. Hồ Chí Minh', 11.34264218, 106.588297)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Trừ Văn Thố</span>
+                    <span class="province-subname">TP. Hồ Chí Minh</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/></svg></div>
                 <div class="temps">
                     <span class="temp-min">26°</span>
                     <span class="temp-max">33°</span>
                 </div>
             </div>
-            <div class="card-desc">Ít mây</div>
+            <div class="card-desc">Có mây</div>
             <div class="card-footer">
-                <span class="precip">💧 0.0 mm</span>
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 4 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="TP. Hồ Chí Minh" data-rain="0.0" data-name="trung mỹ tây tp. hồ chí minh" onclick="openHourlyChartDashboard('Trung Mỹ Tây', 'TP. Hồ Chí Minh', 10.86013887, 106.6224316)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Trung Mỹ Tây</span>
+                    <span class="province-subname">TP. Hồ Chí Minh</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/></svg></div>
+                <div class="temps">
+                    <span class="temp-min">26°</span>
+                    <span class="temp-max">34°</span>
+                </div>
+            </div>
+            <div class="card-desc">Có mây</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 7 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="TP. Hồ Chí Minh" data-rain="0.0" data-name="vĩnh hội tp. hồ chí minh" onclick="openHourlyChartDashboard('Vĩnh Hội', 'TP. Hồ Chí Minh', 10.75528435, 106.6963633)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Vĩnh Hội</span>
+                    <span class="province-subname">TP. Hồ Chí Minh</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/></svg></div>
+                <div class="temps">
+                    <span class="temp-min">27°</span>
+                    <span class="temp-max">35°</span>
+                </div>
+            </div>
+            <div class="card-desc">Có mây</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
                 <span class="wind">💨 3 km/h</span>
             </div>
         </div>
 
-        <div class="card" data-name="bắc ninh">
+        <div class="card no-rain" data-province="TP. Hồ Chí Minh" data-rain="0.0" data-name="vĩnh lộc tp. hồ chí minh" onclick="openHourlyChartDashboard('Vĩnh Lộc', 'TP. Hồ Chí Minh', 10.82843839, 106.547249)">
             <div class="card-header">
-                <span class="province-name">Bắc Ninh</span>
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Vĩnh Lộc</span>
+                    <span class="province-subname">TP. Hồ Chí Minh</span>
+                </div>
                 <span class="star">☆</span>
             </div>
             <div class="card-body">
-                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M8 26 Q4 23 4 18 Q4 10 12 8 Q12 2 20 2 Q28 2 30 9 Q36 9 36 18 Q36 24 30 26Z" fill="#607d9e"/><polygon points="22,28 16,38 22,36 18,46 30,33 23,35" fill="#FFB800"/></svg></div>
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/></svg></div>
+                <div class="temps">
+                    <span class="temp-min">26°</span>
+                    <span class="temp-max">34°</span>
+                </div>
+            </div>
+            <div class="card-desc">Có mây</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 4 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="TP. Hồ Chí Minh" data-rain="0.0" data-name="vĩnh tân tp. hồ chí minh" onclick="openHourlyChartDashboard('Vĩnh Tân', 'TP. Hồ Chí Minh', 11.14661735, 106.7127387)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Vĩnh Tân</span>
+                    <span class="province-subname">TP. Hồ Chí Minh</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/></svg></div>
+                <div class="temps">
+                    <span class="temp-min">26°</span>
+                    <span class="temp-max">34°</span>
+                </div>
+            </div>
+            <div class="card-desc">Có mây</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 5 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="TP. Hồ Chí Minh" data-rain="0.0" data-name="vũng tàu tp. hồ chí minh" onclick="openHourlyChartDashboard('Vũng Tàu', 'TP. Hồ Chí Minh', 10.35646546, 107.0756028)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Vũng Tàu</span>
+                    <span class="province-subname">TP. Hồ Chí Minh</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/></svg></div>
                 <div class="temps">
                     <span class="temp-min">27°</span>
                     <span class="temp-max">32°</span>
                 </div>
             </div>
-            <div class="card-desc">Giông</div>
+            <div class="card-desc">Có mây</div>
             <div class="card-footer">
-                <span class="precip">💧 0.0 mm</span>
-                <span class="wind">💨 16 km/h</span>
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 9 km/h</span>
             </div>
         </div>
 
-        <div class="card" data-name="cà mau">
+        <div class="card no-rain" data-province="TP. Hồ Chí Minh" data-rain="0.0" data-name="vườn lài tp. hồ chí minh" onclick="openHourlyChartDashboard('Vườn Lài', 'TP. Hồ Chí Minh', 10.76665852, 106.6738439)">
             <div class="card-header">
-                <span class="province-name">Cà Mau</span>
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Vườn Lài</span>
+                    <span class="province-subname">TP. Hồ Chí Minh</span>
+                </div>
                 <span class="star">☆</span>
             </div>
             <div class="card-body">
-                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/><line x1="9" y1="9" x2="13.5" y2="13.5"/><line x1="34.5" y1="34.5" x2="39" y2="39"/><line x1="39" y1="9" x2="34.5" y2="13.5"/><line x1="13.5" y1="34.5" x2="9" y2="39"/></g></svg></div>
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/></svg></div>
                 <div class="temps">
                     <span class="temp-min">27°</span>
                     <span class="temp-max">34°</span>
                 </div>
             </div>
-            <div class="card-desc">Ít mây</div>
+            <div class="card-desc">Có mây</div>
             <div class="card-footer">
-                <span class="precip">💧 0.0 mm</span>
-                <span class="wind">💨 0 km/h</span>
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 5 km/h</span>
             </div>
         </div>
 
-        <div class="card" data-name="cần thơ">
+        <div class="card no-rain" data-province="TP. Hồ Chí Minh" data-rain="0.0" data-name="xóm chiếu tp. hồ chí minh" onclick="openHourlyChartDashboard('Xóm Chiếu', 'TP. Hồ Chí Minh', 10.76019936, 106.7120223)">
             <div class="card-header">
-                <span class="province-name">Cần Thơ</span>
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Xóm Chiếu</span>
+                    <span class="province-subname">TP. Hồ Chí Minh</span>
+                </div>
                 <span class="star">☆</span>
             </div>
             <div class="card-body">
-                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/><line x1="9" y1="9" x2="13.5" y2="13.5"/><line x1="34.5" y1="34.5" x2="39" y2="39"/><line x1="39" y1="9" x2="34.5" y2="13.5"/><line x1="13.5" y1="34.5" x2="9" y2="39"/></g></svg></div>
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/></svg></div>
+                <div class="temps">
+                    <span class="temp-min">27°</span>
+                    <span class="temp-max">34°</span>
+                </div>
+            </div>
+            <div class="card-desc">Có mây</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 5 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="TP. Hồ Chí Minh" data-rain="0.0" data-name="xuân hòa tp. hồ chí minh" onclick="openHourlyChartDashboard('Xuân Hòa', 'TP. Hồ Chí Minh', 10.78273272, 106.688269)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Xuân Hòa</span>
+                    <span class="province-subname">TP. Hồ Chí Minh</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/></svg></div>
+                <div class="temps">
+                    <span class="temp-min">27°</span>
+                    <span class="temp-max">34°</span>
+                </div>
+            </div>
+            <div class="card-desc">Có mây</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 5 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="TP. Hồ Chí Minh" data-rain="0.0" data-name="xuân sơn tp. hồ chí minh" onclick="openHourlyChartDashboard('Xuân Sơn', 'TP. Hồ Chí Minh', 10.61853369, 107.3314952)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Xuân Sơn</span>
+                    <span class="province-subname">TP. Hồ Chí Minh</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/></svg></div>
+                <div class="temps">
+                    <span class="temp-min">25°</span>
+                    <span class="temp-max">34°</span>
+                </div>
+            </div>
+            <div class="card-desc">Nhiều mây</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 3 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="TP. Hồ Chí Minh" data-rain="0.0" data-name="xuân thới sơn tp. hồ chí minh" onclick="openHourlyChartDashboard('Xuân Thới Sơn', 'TP. Hồ Chí Minh', 10.89002652, 106.5566761)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Xuân Thới Sơn</span>
+                    <span class="province-subname">TP. Hồ Chí Minh</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/></svg></div>
+                <div class="temps">
+                    <span class="temp-min">26°</span>
+                    <span class="temp-max">34°</span>
+                </div>
+            </div>
+            <div class="card-desc">Có mây</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 2 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="TP. Hồ Chí Minh" data-rain="0.0" data-name="xuyên mộc tp. hồ chí minh" onclick="openHourlyChartDashboard('Xuyên Mộc', 'TP. Hồ Chí Minh', 10.54903749, 107.4660259)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Xuyên Mộc</span>
+                    <span class="province-subname">TP. Hồ Chí Minh</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/></svg></div>
                 <div class="temps">
                     <span class="temp-min">26°</span>
                     <span class="temp-max">33°</span>
                 </div>
             </div>
-            <div class="card-desc">Ít mây</div>
+            <div class="card-desc">Nhiều mây</div>
             <div class="card-footer">
-                <span class="precip">💧 0.0 mm</span>
-                <span class="wind">💨 1 km/h</span>
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 4 km/h</span>
             </div>
         </div>
 
-        <div class="card" data-name="cao bằng">
+        <div class="card no-rain" data-province="Tây Ninh" data-rain="0.0" data-name="an lục long tây ninh" onclick="openHourlyChartDashboard('An Lục Long', 'Tây Ninh', 10.42410172, 106.4626503)">
             <div class="card-header">
-                <span class="province-name">Cao Bằng</span>
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">An Lục Long</span>
+                    <span class="province-subname">Tây Ninh</span>
+                </div>
                 <span class="star">☆</span>
             </div>
             <div class="card-body">
-                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/><line x1="9" y1="9" x2="13.5" y2="13.5"/><line x1="34.5" y1="34.5" x2="39" y2="39"/><line x1="39" y1="9" x2="34.5" y2="13.5"/><line x1="13.5" y1="34.5" x2="9" y2="39"/></g></svg></div>
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/></svg></div>
                 <div class="temps">
-                    <span class="temp-min">24°</span>
+                    <span class="temp-min">26°</span>
+                    <span class="temp-max">34°</span>
+                </div>
+            </div>
+            <div class="card-desc">Có mây</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 4 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="Tây Ninh" data-rain="0.0" data-name="an ninh tây ninh" onclick="openHourlyChartDashboard('An Ninh', 'Tây Ninh', 10.98147021, 106.3127991)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">An Ninh</span>
+                    <span class="province-subname">Tây Ninh</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/></svg></div>
+                <div class="temps">
+                    <span class="temp-min">26°</span>
+                    <span class="temp-max">35°</span>
+                </div>
+            </div>
+            <div class="card-desc">Có mây</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 3 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="Tây Ninh" data-rain="0.0" data-name="an tịnh tây ninh" onclick="openHourlyChartDashboard('An Tịnh', 'Tây Ninh', 11.06192302, 106.3881972)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">An Tịnh</span>
+                    <span class="province-subname">Tây Ninh</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/></svg></div>
+                <div class="temps">
+                    <span class="temp-min">26°</span>
+                    <span class="temp-max">35°</span>
+                </div>
+            </div>
+            <div class="card-desc">Có mây</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 3 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="Tây Ninh" data-rain="0.0" data-name="bến cầu tây ninh" onclick="openHourlyChartDashboard('Bến Cầu', 'Tây Ninh', 11.10965148, 106.1945596)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Bến Cầu</span>
+                    <span class="province-subname">Tây Ninh</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/></svg></div>
+                <div class="temps">
+                    <span class="temp-min">26°</span>
+                    <span class="temp-max">35°</span>
+                </div>
+            </div>
+            <div class="card-desc">Có mây</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 5 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="Tây Ninh" data-rain="0.0" data-name="bến lức tây ninh" onclick="openHourlyChartDashboard('Bến Lức', 'Tây Ninh', 10.66178425, 106.4831311)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Bến Lức</span>
+                    <span class="province-subname">Tây Ninh</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/></svg></div>
+                <div class="temps">
+                    <span class="temp-min">26°</span>
+                    <span class="temp-max">34°</span>
+                </div>
+            </div>
+            <div class="card-desc">Có mây</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 4 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="Đồng Tháp" data-rain="0.0" data-name="tháp mười đồng tháp" onclick="openHourlyChartDashboard('Tháp Mười', 'Đồng Tháp', 10.54536897, 105.8347125)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Tháp Mười</span>
+                    <span class="province-subname">Đồng Tháp</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M10 28 Q6 25 6 20 Q6 12 14 10 Q14 4 22 4 Q30 4 32 11 Q38 11 38 20 Q38 26 32 28Z" fill="#607d9e"/><line x1="18" y1="34" x2="16" y2="42" stroke="#5b9bd5" stroke-width="2.5" stroke-linecap="round"/><line x1="26" y1="34" x2="24" y2="42" stroke="#5b9bd5" stroke-width="2.5" stroke-linecap="round"/></svg></div>
+                <div class="temps">
+                    <span class="temp-min">26°</span>
+                    <span class="temp-max">34°</span>
+                </div>
+            </div>
+            <div class="card-desc">Giông</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 5 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="Đồng Tháp" data-rain="0.0" data-name="thới sơn đồng tháp" onclick="openHourlyChartDashboard('Thới Sơn', 'Đồng Tháp', 10.33736529, 106.3304122)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Thới Sơn</span>
+                    <span class="province-subname">Đồng Tháp</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/></svg></div>
+                <div class="temps">
+                    <span class="temp-min">26°</span>
+                    <span class="temp-max">34°</span>
+                </div>
+            </div>
+            <div class="card-desc">Có mây</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 2 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="Đồng Tháp" data-rain="0.0" data-name="thường lạc đồng tháp" onclick="openHourlyChartDashboard('Thường Lạc', 'Đồng Tháp', 10.85519618, 105.3022313)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Thường Lạc</span>
+                    <span class="province-subname">Đồng Tháp</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/></g></svg></div>
+                <div class="temps">
+                    <span class="temp-min">26°</span>
                     <span class="temp-max">33°</span>
                 </div>
             </div>
             <div class="card-desc">Trời quang</div>
             <div class="card-footer">
-                <span class="precip">💧 0.0 mm</span>
-                <span class="wind">💨 9 km/h</span>
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 4 km/h</span>
             </div>
         </div>
 
-        <div class="card" data-name="đà nẵng">
+        <div class="card no-rain" data-province="Đồng Tháp" data-rain="0.0" data-name="thường phước đồng tháp" onclick="openHourlyChartDashboard('Thường Phước', 'Đồng Tháp', 10.85233627, 105.2409306)">
             <div class="card-header">
-                <span class="province-name">Đà Nẵng</span>
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Thường Phước</span>
+                    <span class="province-subname">Đồng Tháp</span>
+                </div>
                 <span class="star">☆</span>
             </div>
             <div class="card-body">
-                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/><path d="M18 38 Q14 36 14 31 Q14 26 19 25 Q20 21 26 21 Q32 21 33 26 Q37 26 37 31 Q37 36 33 38Z" fill="#a8c4dc"/></svg></div>
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/></g></svg></div>
                 <div class="temps">
-                    <span class="temp-min">27°</span>
-                    <span class="temp-max">37°</span>
+                    <span class="temp-min">26°</span>
+                    <span class="temp-max">33°</span>
                 </div>
             </div>
-            <div class="card-desc">Nhiều mây</div>
+            <div class="card-desc">Trời quang</div>
             <div class="card-footer">
-                <span class="precip">💧 0.0 mm</span>
-                <span class="wind">💨 11 km/h</span>
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 4 km/h</span>
             </div>
         </div>
 
-        <div class="card" data-name="đắk lắk">
+        <div class="card no-rain" data-province="Đồng Tháp" data-rain="0.0" data-name="tràm chim đồng tháp" onclick="openHourlyChartDashboard('Tràm Chim', 'Đồng Tháp', 10.73652016, 105.5906969)">
             <div class="card-header">
-                <span class="province-name">Đắk Lắk</span>
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Tràm Chim</span>
+                    <span class="province-subname">Đồng Tháp</span>
+                </div>
                 <span class="star">☆</span>
             </div>
             <div class="card-body">
-                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/><line x1="9" y1="9" x2="13.5" y2="13.5"/><line x1="34.5" y1="34.5" x2="39" y2="39"/><line x1="39" y1="9" x2="34.5" y2="13.5"/><line x1="13.5" y1="34.5" x2="9" y2="39"/></g></svg></div>
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/></g></svg></div>
                 <div class="temps">
-                    <span class="temp-min">24°</span>
-                    <span class="temp-max">33°</span>
+                    <span class="temp-min">26°</span>
+                    <span class="temp-max">35°</span>
                 </div>
             </div>
             <div class="card-desc">Ít mây</div>
             <div class="card-footer">
-                <span class="precip">💧 0.0 mm</span>
+                <span class="precip" style="">💧 0.0 mm</span>
                 <span class="wind">💨 5 km/h</span>
             </div>
         </div>
 
-        <div class="card" data-name="điện biên">
+        <div class="card no-rain" data-province="Đồng Tháp" data-rain="0.0" data-name="trung an đồng tháp" onclick="openHourlyChartDashboard('Trung An', 'Đồng Tháp', 10.36961039, 106.3241239)">
             <div class="card-header">
-                <span class="province-name">Điện Biên</span>
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Trung An</span>
+                    <span class="province-subname">Đồng Tháp</span>
+                </div>
                 <span class="star">☆</span>
             </div>
             <div class="card-body">
-                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/><line x1="9" y1="9" x2="13.5" y2="13.5"/><line x1="34.5" y1="34.5" x2="39" y2="39"/><line x1="39" y1="9" x2="34.5" y2="13.5"/><line x1="13.5" y1="34.5" x2="9" y2="39"/></g></svg></div>
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/></svg></div>
                 <div class="temps">
-                    <span class="temp-min">24°</span>
-                    <span class="temp-max">31°</span>
+                    <span class="temp-min">26°</span>
+                    <span class="temp-max">34°</span>
+                </div>
+            </div>
+            <div class="card-desc">Có mây</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 2 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="Đồng Tháp" data-rain="0.0" data-name="trường xuân đồng tháp" onclick="openHourlyChartDashboard('Trường Xuân', 'Đồng Tháp', 10.65777339, 105.7440821)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Trường Xuân</span>
+                    <span class="province-subname">Đồng Tháp</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/></g></svg></div>
+                <div class="temps">
+                    <span class="temp-min">26°</span>
+                    <span class="temp-max">35°</span>
                 </div>
             </div>
             <div class="card-desc">Ít mây</div>
             <div class="card-footer">
-                <span class="precip">💧 0.0 mm</span>
+                <span class="precip" style="">💧 0.0 mm</span>
                 <span class="wind">💨 5 km/h</span>
             </div>
         </div>
 
-        <div class="card" data-name="đồng nai">
+        <div class="card no-rain" data-province="Đồng Tháp" data-rain="0.0" data-name="vĩnh bình đồng tháp" onclick="openHourlyChartDashboard('Vĩnh Bình', 'Đồng Tháp', 10.34665436, 106.5736307)">
             <div class="card-header">
-                <span class="province-name">Đồng Nai</span>
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Vĩnh Bình</span>
+                    <span class="province-subname">Đồng Tháp</span>
+                </div>
                 <span class="star">☆</span>
             </div>
             <div class="card-body">
-                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/><path d="M18 38 Q14 36 14 31 Q14 26 19 25 Q20 21 26 21 Q32 21 33 26 Q37 26 37 31 Q37 36 33 38Z" fill="#a8c4dc"/></svg></div>
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/></svg></div>
                 <div class="temps">
-                    <span class="temp-min">27°</span>
+                    <span class="temp-min">26°</span>
                     <span class="temp-max">34°</span>
                 </div>
             </div>
             <div class="card-desc">Có mây</div>
             <div class="card-footer">
-                <span class="precip">💧 0.0 mm</span>
-                <span class="wind">💨 7 km/h</span>
-            </div>
-        </div>
-
-        <div class="card" data-name="đồng tháp">
-            <div class="card-header">
-                <span class="province-name">Đồng Tháp</span>
-                <span class="star">☆</span>
-            </div>
-            <div class="card-body">
-                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/><line x1="9" y1="9" x2="13.5" y2="13.5"/><line x1="34.5" y1="34.5" x2="39" y2="39"/><line x1="39" y1="9" x2="34.5" y2="13.5"/><line x1="13.5" y1="34.5" x2="9" y2="39"/></g></svg></div>
-                <div class="temps">
-                    <span class="temp-min">26°</span>
-                    <span class="temp-max">35°</span>
-                </div>
-            </div>
-            <div class="card-desc">Ít mây</div>
-            <div class="card-footer">
-                <span class="precip">💧 0.0 mm</span>
+                <span class="precip" style="">💧 0.0 mm</span>
                 <span class="wind">💨 3 km/h</span>
             </div>
         </div>
 
-        <div class="card" data-name="gia lai">
+        <div class="card no-rain" data-province="Đồng Tháp" data-rain="0.0" data-name="vĩnh hựu đồng tháp" onclick="openHourlyChartDashboard('Vĩnh Hựu', 'Đồng Tháp', 10.30871107, 106.5823646)">
             <div class="card-header">
-                <span class="province-name">Gia Lai</span>
-                <span class="star">☆</span>
-            </div>
-            <div class="card-body">
-                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/><path d="M18 38 Q14 36 14 31 Q14 26 19 25 Q20 21 26 21 Q32 21 33 26 Q37 26 37 31 Q37 36 33 38Z" fill="#a8c4dc"/></svg></div>
-                <div class="temps">
-                    <span class="temp-min">22°</span>
-                    <span class="temp-max">30°</span>
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Vĩnh Hựu</span>
+                    <span class="province-subname">Đồng Tháp</span>
                 </div>
-            </div>
-            <div class="card-desc">Nhiều mây</div>
-            <div class="card-footer">
-                <span class="precip">💧 0.0 mm</span>
-                <span class="wind">💨 6 km/h</span>
-            </div>
-        </div>
-
-        <div class="card" data-name="hà nội">
-            <div class="card-header">
-                <span class="province-name">Hà Nội</span>
                 <span class="star">☆</span>
             </div>
             <div class="card-body">
-                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M8 26 Q4 23 4 18 Q4 10 12 8 Q12 2 20 2 Q28 2 30 9 Q36 9 36 18 Q36 24 30 26Z" fill="#607d9e"/><polygon points="22,28 16,38 22,36 18,46 30,33 23,35" fill="#FFB800"/></svg></div>
-                <div class="temps">
-                    <span class="temp-min">27°</span>
-                    <span class="temp-max">32°</span>
-                </div>
-            </div>
-            <div class="card-desc">Giông</div>
-            <div class="card-footer">
-                <span class="precip">💧 0.0 mm</span>
-                <span class="wind">💨 15 km/h</span>
-            </div>
-        </div>
-
-        <div class="card" data-name="hà tĩnh">
-            <div class="card-header">
-                <span class="province-name">Hà Tĩnh</span>
-                <span class="star">☆</span>
-            </div>
-            <div class="card-body">
-                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/><path d="M18 38 Q14 36 14 31 Q14 26 19 25 Q20 21 26 21 Q32 21 33 26 Q37 26 37 31 Q37 36 33 38Z" fill="#a8c4dc"/></svg></div>
-                <div class="temps">
-                    <span class="temp-min">27°</span>
-                    <span class="temp-max">35°</span>
-                </div>
-            </div>
-            <div class="card-desc">Nhiều mây</div>
-            <div class="card-footer">
-                <span class="precip">💧 0.0 mm</span>
-                <span class="wind">💨 21 km/h</span>
-            </div>
-        </div>
-
-        <div class="card" data-name="hải phòng">
-            <div class="card-header">
-                <span class="province-name">Hải Phòng</span>
-                <span class="star">☆</span>
-            </div>
-            <div class="card-body">
-                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/><path d="M18 38 Q14 36 14 31 Q14 26 19 25 Q20 21 26 21 Q32 21 33 26 Q37 26 37 31 Q37 36 33 38Z" fill="#a8c4dc"/></svg></div>
-                <div class="temps">
-                    <span class="temp-min">28°</span>
-                    <span class="temp-max">32°</span>
-                </div>
-            </div>
-            <div class="card-desc">Nhiều mây</div>
-            <div class="card-footer">
-                <span class="precip">💧 0.0 mm</span>
-                <span class="wind">💨 13 km/h</span>
-            </div>
-        </div>
-
-        <div class="card" data-name="hồ chí minh">
-            <div class="card-header">
-                <span class="province-name">Hồ Chí Minh</span>
-                <span class="star">☆</span>
-            </div>
-            <div class="card-body">
-                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/><path d="M18 38 Q14 36 14 31 Q14 26 19 25 Q20 21 26 21 Q32 21 33 26 Q37 26 37 31 Q37 36 33 38Z" fill="#a8c4dc"/></svg></div>
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/></svg></div>
                 <div class="temps">
                     <span class="temp-min">26°</span>
                     <span class="temp-max">34°</span>
@@ -561,56 +857,153 @@
             </div>
             <div class="card-desc">Có mây</div>
             <div class="card-footer">
-                <span class="precip">💧 0.0 mm</span>
-                <span class="wind">💨 7 km/h</span>
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 5 km/h</span>
             </div>
         </div>
 
-        <div class="card" data-name="huế">
+        <div class="card no-rain" data-province="Đồng Tháp" data-rain="0.0" data-name="vĩnh kim đồng tháp" onclick="openHourlyChartDashboard('Vĩnh Kim', 'Đồng Tháp', 10.34621987, 106.2145399)">
             <div class="card-header">
-                <span class="province-name">Huế</span>
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Vĩnh Kim</span>
+                    <span class="province-subname">Đồng Tháp</span>
+                </div>
                 <span class="star">☆</span>
             </div>
             <div class="card-body">
-                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/><path d="M18 38 Q14 36 14 31 Q14 26 19 25 Q20 21 26 21 Q32 21 33 26 Q37 26 37 31 Q37 36 33 38Z" fill="#a8c4dc"/></svg></div>
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/></svg></div>
                 <div class="temps">
                     <span class="temp-min">26°</span>
-                    <span class="temp-max">36°</span>
+                    <span class="temp-max">34°</span>
                 </div>
             </div>
-            <div class="card-desc">Nhiều mây</div>
+            <div class="card-desc">Có mây</div>
             <div class="card-footer">
-                <span class="precip">💧 0.0 mm</span>
-                <span class="wind">💨 4 km/h</span>
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 2 km/h</span>
             </div>
         </div>
 
-        <div class="card" data-name="khánh hòa">
+        <div class="card no-rain" data-province="Vĩnh Long" data-rain="0.0" data-name="an bình vĩnh long" onclick="openHourlyChartDashboard('An Bình', 'Vĩnh Long', 10.29057603, 105.9861591)">
             <div class="card-header">
-                <span class="province-name">Khánh Hòa</span>
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">An Bình</span>
+                    <span class="province-subname">Vĩnh Long</span>
+                </div>
                 <span class="star">☆</span>
             </div>
             <div class="card-body">
-                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/><line x1="9" y1="9" x2="13.5" y2="13.5"/><line x1="34.5" y1="34.5" x2="39" y2="39"/><line x1="39" y1="9" x2="34.5" y2="13.5"/><line x1="13.5" y1="34.5" x2="9" y2="39"/></g></svg></div>
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/></svg></div>
+                <div class="temps">
+                    <span class="temp-min">26°</span>
+                    <span class="temp-max">33°</span>
+                </div>
+            </div>
+            <div class="card-desc">Có mây</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 2 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="Vĩnh Long" data-rain="0.0" data-name="an định vĩnh long" onclick="openHourlyChartDashboard('An Định', 'Vĩnh Long', 10.06700248, 106.3952369)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">An Định</span>
+                    <span class="province-subname">Vĩnh Long</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/></svg></div>
                 <div class="temps">
                     <span class="temp-min">27°</span>
                     <span class="temp-max">34°</span>
                 </div>
             </div>
-            <div class="card-desc">Ít mây</div>
+            <div class="card-desc">Có mây</div>
             <div class="card-footer">
-                <span class="precip">💧 0.0 mm</span>
-                <span class="wind">💨 11 km/h</span>
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 3 km/h</span>
             </div>
         </div>
 
-        <div class="card" data-name="kiên giang">
+        <div class="card no-rain" data-province="Vĩnh Long" data-rain="0.0" data-name="an hiệp vĩnh long" onclick="openHourlyChartDashboard('An Hiệp', 'Vĩnh Long', 10.0372626, 106.5213781)">
             <div class="card-header">
-                <span class="province-name">Kiên Giang</span>
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">An Hiệp</span>
+                    <span class="province-subname">Vĩnh Long</span>
+                </div>
                 <span class="star">☆</span>
             </div>
             <div class="card-body">
-                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/><line x1="9" y1="9" x2="13.5" y2="13.5"/><line x1="34.5" y1="34.5" x2="39" y2="39"/><line x1="39" y1="9" x2="34.5" y2="13.5"/><line x1="13.5" y1="34.5" x2="9" y2="39"/></g></svg></div>
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/></svg></div>
+                <div class="temps">
+                    <span class="temp-min">27°</span>
+                    <span class="temp-max">34°</span>
+                </div>
+            </div>
+            <div class="card-desc">Có mây</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 7 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="Vĩnh Long" data-rain="0.0" data-name="an hội vĩnh long" onclick="openHourlyChartDashboard('An Hội', 'Vĩnh Long', 10.20132536, 106.3772085)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">An Hội</span>
+                    <span class="province-subname">Vĩnh Long</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/></svg></div>
+                <div class="temps">
+                    <span class="temp-min">26°</span>
+                    <span class="temp-max">34°</span>
+                </div>
+            </div>
+            <div class="card-desc">Có mây</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 3 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="Vĩnh Long" data-rain="0.0" data-name="an ngãi trung vĩnh long" onclick="openHourlyChartDashboard('An Ngãi Trung', 'Vĩnh Long', 10.09075261, 106.5462637)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">An Ngãi Trung</span>
+                    <span class="province-subname">Vĩnh Long</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/></svg></div>
+                <div class="temps">
+                    <span class="temp-min">27°</span>
+                    <span class="temp-max">34°</span>
+                </div>
+            </div>
+            <div class="card-desc">Có mây</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 7 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="Vĩnh Long" data-rain="0.0" data-name="an phú tân vĩnh long" onclick="openHourlyChartDashboard('An Phú Tân', 'Vĩnh Long', 9.863173197, 106.0200228)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">An Phú Tân</span>
+                    <span class="province-subname">Vĩnh Long</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/></g></svg></div>
                 <div class="temps">
                     <span class="temp-min">26°</span>
                     <span class="temp-max">33°</span>
@@ -618,303 +1011,219 @@
             </div>
             <div class="card-desc">Ít mây</div>
             <div class="card-footer">
-                <span class="precip">💧 0.0 mm</span>
-                <span class="wind">💨 3 km/h</span>
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 0 km/h</span>
             </div>
         </div>
 
-        <div class="card" data-name="kon tum">
+        <div class="card no-rain" data-province="Vĩnh Long" data-rain="0.0" data-name="an qui vĩnh long" onclick="openHourlyChartDashboard('An Qui', 'Vĩnh Long', 9.895461451, 106.5604956)">
             <div class="card-header">
-                <span class="province-name">Kon Tum</span>
-                <span class="star">☆</span>
-            </div>
-            <div class="card-body">
-                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/><path d="M18 38 Q14 36 14 31 Q14 26 19 25 Q20 21 26 21 Q32 21 33 26 Q37 26 37 31 Q37 36 33 38Z" fill="#a8c4dc"/></svg></div>
-                <div class="temps">
-                    <span class="temp-min">23°</span>
-                    <span class="temp-max">32°</span>
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">An Qui</span>
+                    <span class="province-subname">Vĩnh Long</span>
                 </div>
-            </div>
-            <div class="card-desc">Nhiều mây</div>
-            <div class="card-footer">
-                <span class="precip">💧 0.0 mm</span>
-                <span class="wind">💨 9 km/h</span>
-            </div>
-        </div>
-
-        <div class="card" data-name="lào cai">
-            <div class="card-header">
-                <span class="province-name">Lào Cai</span>
                 <span class="star">☆</span>
             </div>
             <div class="card-body">
-                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M8 26 Q4 23 4 18 Q4 10 12 8 Q12 2 20 2 Q28 2 30 9 Q36 9 36 18 Q36 24 30 26Z" fill="#607d9e"/><polygon points="22,28 16,38 22,36 18,46 30,33 23,35" fill="#FFB800"/></svg></div>
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/></svg></div>
                 <div class="temps">
-                    <span class="temp-min">24°</span>
-                    <span class="temp-max">32°</span>
-                </div>
-            </div>
-            <div class="card-desc">Giông</div>
-            <div class="card-footer">
-                <span class="precip">💧 0.0 mm</span>
-                <span class="wind">💨 4 km/h</span>
-            </div>
-        </div>
-
-        <div class="card" data-name="long an">
-            <div class="card-header">
-                <span class="province-name">Long An</span>
-                <span class="star">☆</span>
-            </div>
-            <div class="card-body">
-                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/><path d="M18 38 Q14 36 14 31 Q14 26 19 25 Q20 21 26 21 Q32 21 33 26 Q37 26 37 31 Q37 36 33 38Z" fill="#a8c4dc"/></svg></div>
-                <div class="temps">
-                    <span class="temp-min">26°</span>
-                    <span class="temp-max">34°</span>
+                    <span class="temp-min">27°</span>
+                    <span class="temp-max">33°</span>
                 </div>
             </div>
             <div class="card-desc">Có mây</div>
             <div class="card-footer">
-                <span class="precip">💧 0.0 mm</span>
-                <span class="wind">💨 4 km/h</span>
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 7 km/h</span>
             </div>
         </div>
 
-        <div class="card" data-name="nam định">
+        <div class="card no-rain" data-province="Vĩnh Long" data-rain="0.0" data-name="an trường vĩnh long" onclick="openHourlyChartDashboard('An Trường', 'Vĩnh Long', 9.954555938, 106.1647183)">
             <div class="card-header">
-                <span class="province-name">Nam Định</span>
-                <span class="star">☆</span>
-            </div>
-            <div class="card-body">
-                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/><path d="M18 38 Q14 36 14 31 Q14 26 19 25 Q20 21 26 21 Q32 21 33 26 Q37 26 37 31 Q37 36 33 38Z" fill="#a8c4dc"/></svg></div>
-                <div class="temps">
-                    <span class="temp-min">28°</span>
-                    <span class="temp-max">32°</span>
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">An Trường</span>
+                    <span class="province-subname">Vĩnh Long</span>
                 </div>
-            </div>
-            <div class="card-desc">Nhiều mây</div>
-            <div class="card-footer">
-                <span class="precip">💧 0.0 mm</span>
-                <span class="wind">💨 18 km/h</span>
-            </div>
-        </div>
-
-        <div class="card" data-name="nghệ an">
-            <div class="card-header">
-                <span class="province-name">Nghệ An</span>
                 <span class="star">☆</span>
             </div>
             <div class="card-body">
-                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M8 26 Q4 23 4 18 Q4 10 12 8 Q12 2 20 2 Q28 2 30 9 Q36 9 36 18 Q36 24 30 26Z" fill="#607d9e"/><polygon points="22,28 16,38 22,36 18,46 30,33 23,35" fill="#FFB800"/></svg></div>
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/></g></svg></div>
                 <div class="temps">
-                    <span class="temp-min">27°</span>
-                    <span class="temp-max">34°</span>
-                </div>
-            </div>
-            <div class="card-desc">Giông</div>
-            <div class="card-footer">
-                <span class="precip">💧 0.0 mm</span>
-                <span class="wind">💨 3 km/h</span>
-            </div>
-        </div>
-
-        <div class="card" data-name="ninh bình">
-            <div class="card-header">
-                <span class="province-name">Ninh Bình</span>
-                <span class="star">☆</span>
-            </div>
-            <div class="card-body">
-                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/><path d="M18 38 Q14 36 14 31 Q14 26 19 25 Q20 21 26 21 Q32 21 33 26 Q37 26 37 31 Q37 36 33 38Z" fill="#a8c4dc"/></svg></div>
-                <div class="temps">
-                    <span class="temp-min">28°</span>
+                    <span class="temp-min">26°</span>
                     <span class="temp-max">33°</span>
                 </div>
             </div>
-            <div class="card-desc">Nhiều mây</div>
+            <div class="card-desc">Ít mây</div>
             <div class="card-footer">
-                <span class="precip">💧 0.0 mm</span>
-                <span class="wind">💨 19 km/h</span>
-            </div>
-        </div>
-
-        <div class="card" data-name="phú thọ">
-            <div class="card-header">
-                <span class="province-name">Phú Thọ</span>
-                <span class="star">☆</span>
-            </div>
-            <div class="card-body">
-                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M8 26 Q4 23 4 18 Q4 10 12 8 Q12 2 20 2 Q28 2 30 9 Q36 9 36 18 Q36 24 30 26Z" fill="#607d9e"/><polygon points="22,28 16,38 22,36 18,46 30,33 23,35" fill="#FFB800"/></svg></div>
-                <div class="temps">
-                    <span class="temp-min">26°</span>
-                    <span class="temp-max">34°</span>
-                </div>
-            </div>
-            <div class="card-desc">Giông</div>
-            <div class="card-footer">
-                <span class="precip">💧 0.0 mm</span>
-                <span class="wind">💨 16 km/h</span>
-            </div>
-        </div>
-
-        <div class="card" data-name="quảng bình">
-            <div class="card-header">
-                <span class="province-name">Quảng Bình</span>
-                <span class="star">☆</span>
-            </div>
-            <div class="card-body">
-                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/><path d="M18 38 Q14 36 14 31 Q14 26 19 25 Q20 21 26 21 Q32 21 33 26 Q37 26 37 31 Q37 36 33 38Z" fill="#a8c4dc"/></svg></div>
-                <div class="temps">
-                    <span class="temp-min">26°</span>
-                    <span class="temp-max">36°</span>
-                </div>
-            </div>
-            <div class="card-desc">Nhiều mây</div>
-            <div class="card-footer">
-                <span class="precip">💧 0.0 mm</span>
-                <span class="wind">💨 11 km/h</span>
-            </div>
-        </div>
-
-        <div class="card" data-name="quảng nam">
-            <div class="card-header">
-                <span class="province-name">Quảng Nam</span>
-                <span class="star">☆</span>
-            </div>
-            <div class="card-body">
-                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M8 26 Q4 23 4 18 Q4 10 12 8 Q12 2 20 2 Q28 2 30 9 Q36 9 36 18 Q36 24 30 26Z" fill="#607d9e"/><polygon points="22,28 16,38 22,36 18,46 30,33 23,35" fill="#FFB800"/></svg></div>
-                <div class="temps">
-                    <span class="temp-min">25°</span>
-                    <span class="temp-max">35°</span>
-                </div>
-            </div>
-            <div class="card-desc">Giông</div>
-            <div class="card-footer">
-                <span class="precip">💧 0.0 mm</span>
+                <span class="precip" style="">💧 0.0 mm</span>
                 <span class="wind">💨 1 km/h</span>
             </div>
         </div>
 
-        <div class="card" data-name="quảng ngãi">
+        <div class="card no-rain" data-province="Vĩnh Long" data-rain="0.0" data-name="ba tri vĩnh long" onclick="openHourlyChartDashboard('Ba Tri', 'Vĩnh Long', 10.03907567, 106.5895553)">
             <div class="card-header">
-                <span class="province-name">Quảng Ngãi</span>
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Ba Tri</span>
+                    <span class="province-subname">Vĩnh Long</span>
+                </div>
                 <span class="star">☆</span>
             </div>
             <div class="card-body">
-                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/><path d="M18 38 Q14 36 14 31 Q14 26 19 25 Q20 21 26 21 Q32 21 33 26 Q37 26 37 31 Q37 36 33 38Z" fill="#a8c4dc"/></svg></div>
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/></svg></div>
                 <div class="temps">
                     <span class="temp-min">27°</span>
-                    <span class="temp-max">37°</span>
+                    <span class="temp-max">34°</span>
                 </div>
             </div>
             <div class="card-desc">Có mây</div>
             <div class="card-footer">
-                <span class="precip">💧 0.0 mm</span>
-                <span class="wind">💨 10 km/h</span>
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 7 km/h</span>
             </div>
         </div>
 
-        <div class="card" data-name="quảng ninh">
+        <div class="card no-rain" data-province="Vĩnh Long" data-rain="0.0" data-name="bảo thạnh vĩnh long" onclick="openHourlyChartDashboard('Bảo Thạnh', 'Vĩnh Long', 10.06149275, 106.6660598)">
             <div class="card-header">
-                <span class="province-name">Quảng Ninh</span>
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Bảo Thạnh</span>
+                    <span class="province-subname">Vĩnh Long</span>
+                </div>
                 <span class="star">☆</span>
             </div>
             <div class="card-body">
-                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M8 26 Q4 23 4 18 Q4 10 12 8 Q12 2 20 2 Q28 2 30 9 Q36 9 36 18 Q36 24 30 26Z" fill="#607d9e"/><polygon points="22,28 16,38 22,36 18,46 30,33 23,35" fill="#FFB800"/></svg></div>
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/></svg></div>
                 <div class="temps">
                     <span class="temp-min">27°</span>
-                    <span class="temp-max">30°</span>
+                    <span class="temp-max">33°</span>
                 </div>
             </div>
-            <div class="card-desc">Giông</div>
+            <div class="card-desc">Có mây</div>
             <div class="card-footer">
-                <span class="precip">💧 0.0 mm</span>
-                <span class="wind">💨 14 km/h</span>
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 7 km/h</span>
             </div>
         </div>
 
-        <div class="card" data-name="sơn la">
+        <div class="card no-rain" data-province="Vĩnh Long" data-rain="0.0" data-name="bến tre vĩnh long" onclick="openHourlyChartDashboard('Bến Tre', 'Vĩnh Long', 10.23763981, 106.3241554)">
             <div class="card-header">
-                <span class="province-name">Sơn La</span>
-                <span class="star">☆</span>
-            </div>
-            <div class="card-body">
-                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/><line x1="9" y1="9" x2="13.5" y2="13.5"/><line x1="34.5" y1="34.5" x2="39" y2="39"/><line x1="39" y1="9" x2="34.5" y2="13.5"/><line x1="13.5" y1="34.5" x2="9" y2="39"/></g></svg></div>
-                <div class="temps">
-                    <span class="temp-min">23°</span>
-                    <span class="temp-max">32°</span>
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Bến Tre</span>
+                    <span class="province-subname">Vĩnh Long</span>
                 </div>
-            </div>
-            <div class="card-desc">Ít mây</div>
-            <div class="card-footer">
-                <span class="precip">💧 0.0 mm</span>
-                <span class="wind">💨 2 km/h</span>
-            </div>
-        </div>
-
-        <div class="card" data-name="tây ninh">
-            <div class="card-header">
-                <span class="province-name">Tây Ninh</span>
                 <span class="star">☆</span>
             </div>
             <div class="card-body">
-                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/><line x1="9" y1="9" x2="13.5" y2="13.5"/><line x1="34.5" y1="34.5" x2="39" y2="39"/><line x1="39" y1="9" x2="34.5" y2="13.5"/><line x1="13.5" y1="34.5" x2="9" y2="39"/></g></svg></div>
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/></svg></div>
                 <div class="temps">
                     <span class="temp-min">26°</span>
                     <span class="temp-max">34°</span>
                 </div>
             </div>
-            <div class="card-desc">Ít mây</div>
+            <div class="card-desc">Có mây</div>
             <div class="card-footer">
-                <span class="precip">💧 0.0 mm</span>
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 3 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="An Giang" data-rain="0.0" data-name="vĩnh hậu an giang" onclick="openHourlyChartDashboard('Vĩnh Hậu', 'An Giang', 10.77527652, 105.1262156)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Vĩnh Hậu</span>
+                    <span class="province-subname">An Giang</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/></g></svg></div>
+                <div class="temps">
+                    <span class="temp-min">26°</span>
+                    <span class="temp-max">34°</span>
+                </div>
+            </div>
+            <div class="card-desc">Trời quang</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
                 <span class="wind">💨 4 km/h</span>
             </div>
         </div>
 
-        <div class="card" data-name="thanh hóa">
+        <div class="card no-rain" data-province="An Giang" data-rain="0.0" data-name="vĩnh hòa an giang" onclick="openHourlyChartDashboard('Vĩnh Hòa', 'An Giang', 9.69580915, 105.1690176)">
             <div class="card-header">
-                <span class="province-name">Thanh Hóa</span>
-                <span class="star">☆</span>
-            </div>
-            <div class="card-body">
-                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M8 26 Q4 23 4 18 Q4 10 12 8 Q12 2 20 2 Q28 2 30 9 Q36 9 36 18 Q36 24 30 26Z" fill="#607d9e"/><polygon points="22,28 16,38 22,36 18,46 30,33 23,35" fill="#FFB800"/></svg></div>
-                <div class="temps">
-                    <span class="temp-min">28°</span>
-                    <span class="temp-max">34°</span>
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Vĩnh Hòa</span>
+                    <span class="province-subname">An Giang</span>
                 </div>
-            </div>
-            <div class="card-desc">Giông</div>
-            <div class="card-footer">
-                <span class="precip">💧 0.0 mm</span>
-                <span class="wind">💨 18 km/h</span>
-            </div>
-        </div>
-
-        <div class="card" data-name="tiền giang">
-            <div class="card-header">
-                <span class="province-name">Tiền Giang</span>
                 <span class="star">☆</span>
             </div>
             <div class="card-body">
-                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/><path d="M18 38 Q14 36 14 31 Q14 26 19 25 Q20 21 26 21 Q32 21 33 26 Q37 26 37 31 Q37 36 33 38Z" fill="#a8c4dc"/></svg></div>
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/></g></svg></div>
                 <div class="temps">
                     <span class="temp-min">26°</span>
                     <span class="temp-max">34°</span>
                 </div>
             </div>
-            <div class="card-desc">Có mây</div>
+            <div class="card-desc">Trời quang</div>
             <div class="card-footer">
-                <span class="precip">💧 0.0 mm</span>
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 4 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="An Giang" data-rain="0.0" data-name="vĩnh hòa hưng an giang" onclick="openHourlyChartDashboard('Vĩnh Hòa Hưng', 'An Giang', 9.777057096, 105.3730951)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Vĩnh Hòa Hưng</span>
+                    <span class="province-subname">An Giang</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/></g></svg></div>
+                <div class="temps">
+                    <span class="temp-min">26°</span>
+                    <span class="temp-max">34°</span>
+                </div>
+            </div>
+            <div class="card-desc">Trời quang</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
                 <span class="wind">💨 2 km/h</span>
             </div>
         </div>
 
-        <div class="card" data-name="vĩnh long">
+        <div class="card no-rain" data-province="An Giang" data-rain="0.0" data-name="vĩnh phong an giang" onclick="openHourlyChartDashboard('Vĩnh Phong', 'An Giang', 9.468985924, 105.2670703)">
             <div class="card-header">
-                <span class="province-name">Vĩnh Long</span>
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Vĩnh Phong</span>
+                    <span class="province-subname">An Giang</span>
+                </div>
                 <span class="star">☆</span>
             </div>
             <div class="card-body">
-                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/><line x1="9" y1="9" x2="13.5" y2="13.5"/><line x1="34.5" y1="34.5" x2="39" y2="39"/><line x1="39" y1="9" x2="34.5" y2="13.5"/><line x1="13.5" y1="34.5" x2="9" y2="39"/></g></svg></div>
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/></g></svg></div>
+                <div class="temps">
+                    <span class="temp-min">27°</span>
+                    <span class="temp-max">34°</span>
+                </div>
+            </div>
+            <div class="card-desc">Trời quang</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 1 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="An Giang" data-rain="0.0" data-name="vĩnh tế an giang" onclick="openHourlyChartDashboard('Vĩnh Tế', 'An Giang', 10.65998541, 105.069153)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Vĩnh Tế</span>
+                    <span class="province-subname">An Giang</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/></g></svg></div>
                 <div class="temps">
                     <span class="temp-min">26°</span>
                     <span class="temp-max">33°</span>
@@ -922,29 +1231,917 @@
             </div>
             <div class="card-desc">Ít mây</div>
             <div class="card-footer">
-                <span class="precip">💧 0.0 mm</span>
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 4 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="An Giang" data-rain="0.0" data-name="vĩnh thạnh trung an giang" onclick="openHourlyChartDashboard('Vĩnh Thạnh Trung', 'An Giang', 10.60142899, 105.189981)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Vĩnh Thạnh Trung</span>
+                    <span class="province-subname">An Giang</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M10 28 Q6 25 6 20 Q6 12 14 10 Q14 4 22 4 Q30 4 32 11 Q38 11 38 20 Q38 26 32 28Z" fill="#607d9e"/><line x1="18" y1="34" x2="16" y2="42" stroke="#5b9bd5" stroke-width="2.5" stroke-linecap="round"/><line x1="26" y1="34" x2="24" y2="42" stroke="#5b9bd5" stroke-width="2.5" stroke-linecap="round"/></svg></div>
+                <div class="temps">
+                    <span class="temp-min">26°</span>
+                    <span class="temp-max">33°</span>
+                </div>
+            </div>
+            <div class="card-desc">Giông</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 4 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="An Giang" data-rain="0.0" data-name="vĩnh thông an giang" onclick="openHourlyChartDashboard('Vĩnh Thông', 'An Giang', 10.06844297, 105.0899708)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Vĩnh Thông</span>
+                    <span class="province-subname">An Giang</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/></g></svg></div>
+                <div class="temps">
+                    <span class="temp-min">27°</span>
+                    <span class="temp-max">32°</span>
+                </div>
+            </div>
+            <div class="card-desc">Ít mây</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 6 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="An Giang" data-rain="0.0" data-name="vĩnh thuận an giang" onclick="openHourlyChartDashboard('Vĩnh Thuận', 'An Giang', 9.50680594, 105.1927767)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Vĩnh Thuận</span>
+                    <span class="province-subname">An Giang</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/></g></svg></div>
+                <div class="temps">
+                    <span class="temp-min">26°</span>
+                    <span class="temp-max">34°</span>
+                </div>
+            </div>
+            <div class="card-desc">Trời quang</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
                 <span class="wind">💨 2 km/h</span>
             </div>
         </div>
 
-    <div class="no-result" id="noResult">Không tìm thấy tỉnh thành nào 🔍</div>
+        <div class="card no-rain" data-province="An Giang" data-rain="0.0" data-name="vĩnh trạch an giang" onclick="openHourlyChartDashboard('Vĩnh Trạch', 'An Giang', 10.2943434, 105.3437148)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Vĩnh Trạch</span>
+                    <span class="province-subname">An Giang</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/></g></svg></div>
+                <div class="temps">
+                    <span class="temp-min">26°</span>
+                    <span class="temp-max">33°</span>
+                </div>
+            </div>
+            <div class="card-desc">Ít mây</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 3 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="An Giang" data-rain="0.0" data-name="vĩnh tuy an giang" onclick="openHourlyChartDashboard('Vĩnh Tuy', 'An Giang', 9.656912156, 105.3231786)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Vĩnh Tuy</span>
+                    <span class="province-subname">An Giang</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/></g></svg></div>
+                <div class="temps">
+                    <span class="temp-min">26°</span>
+                    <span class="temp-max">35°</span>
+                </div>
+            </div>
+            <div class="card-desc">Trời quang</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 4 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="An Giang" data-rain="0.0" data-name="vĩnh xương an giang" onclick="openHourlyChartDashboard('Vĩnh Xương', 'An Giang', 10.87371038, 105.1736166)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Vĩnh Xương</span>
+                    <span class="province-subname">An Giang</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/></g></svg></div>
+                <div class="temps">
+                    <span class="temp-min">26°</span>
+                    <span class="temp-max">33°</span>
+                </div>
+            </div>
+            <div class="card-desc">Trời quang</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 4 km/h</span>
+            </div>
+        </div>
+
+        <div class="card has-rain" data-province="Cần Thơ" data-rain="0.1" data-name="an bình cần thơ" onclick="openHourlyChartDashboard('An Bình', 'Cần Thơ', 10.00437527, 105.7181708)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">An Bình</span>
+                    <span class="province-subname">Cần Thơ</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 30 Q8 27 8 22 Q8 14 16 12 Q16 6 24 6 Q32 6 34 13 Q40 13 40 22 Q40 28 34 30Z" fill="#5b9bd5"/><line x1="24" y1="36" x2="22" y2="42" stroke="#5b9bd5" stroke-width="2.5" stroke-linecap="round"/></svg></div>
+                <div class="temps">
+                    <span class="temp-min">26°</span>
+                    <span class="temp-max">34°</span>
+                </div>
+            </div>
+            <div class="card-desc">Mưa phùn nhẹ</div>
+            <div class="card-footer">
+                <span class="precip" style="color: #0284c7; font-weight: 700;">💧 0.1 mm</span>
+                <span class="wind">💨 1 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="Cần Thơ" data-rain="0.0" data-name="an lạc thôn cần thơ" onclick="openHourlyChartDashboard('An Lạc Thôn', 'Cần Thơ', 9.873777173, 105.9117309)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">An Lạc Thôn</span>
+                    <span class="province-subname">Cần Thơ</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/></g></svg></div>
+                <div class="temps">
+                    <span class="temp-min">26°</span>
+                    <span class="temp-max">33°</span>
+                </div>
+            </div>
+            <div class="card-desc">Ít mây</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 4 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="Cần Thơ" data-rain="0.0" data-name="an ninh cần thơ" onclick="openHourlyChartDashboard('An Ninh', 'Cần Thơ', 9.631031192, 105.9111724)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">An Ninh</span>
+                    <span class="province-subname">Cần Thơ</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/></g></svg></div>
+                <div class="temps">
+                    <span class="temp-min">27°</span>
+                    <span class="temp-max">34°</span>
+                </div>
+            </div>
+            <div class="card-desc">Trời quang</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 5 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="Cần Thơ" data-rain="0.0" data-name="an thạnh cần thơ" onclick="openHourlyChartDashboard('An Thạnh', 'Cần Thơ', 9.684591713, 106.1481256)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">An Thạnh</span>
+                    <span class="province-subname">Cần Thơ</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/></g></svg></div>
+                <div class="temps">
+                    <span class="temp-min">27°</span>
+                    <span class="temp-max">34°</span>
+                </div>
+            </div>
+            <div class="card-desc">Ít mây</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 6 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="Cần Thơ" data-rain="0.0" data-name="bình thủy cần thơ" onclick="openHourlyChartDashboard('Bình Thủy', 'Cần Thơ', 10.0712402, 105.7516802)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Bình Thủy</span>
+                    <span class="province-subname">Cần Thơ</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/></g></svg></div>
+                <div class="temps">
+                    <span class="temp-min">26°</span>
+                    <span class="temp-max">33°</span>
+                </div>
+            </div>
+            <div class="card-desc">Ít mây</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 1 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="Cần Thơ" data-rain="0.0" data-name="cái khế cần thơ" onclick="openHourlyChartDashboard('Cái Khế', 'Cần Thơ', 10.05169448, 105.7814741)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Cái Khế</span>
+                    <span class="province-subname">Cần Thơ</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/></g></svg></div>
+                <div class="temps">
+                    <span class="temp-min">26°</span>
+                    <span class="temp-max">33°</span>
+                </div>
+            </div>
+            <div class="card-desc">Ít mây</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 1 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="Cần Thơ" data-rain="0.0" data-name="cái răng cần thơ" onclick="openHourlyChartDashboard('Cái Răng', 'Cần Thơ', 9.987435245, 105.7613586)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Cái Răng</span>
+                    <span class="province-subname">Cần Thơ</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/></g></svg></div>
+                <div class="temps">
+                    <span class="temp-min">26°</span>
+                    <span class="temp-max">33°</span>
+                </div>
+            </div>
+            <div class="card-desc">Ít mây</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 1 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="Cần Thơ" data-rain="0.0" data-name="châu thành cần thơ" onclick="openHourlyChartDashboard('Châu Thành', 'Cần Thơ', 9.942515381, 105.836257)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Châu Thành</span>
+                    <span class="province-subname">Cần Thơ</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/></g></svg></div>
+                <div class="temps">
+                    <span class="temp-min">26°</span>
+                    <span class="temp-max">33°</span>
+                </div>
+            </div>
+            <div class="card-desc">Ít mây</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 0 km/h</span>
+            </div>
+        </div>
+
+        <div class="card has-rain" data-province="Cần Thơ" data-rain="0.1" data-name="cờ đỏ cần thơ" onclick="openHourlyChartDashboard('Cờ Đỏ', 'Cần Thơ', 10.06783646, 105.415743)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Cờ Đỏ</span>
+                    <span class="province-subname">Cần Thơ</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 30 Q8 27 8 22 Q8 14 16 12 Q16 6 24 6 Q32 6 34 13 Q40 13 40 22 Q40 28 34 30Z" fill="#5b9bd5"/><line x1="24" y1="36" x2="22" y2="42" stroke="#5b9bd5" stroke-width="2.5" stroke-linecap="round"/></svg></div>
+                <div class="temps">
+                    <span class="temp-min">26°</span>
+                    <span class="temp-max">33°</span>
+                </div>
+            </div>
+            <div class="card-desc">Mưa phùn nhẹ</div>
+            <div class="card-footer">
+                <span class="precip" style="color: #0284c7; font-weight: 700;">💧 0.1 mm</span>
+                <span class="wind">💨 2 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="Cần Thơ" data-rain="0.0" data-name="cù lao dung cần thơ" onclick="openHourlyChartDashboard('Cù Lao Dung', 'Cần Thơ', 9.575043319, 106.2250343)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Cù Lao Dung</span>
+                    <span class="province-subname">Cần Thơ</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/></g></svg></div>
+                <div class="temps">
+                    <span class="temp-min">27°</span>
+                    <span class="temp-max">33°</span>
+                </div>
+            </div>
+            <div class="card-desc">Trời quang</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 6 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="Cà Mau" data-rain="0.0" data-name="trần phán cà mau" onclick="openHourlyChartDashboard('Trần Phán', 'Cà Mau', 9.008089537, 105.1424919)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Trần Phán</span>
+                    <span class="province-subname">Cà Mau</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/></g></svg></div>
+                <div class="temps">
+                    <span class="temp-min">27°</span>
+                    <span class="temp-max">34°</span>
+                </div>
+            </div>
+            <div class="card-desc">Ít mây</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 2 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="Cà Mau" data-rain="0.0" data-name="trần văn thời cà mau" onclick="openHourlyChartDashboard('Trần Văn Thời', 'Cà Mau', 9.085739349, 104.950579)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Trần Văn Thời</span>
+                    <span class="province-subname">Cà Mau</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/></g></svg></div>
+                <div class="temps">
+                    <span class="temp-min">26°</span>
+                    <span class="temp-max">34°</span>
+                </div>
+            </div>
+            <div class="card-desc">Ít mây</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 2 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="Cà Mau" data-rain="0.0" data-name="trí phải cà mau" onclick="openHourlyChartDashboard('Trí Phải', 'Cà Mau', 9.399547259, 105.1924926)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Trí Phải</span>
+                    <span class="province-subname">Cà Mau</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/></g></svg></div>
+                <div class="temps">
+                    <span class="temp-min">27°</span>
+                    <span class="temp-max">34°</span>
+                </div>
+            </div>
+            <div class="card-desc">Trời quang</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 2 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="Cà Mau" data-rain="0.0" data-name="u minh cà mau" onclick="openHourlyChartDashboard('U Minh', 'Cà Mau', 9.435250375, 104.8747195)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">U Minh</span>
+                    <span class="province-subname">Cà Mau</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/></g></svg></div>
+                <div class="temps">
+                    <span class="temp-min">26°</span>
+                    <span class="temp-max">34°</span>
+                </div>
+            </div>
+            <div class="card-desc">Ít mây</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 4 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="Cà Mau" data-rain="0.0" data-name="vĩnh hậu cà mau" onclick="openHourlyChartDashboard('Vĩnh Hậu', 'Cà Mau', 9.204258036, 105.6486101)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Vĩnh Hậu</span>
+                    <span class="province-subname">Cà Mau</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/></g></svg></div>
+                <div class="temps">
+                    <span class="temp-min">28°</span>
+                    <span class="temp-max">33°</span>
+                </div>
+            </div>
+            <div class="card-desc">Trời quang</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 6 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="Cà Mau" data-rain="0.0" data-name="vĩnh lộc cà mau" onclick="openHourlyChartDashboard('Vĩnh Lộc', 'Cà Mau', 9.570583795, 105.3567666)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Vĩnh Lộc</span>
+                    <span class="province-subname">Cà Mau</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/></g></svg></div>
+                <div class="temps">
+                    <span class="temp-min">26°</span>
+                    <span class="temp-max">35°</span>
+                </div>
+            </div>
+            <div class="card-desc">Trời quang</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 3 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="Cà Mau" data-rain="0.0" data-name="vĩnh lợi cà mau" onclick="openHourlyChartDashboard('Vĩnh Lợi', 'Cà Mau', 9.36717121, 105.7373639)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Vĩnh Lợi</span>
+                    <span class="province-subname">Cà Mau</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/></g></svg></div>
+                <div class="temps">
+                    <span class="temp-min">27°</span>
+                    <span class="temp-max">33°</span>
+                </div>
+            </div>
+            <div class="card-desc">Trời quang</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 5 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="Cà Mau" data-rain="0.0" data-name="vĩnh mỹ cà mau" onclick="openHourlyChartDashboard('Vĩnh Mỹ', 'Cà Mau', 9.318517159, 105.5760294)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Vĩnh Mỹ</span>
+                    <span class="province-subname">Cà Mau</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/></g></svg></div>
+                <div class="temps">
+                    <span class="temp-min">27°</span>
+                    <span class="temp-max">34°</span>
+                </div>
+            </div>
+            <div class="card-desc">Trời quang</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 6 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="Cà Mau" data-rain="0.0" data-name="vĩnh phước cà mau" onclick="openHourlyChartDashboard('Vĩnh Phước', 'Cà Mau', 9.398907014, 105.4096728)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Vĩnh Phước</span>
+                    <span class="province-subname">Cà Mau</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/></g></svg></div>
+                <div class="temps">
+                    <span class="temp-min">27°</span>
+                    <span class="temp-max">33°</span>
+                </div>
+            </div>
+            <div class="card-desc">Trời quang</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 3 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="Cà Mau" data-rain="0.0" data-name="vĩnh thanh cà mau" onclick="openHourlyChartDashboard('Vĩnh Thanh', 'Cà Mau', 9.379612642, 105.5171329)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Vĩnh Thanh</span>
+                    <span class="province-subname">Cà Mau</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/></g></svg></div>
+                <div class="temps">
+                    <span class="temp-min">27°</span>
+                    <span class="temp-max">33°</span>
+                </div>
+            </div>
+            <div class="card-desc">Trời quang</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 4 km/h</span>
+            </div>
+        </div>
+
+        <div class="card no-rain" data-province="Cà Mau" data-rain="0.0" data-name="vĩnh trạch cà mau" onclick="openHourlyChartDashboard('Vĩnh Trạch', 'Cà Mau', 9.297287689, 105.7735913)">
+            <div class="card-header">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="province-name">Vĩnh Trạch</span>
+                    <span class="province-subname">Cà Mau</span>
+                </div>
+                <span class="star">☆</span>
+            </div>
+            <div class="card-body">
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/></g></svg></div>
+                <div class="temps">
+                    <span class="temp-min">28°</span>
+                    <span class="temp-max">33°</span>
+                </div>
+            </div>
+            <div class="card-desc">Trời quang</div>
+            <div class="card-footer">
+                <span class="precip" style="">💧 0.0 mm</span>
+                <span class="wind">💨 5 km/h</span>
+            </div>
+        </div>
+
+    <div class="no-result" id="noResult">Không tìm thấy địa điểm nào khớp yêu cầu 🔍</div>
+  </div>
+</div>
+
+<div id="hourlyModal" class="modal" onclick="closeHourlyModal(event)">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <div class="modal-title">
+        <h3 id="modalStationTitle">Dự báo thời tiết</h3>
+        <p id="modalCoordsTitle">Vĩ độ: -- | Kinh độ: --</p>
+      </div>
+      <span class="close-btn" onclick="document.getElementById('hourlyModal').style.display='none'">&times;</span>
+    </div>
+    <div class="modal-body" id="modalBodyContent">
+        </div>
   </div>
 </div>
 
 <script>
-function filterCards(q) {
-  const query = q.toLowerCase().trim();
-  const cards = document.querySelectorAll('.card');
-  let found = 0;
-  cards.forEach(c => {
-    const match = c.dataset.name.includes(query);
-    c.classList.toggle('hidden', !match);
-    if (match) found++;
+const wmoIconMap = {0: '☀️', 1: '🌤️', 2: '⛅', 3: '☁️', 45: '🌫️', 48: '🌫️', 51: '🌦️', 53: '🌦️', 55: '🌧️', 61: '🌧️', 63: '🌧️', 65: '🌧️', 71: '🌨️', 73: '❄️', 75: '❄️', 80: '🌦️', 81: '🌧️', 82: '⛈️', 95: '⛈️', 96: '⛈️'};
+let hourlyChartInstance = null; // Biến lưu trữ đối tượng Chart để tránh rò rỉ bộ nhớ
+
+function sortCardsByRain() {
+  const grid = document.getElementById('grid');
+  const cards = Array.from(grid.querySelectorAll('.card'));
+  const noResultEl = document.getElementById('noResult');
+  cards.sort((a, b) => {
+    const rainA = parseFloat(a.dataset.rain) || 0;
+    const rainB = parseFloat(b.dataset.rain) || 0;
+    if (rainB !== rainA) return rainB - rainA;
+    return a.dataset.name.localeCompare(b.dataset.name);
   });
-  document.getElementById('noResult').style.display = found === 0 ? 'block' : 'none';
+  cards.forEach(card => grid.appendChild(card));
+  grid.appendChild(noResultEl);
 }
 
-// Đồng hồ realtime trong header
+function selectProvince(provName) {
+  const buttons = document.querySelectorAll('.tab-btn');
+  buttons.forEach(btn => {
+    if(btn.textContent.includes(provName) || (provName === 'all' && btn.textContent.includes('Tất Cả'))) btn.classList.add('active');
+    else btn.classList.remove('active');
+  });
+  const cards = document.querySelectorAll('.card');
+  cards.forEach(card => {
+    if (provName === 'all' || card.dataset.province === provName) card.classList.remove('hidden-tab');
+    else card.classList.add('hidden-tab');
+  });
+  checkNoResult();
+}
+
+function filterSearch(q) {
+  const query = q.toLowerCase().trim();
+  const cards = document.querySelectorAll('.card');
+  cards.forEach(card => {
+    if (card.dataset.name.includes(query)) card.classList.remove('hidden-search');
+    else card.classList.add('hidden-search');
+  });
+  checkNoResult();
+}
+
+function checkNoResult() {
+  const visibleCards = document.querySelectorAll('.card:not(.hidden-tab):not(.hidden-search)');
+  document.getElementById('noResult').style.display = visibleCards.length === 0 ? 'block' : 'none';
+}
+
+// ====================================================
+// NEW LOGIC: DỰ BÁO BIỂU ĐỒ ĐƯỜNG ĐỒNG BỘ CHUẨN NANGMUA.VN
+// ====================================================
+async function openHourlyChartDashboard(stationName, provinceName, lat, lon) {
+  const modal = document.getElementById('hourlyModal');
+  const title = document.getElementById('modalStationTitle');
+  const coords = document.getElementById('modalCoordsTitle');
+  const body = document.getElementById('modalBodyContent');
+  
+  title.textContent = `Dự báo diễn biến thời tiết 24 giờ tới - Xã ${stationName} (${provinceName})`;
+  coords.textContent = `📍 Tọa độ trạm: ${lat}°N, ${lon}°E | Nguồn dữ liệu: Open-Meteo High-Resolution`;
+  body.innerHTML = '<div class="loading-box">📊 Đang đồng bộ và khởi tạo ma trận đồ họa ngang...</div>';
+  modal.style.display = 'flex';
+
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,precipitation,wind_speed_10m,weather_code,humidity_2m&timezone=Asia%2FHo_Chi_Minh&forecast_days=2`;
+  
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    const hourly = data.hourly;
+    
+    if(!hourly) {
+      body.innerHTML = '<div class="loading-box">❌ Không đồng bộ được cơ sở dữ liệu mốc giờ.</div>';
+      return;
+    }
+
+    // Tìm điểm giờ hiện tại
+    const nowIndex = hourly.time.findIndex(t => new Date(t) >= new Date().setMinutes(0,0,0) - 3600000);
+    const startIndex = nowIndex >= 0 ? nowIndex : 0;
+
+    // Khởi tạo mảng cắt dữ liệu đúng 24 mốc giờ tiếp theo
+    const hoursLabels = [];
+    const dateLabels = [];
+    const tempDataset = [];
+    const rainDataset = [];
+    const windDataset = [];
+    const humidityDataset = [];
+    const emojiDataset = [];
+
+    let topMetaCellsHtml = '';
+    let bottomRainCellsHtml = '';
+    let maxPrecip = 0;
+
+    // Vòng lặp lấy max lượng mưa để dựng cột tỷ lệ đồ họa
+    for (let i = startIndex; i < startIndex + 24; i++) {
+      if (i >= hourly.time.length) break;
+      const pVal = hourly.precipitation[i];
+      if (pVal > maxPrecip) maxPrecip = pVal;
+    }
+
+    for (let i = startIndex; i < startIndex + 24; i++) {
+      if (i >= hourly.time.length) break;
+
+      const tItem = new Date(hourly.time[i]);
+      const hourStr = `${String(tItem.getHours()).padStart(2, '0')}:00`;
+      const dateStr = `${tItem.getDate()}/${tItem.getMonth()+1}`;
+      
+      const tempVal = hourly.temperature_2m[i];
+      const rainVal = hourly.precipitation[i];
+      const windVal = Math.round(hourly.wind_speed_10m[i]);
+      const humidVal = hourly.humidity_2m[i];
+      const code = hourly.weather_code[i];
+      const emoji = wmoIconMap[code] || "☁️";
+
+      hoursLabels.push(hourStr);
+      dateLabels.push(dateStr);
+      tempDataset.push(tempVal);
+      rainDataset.push(rainVal);
+      windDataset.push(windVal);
+      humidityDataset.push(humidVal);
+      emojiDataset.push(emoji);
+
+      // 1. Dựng dòng icon và thời gian đỉnh đầu
+      topMetaCellsHtml += `
+        <div class="meta-cell">
+          <div class="m-time">${hourStr}</div>
+          <div class="m-date">${dateStr}</div>
+          <div class="m-icon">${emoji}</div>
+        </div>
+      `;
+
+      // Tính toán chiều cao cột mưa vẽ bằng CSS
+      let rHeight = 2;
+      if (maxPrecip > 0 && rainVal > 0) {
+        rHeight = Math.round((rainVal / maxPrecip) * 35) + 2;
+      } else if (rainVal > 0) {
+        rHeight = 15;
+      }
+
+      // 2. Dựng dòng cột mưa và sức gió đáy dưới
+      bottomRainCellsHtml += `
+        <div class="rain-cell" style="cursor:pointer;" onclick="syncDashboardSummary('${hourStr} (${dateStr})', ${tempVal}, ${rainVal}, ${windVal}, ${humidVal}, '${emoji}')">
+          <div class="timeline-rain-bar-wrapper" style="height:45px;">
+            <div class="rain-bar" style="height: ${rHeight}px; ${rainVal > 0 ? '' : 'background:#cbd5e1; opacity:0.2;'}"></div>
+          </div>
+          <div class="rain-txt" style="${rainVal > 0 ? '' : 'color:#0369a1; font-weight:bold;'}">${rainVal}m</div>
+          <div class="wind-txt">💨${windVal}</div>
+        </div>
+      `;
+    }
+
+    // Tái cấu trúc cấu trúc nạp Modal Body dạng canvas đồ thị lồng giữa hai timeline metadata
+    body.innerHTML = `
+      <p style="font-size: 11px; color: #64748b; font-weight: 500; margin-bottom: 2px;">👉 Vuốt/Cuộn ngang khung bảng số liệu dưới đây để xem diễn biến đầy đủ 24 giờ tiếp theo.</p>
+      
+      <div class="timeline-dashboard-scroll">
+        <div class="timeline-canvas-wrapper">
+          
+          <div class="timeline-top-meta-row">
+            ${topMetaCellsHtml}
+          </div>
+          
+          <div style="width: 100%; height: 160px; padding: 0 10px; position:relative;">
+            <canvas id="hourlyLineChartCtx" style="width:100%; height:100%;"></canvas>
+          </div>
+          
+          <div class="timeline-bottom-rain-row">
+            ${bottomRainCellsHtml}
+          </div>
+          
+        </div>
+      </div>
+      
+      <div class="detail-summary-box">
+         <div class="summary-item">
+            <div class="sum-icon">⏰</div>
+            <div class="sum-text">
+               <h4>Thời gian điểm</h4>
+               <p id="lblSumTime">--</p>
+            </div>
+         </div>
+         <div class="summary-item">
+            <div class="sum-icon">🌡️</div>
+            <div class="sum-text">
+               <h4>Nhiệt độ không khí</h4>
+               <p id="lblSumTemp">-- °C</p>
+            </div>
+         </div>
+         <div class="summary-item">
+            <div class="sum-icon">💧</div>
+            <div class="sum-text">
+               <h4>Lượng mưa dự báo</h4>
+               <p id="lblSumRain">-- mm</p>
+            </div>
+         </div>
+         <div class="summary-item">
+            <div class="sum-icon">💦</div>
+            <div class="sum-text">
+               <h4>Độ ẩm tương đối</h4>
+               <p id="lblSumHumid">-- %</p>
+            </div>
+         </div>
+         <div class="summary-item">
+            <div class="sum-icon">💨</div>
+            <div class="sum-text">
+               <h4>Tốc độ gió 10m</h4>
+               <p id="lblSumWind">-- km/h</p>
+            </div>
+         </div>
+      </div>
+    `;
+
+    // Khởi tạo vẽ đồ thị đường cong nhiệt độ bằng Chart.js khớp chính xác tọa độ các cột
+    const ctx = document.getElementById('hourlyLineChartCtx').getContext('2d');
+    
+    if(hourlyChartInstance) {
+      hourlyChartInstance.destroy();
+    }
+
+    hourlyChartInstance = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: hoursLabels,
+        datasets: [{
+          label: 'Nhiệt độ (°C)',
+          data: tempDataset,
+          borderColor: '#e11d48',
+          borderWidth: 3,
+          backgroundColor: 'rgba(225, 29, 72, 0.05)',
+          fill: true,
+          tension: 0.4, // Đường cong mềm mại như nangmua.vn
+          pointRadius: 4,
+          pointBackgroundColor: '#e11d48',
+          pointHoverRadius: 6
+        }]
+      },
+      options: {
+        responsive: false,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false }, // Ẩn nhãn chỉ mục phụ
+          tooltip: {
+            enabled: true,
+            callbacks: {
+              label: function(context) {
+                const idx = context.dataIndex;
+                // Đồng bộ cập nhật hộp đáy luôn khi di chuột qua điểm nút đồ thị
+                syncDashboardSummary(
+                  `${hoursLabels[idx]} (${dateLabels[idx]})`,
+                  tempDataset[idx],
+                  rainDataset[idx],
+                  windDataset[idx],
+                  humidityDataset[idx],
+                  emojiDataset[idx]
+                );
+                return `Nhiệt độ: ${context.raw}°C`;
+              }
+            }
+          }
+        },
+        scales: {
+          x: { display: false }, // Ẩn trục X của đồ thị vì đã có hàng giờ metadata phía trên khớp tỉ lệ
+          y: {
+            display: true,
+            position: 'left',
+            grid: { color: '#f1f5f9' },
+            ticks: {
+              callback: function(value) { return value + '°'; },
+              font: { size: 10, weight: '600' },
+              color: '#94a3b8'
+            }
+          }
+        }
+      }
+    });
+
+    // Kích hoạt nạp dữ liệu mặc định ban đầu cho mốc giờ hiện hành đầu tiên
+    syncDashboardSummary(`${hoursLabels[0]} (${dateLabels[0]})`, tempDataset[0], rainDataset[0], windDataset[0], humidityDataset[0], emojiDataset[0]);
+
+  } catch (error) {
+    body.innerHTML = `<div class="loading-box">❌ Gặp lỗi kết nối hệ thống dữ liệu khí tượng: ${error.message}</div>`;
+  }
+}
+
+// Hàm đồng bộ và cập nhật số liệu cho các hộp thông tin chi tiết ở đáy
+function syncDashboardSummary(timeStr, temp, rain, wind, humid, emoji) {
+  document.getElementById('lblSumTime').textContent = timeStr;
+  document.getElementById('lblSumTemp').innerHTML = `${Math.round(temp)}°C ${emoji}`;
+  document.getElementById('lblSumRain').textContent = `${rain} mm`;
+  document.getElementById('lblSumHumid').textContent = `${humid} %`;
+  document.getElementById('lblSumWind').textContent = `${wind} km/h`;
+}
+
+function closeHourlyModal(event) {
+  document.getElementById('hourlyModal').style.display = 'none';
+}
+
 function updateClock() {
   const now = new Date();
   const pad = n => String(n).padStart(2, '0');
@@ -953,8 +2150,12 @@ function updateClock() {
   const el = document.getElementById('live-clock');
   if (el) el.textContent = str;
 }
-updateClock();
-setInterval(updateClock, 1000);
+
+window.addEventListener('DOMContentLoaded', () => {
+  sortCardsByRain();
+  updateClock();
+  setInterval(updateClock, 1000);
+});
 </script>
 
 </body>

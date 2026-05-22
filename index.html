@@ -416,7 +416,7 @@
 </div>
 
 <div class="container">
-  <p class="updated-at">Nguồn dữ liệu: Open-Meteo API | Khởi tạo lúc: 22/05/2026 19:46</p>
+  <p class="updated-at">Nguồn dữ liệu: Open-Meteo API | Khởi tạo lúc: 22/05/2026 19:54</p>
   <div class="grid" id="grid">
     
         <div class="card has-rain" data-province="Đồng Nai" data-rain="0.1" data-name="an lộc đồng nai" onclick="openHourlyModal('An Lộc', 'Đồng Nai', 11.70209228, 106.5819982)">
@@ -2234,11 +2234,16 @@ async function openHourlyModal(stationName, provinceName, lat, lon) {
   modal.style.display = 'flex';
 
   try {
+    const now2 = new Date();
+    const pad2 = n => String(n).padStart(2,'0');
+    const todayStr = `${now2.getFullYear()}-${pad2(now2.getMonth()+1)}-${pad2(now2.getDate())}`;
+    const endDate = new Date(now2); endDate.setDate(endDate.getDate() + 6);
+    const endStr = `${endDate.getFullYear()}-${pad2(endDate.getMonth()+1)}-${pad2(endDate.getDate())}`;
     const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}`
       + `&current=temperature_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m,wind_direction_10m,relative_humidity_2m,uv_index`
       + `&hourly=temperature_2m,precipitation,wind_speed_10m,weather_code`
       + `&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,weather_code`
-      + `&timezone=Asia%2FHo_Chi_Minh&forecast_days=14`;
+      + `&timezone=Asia%2FHo_Chi_Minh&forecast_days=7`;
 
     const response = await fetch(url);
     const data = await response.json();
@@ -2299,7 +2304,7 @@ async function openHourlyModal(stationName, provinceName, lat, lon) {
     const curCard = document.querySelector('.hour-card.current-hour');
     if (curCard) curCard.scrollIntoView({behavior:'smooth', block:'nearest', inline:'center'});
 
-    // --- BIỂU ĐỒ 14 NGÀY ---
+    // --- BIỂU ĐỒ 7 NGÀY ---
     if (_chartInstance) { _chartInstance.destroy(); _chartInstance = null; }
     const labels14 = (daily.time || []).map(t => {
       const d = new Date(t); return `${pad(d.getDate())}/${pad(d.getMonth()+1)}`;

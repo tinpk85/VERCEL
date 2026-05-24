@@ -487,142 +487,12 @@
   .hourly-table tr:hover { background-color: #f8fafc; }
   .hourly-table tr.current-hour-row { background-color: #f0f9ff; font-weight: 600; }
 
-  /* ===================== PANEL RADAR & VỆ TINH HYMETNET ===================== */
-  #radarPanel {
-    display: none;
-    max-width: 1600px;
-    margin: 0 auto;
-    padding: 0 16px 40px 16px;
-  }
-  #radarPanel.visible { display: block; }
-
-  .radar-tab-btn {
-    background: linear-gradient(135deg, #7c3aed, #a855f7) !important;
-    color: #fff !important;
-    border-color: #7c3aed !important;
-  }
-  .radar-tab-btn:hover { opacity: 0.9; }
-  .radar-tab-btn.active {
-    background: linear-gradient(135deg, #6d28d9, #9333ea) !important;
-    border-color: #9333ea !important;
-    box-shadow: 0 4px 12px rgba(139,92,246,0.4) !important;
-  }
-
-  /* INFO BOX */
-  .radar-info-box {
-    background: linear-gradient(135deg, #1e1b4b, #312e81);
-    border: 1px solid #4338ca;
-    border-radius: 14px;
-    padding: 18px 22px;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    color: #c7d2fe;
-    font-size: 13.5px;
-    line-height: 1.6;
-  }
-  .radar-info-box .info-icon { font-size: 28px; flex-shrink: 0; }
-  .radar-info-box strong { color: #e0e7ff; }
-  .radar-info-box a { color: #a5b4fc; }
-
-  /* SECTION HEADINGS */
-  .radar-section { margin-bottom: 24px; }
-  .radar-section-title {
-    font-size: 13px;
-    font-weight: 700;
-    color: #64748b;
-    text-transform: uppercase;
-    letter-spacing: 0.07em;
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .radar-section-title::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: #e2e8f0;
-  }
-
-  /* CARD GRID */
-  .radar-card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 12px;
-  }
-  .radar-card {
-    background: white;
-    border: 1px solid #e2e8f0;
-    border-radius: 14px;
-    padding: 16px 18px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    text-decoration: none;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-    position: relative;
-    overflow: hidden;
-  }
-  .radar-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-    border-color: #a5b4fc;
-  }
-  .radar-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    border-radius: 14px 14px 0 0;
-  }
-  .radar-card.type-radar::before { background: linear-gradient(90deg, #3b82f6, #06b6d4); }
-  .radar-card.type-satellite::before { background: linear-gradient(90deg, #8b5cf6, #ec4899); }
-  .radar-card.type-other::before { background: linear-gradient(90deg, #f59e0b, #ef4444); }
-  .radar-card.type-external::before { background: linear-gradient(90deg, #10b981, #14b8a6); }
-
-  .radar-card-icon { font-size: 26px; }
-  .radar-card-name {
-    font-weight: 700;
-    font-size: 14px;
-    color: #1e293b;
-  }
-  .radar-card-desc {
-    font-size: 12px;
-    color: #64748b;
-    line-height: 1.4;
-  }
-  .radar-card-badge {
-    display: inline-block;
-    font-size: 10px;
-    font-weight: 700;
-    padding: 2px 8px;
-    border-radius: 20px;
-    margin-top: 2px;
-    width: fit-content;
-  }
-  .badge-radar { background: #dbeafe; color: #1d4ed8; }
-  .badge-sat { background: #ede9fe; color: #7c3aed; }
-  .badge-other { background: #fef3c7; color: #b45309; }
-  .badge-ext { background: #d1fae5; color: #065f46; }
-
-  .radar-open-hint {
-    margin-top: auto;
-    font-size: 11px;
-    color: #94a3b8;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
+  /* ===================== END RADAR ===================== */
 
   @media (max-width: 600px) {
     .header { flex-wrap: wrap; padding: 14px 16px; }
     .header-right { width: 100%; }
     .search-box { width: 100%; }
-    .radar-card-grid { grid-template-columns: repeat(2, 1fr); }
   }
 </style>
 </head>
@@ -645,7 +515,7 @@
 </div>
 
 <div class="container">
-  <p class="updated-at">Nguồn dữ liệu: Open-Meteo API | Khởi tạo lúc: 24/05/2026 12:41</p>
+  <p class="updated-at">Nguồn dữ liệu: Open-Meteo API | Khởi tạo lúc: 24/05/2026 12:43</p>
   <div class="grid" id="grid">
     
         <div class="card no-rain" data-province="Đồng Nai" data-rain="0.0" data-name="an lộc đồng nai" onclick="openHourlyModal('An Lộc', 'Đồng Nai', 11.70209228, 106.5819982)">
@@ -2314,158 +2184,6 @@
   <div id="stationMap"></div>
 </div>
 
-<!-- PANEL RADAR & VỆ TINH HYMETNET -->
-<div id="radarPanel">
-
-  <div class="radar-info-box">
-    <span class="info-icon">ℹ️</span>
-    <div>
-      <strong>Lưu ý:</strong> Website <strong>hymetnet.gov.vn</strong> có chính sách bảo mật ngăn nhúng trực tiếp vào trang khác. Bấm vào từng thẻ bên dưới để <strong>mở trong cửa sổ mới</strong> và xem dữ liệu đầy đủ.
-    </div>
-  </div>
-
-  <!-- RADAR -->
-  <div class="radar-section">
-    <div class="radar-section-title">📡 Radar thời tiết — hymetnet.gov.vn</div>
-    <div class="radar-card-grid">
-      <a class="radar-card type-radar" href="http://hymetnet.gov.vn/radar/" target="_blank" rel="noopener">
-        <div class="radar-card-icon">🌐</div>
-        <div class="radar-card-name">Tổ hợp toàn quốc</div>
-        <div class="radar-card-desc">Ảnh radar tổng hợp phủ toàn lãnh thổ Việt Nam</div>
-        <div class="radar-card-badge badge-radar">RADAR</div>
-        <div class="radar-open-hint">↗ Mở trang web</div>
-      </a>
-      <a class="radar-card type-radar" href="http://hymetnet.gov.vn/radar/NHB" target="_blank" rel="noopener">
-        <div class="radar-card-icon">📡</div>
-        <div class="radar-card-name">Nhà Bè (TP.HCM)</div>
-        <div class="radar-card-desc">Radar Nhà Bè — phủ sóng khu vực Nam Bộ</div>
-        <div class="radar-card-badge badge-radar">RADAR</div>
-        <div class="radar-open-hint">↗ Mở trang web</div>
-      </a>
-      <a class="radar-card type-radar" href="http://hymetnet.gov.vn/radar/NHT" target="_blank" rel="noopener">
-        <div class="radar-card-icon">📡</div>
-        <div class="radar-card-name">Nha Trang</div>
-        <div class="radar-card-desc">Radar Nha Trang — khu vực Nam Trung Bộ</div>
-        <div class="radar-card-badge badge-radar">RADAR</div>
-        <div class="radar-open-hint">↗ Mở trang web</div>
-      </a>
-      <a class="radar-card type-radar" href="http://hymetnet.gov.vn/radar/QNH" target="_blank" rel="noopener">
-        <div class="radar-card-icon">📡</div>
-        <div class="radar-card-name">Quy Nhơn</div>
-        <div class="radar-card-desc">Radar Quy Nhơn — Nam Trung Bộ</div>
-        <div class="radar-card-badge badge-radar">RADAR</div>
-        <div class="radar-open-hint">↗ Mở trang web</div>
-      </a>
-      <a class="radar-card type-radar" href="http://hymetnet.gov.vn/radar/PLE" target="_blank" rel="noopener">
-        <div class="radar-card-icon">📡</div>
-        <div class="radar-card-name">PleiKu</div>
-        <div class="radar-card-desc">Radar PleiKu — Tây Nguyên</div>
-        <div class="radar-card-badge badge-radar">RADAR</div>
-        <div class="radar-open-hint">↗ Mở trang web</div>
-      </a>
-      <a class="radar-card type-radar" href="http://hymetnet.gov.vn/radar/TKY" target="_blank" rel="noopener">
-        <div class="radar-card-icon">📡</div>
-        <div class="radar-card-name">Tam Kỳ</div>
-        <div class="radar-card-desc">Radar Tam Kỳ — Quảng Nam</div>
-        <div class="radar-card-badge badge-radar">RADAR</div>
-        <div class="radar-open-hint">↗ Mở trang web</div>
-      </a>
-      <a class="radar-card type-radar" href="http://hymetnet.gov.vn/radar/RDB" target="_blank" rel="noopener">
-        <div class="radar-card-icon">🌊</div>
-        <div class="radar-card-name">Radar Biển</div>
-        <div class="radar-card-desc">Theo dõi thời tiết vùng biển Việt Nam</div>
-        <div class="radar-card-badge badge-radar">RADAR BIỂN</div>
-        <div class="radar-open-hint">↗ Mở trang web</div>
-      </a>
-    </div>
-  </div>
-
-  <!-- VỆ TINH -->
-  <div class="radar-section">
-    <div class="radar-section-title">🛰️ Ảnh vệ tinh — hymetnet.gov.vn</div>
-    <div class="radar-card-grid">
-      <a class="radar-card type-satellite" href="http://hymetnet.gov.vn/satellite/IR" target="_blank" rel="noopener">
-        <div class="radar-card-icon">🌡️</div>
-        <div class="radar-card-name">IR — Hồng ngoại</div>
-        <div class="radar-card-desc">Ảnh hồng ngoại, phát hiện mây đêm và tầng mây cao</div>
-        <div class="radar-card-badge badge-sat">VỆ TINH</div>
-        <div class="radar-open-hint">↗ Mở trang web</div>
-      </a>
-      <a class="radar-card type-satellite" href="http://hymetnet.gov.vn/satellite/VIS" target="_blank" rel="noopener">
-        <div class="radar-card-icon">☀️</div>
-        <div class="radar-card-name">VIS — Khả kiến</div>
-        <div class="radar-card-desc">Ảnh ánh sáng nhìn thấy được, rõ nhất ban ngày</div>
-        <div class="radar-card-badge badge-sat">VỆ TINH</div>
-        <div class="radar-open-hint">↗ Mở trang web</div>
-      </a>
-      <a class="radar-card type-satellite" href="http://hymetnet.gov.vn/satellite/WV" target="_blank" rel="noopener">
-        <div class="radar-card-icon">💧</div>
-        <div class="radar-card-name">WV — Hơi nước</div>
-        <div class="radar-card-desc">Phân bố hơi nước trong khí quyển tầng cao</div>
-        <div class="radar-card-badge badge-sat">VỆ TINH</div>
-        <div class="radar-open-hint">↗ Mở trang web</div>
-      </a>
-      <a class="radar-card type-satellite" href="http://hymetnet.gov.vn/satellite/STORM" target="_blank" rel="noopener">
-        <div class="radar-card-icon">⛈️</div>
-        <div class="radar-card-name">Storm — Giông bão</div>
-        <div class="radar-card-desc">Theo dõi vùng giông bão và hệ thống thời tiết nguy hiểm</div>
-        <div class="radar-card-badge badge-sat">VỆ TINH</div>
-        <div class="radar-open-hint">↗ Mở trang web</div>
-      </a>
-      <a class="radar-card type-satellite" href="http://hymetnet.gov.vn/satellite/hra" target="_blank" rel="noopener">
-        <div class="radar-card-icon">🌧️</div>
-        <div class="radar-card-name">Mưa lớn tiềm năng</div>
-        <div class="radar-card-desc">Heavy Rainfall Potential — nguy cơ mưa lớn</div>
-        <div class="radar-card-badge badge-sat">VỆ TINH</div>
-        <div class="radar-open-hint">↗ Mở trang web</div>
-      </a>
-      <a class="radar-card type-satellite" href="http://hymetnet.gov.vn/satellite/DUST" target="_blank" rel="noopener">
-        <div class="radar-card-icon">🏜️</div>
-        <div class="radar-card-name">Dust — Bụi khí</div>
-        <div class="radar-card-desc">Phát hiện các đám mây bụi và hạt khí dung</div>
-        <div class="radar-card-badge badge-sat">VỆ TINH</div>
-        <div class="radar-open-hint">↗ Mở trang web</div>
-      </a>
-      <a class="radar-card type-satellite" href="http://hymetnet.gov.vn/satellite/AIRMASS" target="_blank" rel="noopener">
-        <div class="radar-card-icon">🌬️</div>
-        <div class="radar-card-name">Airmass — Khối khí</div>
-        <div class="radar-card-desc">Phân tích và phân loại các khối không khí</div>
-        <div class="radar-card-badge badge-sat">VỆ TINH</div>
-        <div class="radar-open-hint">↗ Mở trang web</div>
-      </a>
-      <a class="radar-card type-satellite" href="http://hymetnet.gov.vn/satellite/VTC" target="_blank" rel="noopener">
-        <div class="radar-card-icon">🛰️</div>
-        <div class="radar-card-name">Vệ tinh cực</div>
-        <div class="radar-card-desc">Ảnh từ vệ tinh quỹ đạo cực, độ phân giải cao</div>
-        <div class="radar-card-badge badge-sat">VỆ TINH CỰC</div>
-        <div class="radar-open-hint">↗ Mở trang web</div>
-      </a>
-    </div>
-  </div>
-
-  <!-- KHÁC + EXTERNAL -->
-  <div class="radar-section">
-    <div class="radar-section-title">⚡ Dữ liệu khác & Công cụ bên ngoài</div>
-    <div class="radar-card-grid">
-      <a class="radar-card type-other" href="http://hymetnet.gov.vn/lightningmaps/" target="_blank" rel="noopener">
-        <div class="radar-card-icon">⚡</div>
-        <div class="radar-card-name">Bản đồ Sét</div>
-        <div class="radar-card-desc">Theo dõi sét thời gian thực trên lãnh thổ Việt Nam</div>
-        <div class="radar-card-badge badge-other">SÉT</div>
-        <div class="radar-open-hint">↗ Mở trang web</div>
-      </a>
-      <a class="radar-card type-other" href="http://hymetnet.gov.vn/rain/" target="_blank" rel="noopener">
-        <div class="radar-card-icon">🌧️</div>
-        <div class="radar-card-name">Bản đồ Mưa</div>
-        <div class="radar-card-desc">Phân bố lượng mưa quan trắc thực tế theo trạm</div>
-        <div class="radar-card-badge badge-other">MƯA</div>
-        <div class="radar-open-hint">↗ Mở trang web</div>
-      </a>
-    </div>
-  </div>
-
-</div>
-
 <!-- PANEL WEATHERPLUS -->
 <div id="weatherplusPanel">
   <div style="padding:24px 0 12px 0; text-align:center;">
@@ -2633,16 +2351,13 @@ function initStationMap() {
 function toggleMapView() {
   _isMapView = !_isMapView;
   const mapPanel   = document.getElementById('mapPanel');
-  const radarPanel = document.getElementById('radarPanel');
   const wpPanel    = document.getElementById('weatherplusPanel');
   const mainGrid   = document.getElementById('grid');
   const container  = mainGrid.closest('.container');
   const mapBtn = document.querySelector('.map-tab-btn');
 
-  // Luôn đóng radar + weatherplus panel khi bấm bản đồ
-  radarPanel.classList.remove('visible');
+  // Luôn đóng weatherplus panel khi bấm bản đồ
   wpPanel.classList.remove('visible');
-  document.getElementById('radarTabBtn').classList.remove('active');
   document.getElementById('weatherplusTabBtn').classList.remove('active');
 
   if (_isMapView) {
@@ -2908,41 +2623,14 @@ async function openHourlyModal(stationName, provinceName, lat, lon) {
   }
 }
 
-function toggleRadarView() {
-  const radarPanel = document.getElementById('radarPanel');
-  const mapPanel   = document.getElementById('mapPanel');
-  const wpPanel    = document.getElementById('weatherplusPanel');
-  const container  = document.querySelector('.container');
-  const isVisible  = radarPanel.classList.contains('visible');
-
-  // Reset tất cả panels
-  radarPanel.classList.remove('visible');
-  mapPanel.classList.remove('visible');
-  wpPanel.classList.remove('visible');
-  container.style.display = 'block';
-
-  // Bỏ active khỏi mọi tab
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-
-  if (!isVisible) {
-    radarPanel.classList.add('visible');
-    container.style.display = 'none';
-    document.getElementById('radarTabBtn').classList.add('active');
-  } else {
-    document.querySelector('.tab-btn:first-child').classList.add('active');
-  }
-}
-
 function toggleWeatherPlusView() {
   const wpPanel    = document.getElementById('weatherplusPanel');
-  const radarPanel = document.getElementById('radarPanel');
   const mapPanel   = document.getElementById('mapPanel');
   const container  = document.querySelector('.container');
   const isVisible  = wpPanel.classList.contains('visible');
 
   // Reset tất cả panels
   wpPanel.classList.remove('visible');
-  radarPanel.classList.remove('visible');
   mapPanel.classList.remove('visible');
   container.style.display = 'block';
   _isMapView = false;

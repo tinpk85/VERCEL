@@ -28,28 +28,6 @@
     box-shadow: 0 4px 12px rgba(5,150,105,0.4) !important;
   }
 
-  /* WEATHERPLUS TAB BUTTON */
-  .weatherplus-tab-btn {
-    background: linear-gradient(135deg, #1e3a8a, #2563eb) !important;
-    color: #fff !important;
-    border-color: #1e3a8a !important;
-  }
-  .weatherplus-tab-btn:hover { opacity: 0.9; }
-  .weatherplus-tab-btn.active {
-    background: linear-gradient(135deg, #1d4ed8, #3b82f6) !important;
-    border-color: #3b82f6 !important;
-    box-shadow: 0 4px 12px rgba(59,130,246,0.4) !important;
-  }
-
-  /* WEATHERPLUS PANEL */
-  #weatherplusPanel {
-    display: none;
-    max-width: 1600px;
-    margin: 0 auto;
-    padding: 0 16px 40px 16px;
-  }
-  #weatherplusPanel.visible { display: block; }
-
   /* MAP PANEL */
   #mapPanel {
     display: none;
@@ -511,11 +489,11 @@
 </div>
 
 <div class="tabs-container">
-  <button class="tab-btn active" onclick="selectProvince('all')">🌍 Tất Cả</button><button class="tab-btn map-tab-btn" onclick="toggleMapView()">🗺️ Bản Đồ</button><button class="tab-btn weatherplus-tab-btn" id="weatherplusTabBtn" onclick="toggleWeatherPlusView()">🌦️ WeatherPlus</button><button class="tab-btn" onclick="selectProvince('An Giang')">📍 An Giang</button><button class="tab-btn" onclick="selectProvince('Cà Mau')">📍 Cà Mau</button><button class="tab-btn" onclick="selectProvince('Cần Thơ')">📍 Cần Thơ</button><button class="tab-btn" onclick="selectProvince('TP. Hồ Chí Minh')">📍 TP. Hồ Chí Minh</button><button class="tab-btn" onclick="selectProvince('Tây Ninh')">📍 Tây Ninh</button><button class="tab-btn" onclick="selectProvince('Vĩnh Long')">📍 Vĩnh Long</button><button class="tab-btn" onclick="selectProvince('Đồng Nai')">📍 Đồng Nai</button><button class="tab-btn" onclick="selectProvince('Đồng Tháp')">📍 Đồng Tháp</button>
+  <button class="tab-btn active" onclick="selectProvince('all')">🌍 Tất Cả</button><button class="tab-btn map-tab-btn" onclick="toggleMapView()">🗺️ Bản Đồ</button><button class="tab-btn" onclick="selectProvince('An Giang')">📍 An Giang</button><button class="tab-btn" onclick="selectProvince('Cà Mau')">📍 Cà Mau</button><button class="tab-btn" onclick="selectProvince('Cần Thơ')">📍 Cần Thơ</button><button class="tab-btn" onclick="selectProvince('TP. Hồ Chí Minh')">📍 TP. Hồ Chí Minh</button><button class="tab-btn" onclick="selectProvince('Tây Ninh')">📍 Tây Ninh</button><button class="tab-btn" onclick="selectProvince('Vĩnh Long')">📍 Vĩnh Long</button><button class="tab-btn" onclick="selectProvince('Đồng Nai')">📍 Đồng Nai</button><button class="tab-btn" onclick="selectProvince('Đồng Tháp')">📍 Đồng Tháp</button>
 </div>
 
 <div class="container">
-  <p class="updated-at">Nguồn dữ liệu: Open-Meteo API | Khởi tạo lúc: 24/05/2026 12:43</p>
+  <p class="updated-at">Nguồn dữ liệu: Open-Meteo API | Khởi tạo lúc: 24/05/2026 12:46</p>
   <div class="grid" id="grid">
     
         <div class="card no-rain" data-province="Đồng Nai" data-rain="0.0" data-name="an lộc đồng nai" onclick="openHourlyModal('An Lộc', 'Đồng Nai', 11.70209228, 106.5819982)">
@@ -624,7 +602,7 @@
             <div class="card-desc">Nhiều mây</div>
             <div class="card-footer">
                 <span class="precip" style="">💧 0.0 mm</span>
-                <span class="wind">💨 7 km/h</span>
+                <span class="wind">💨 8 km/h</span>
             </div>
         </div>
 
@@ -646,7 +624,7 @@
             <div class="card-desc">Giông</div>
             <div class="card-footer">
                 <span class="precip" style="">💧 0.0 mm</span>
-                <span class="wind">💨 6 km/h</span>
+                <span class="wind">💨 7 km/h</span>
             </div>
         </div>
 
@@ -712,7 +690,7 @@
             <div class="card-desc">Nhiều mây</div>
             <div class="card-footer">
                 <span class="precip" style="">💧 0.0 mm</span>
-                <span class="wind">💨 3 km/h</span>
+                <span class="wind">💨 4 km/h</span>
             </div>
         </div>
 
@@ -954,7 +932,7 @@
             <div class="card-desc">Nhiều mây</div>
             <div class="card-footer">
                 <span class="precip" style="">💧 0.0 mm</span>
-                <span class="wind">💨 6 km/h</span>
+                <span class="wind">💨 5 km/h</span>
             </div>
         </div>
 
@@ -998,7 +976,7 @@
             <div class="card-desc">Có mây</div>
             <div class="card-footer">
                 <span class="precip" style="">💧 0.0 mm</span>
-                <span class="wind">💨 8 km/h</span>
+                <span class="wind">💨 9 km/h</span>
             </div>
         </div>
 
@@ -1108,7 +1086,7 @@
             <div class="card-desc">Giông</div>
             <div class="card-footer">
                 <span class="precip" style="">💧 0.0 mm</span>
-                <span class="wind">💨 9 km/h</span>
+                <span class="wind">💨 8 km/h</span>
             </div>
         </div>
 
@@ -1152,7 +1130,7 @@
             <div class="card-desc">Có mây</div>
             <div class="card-footer">
                 <span class="precip" style="">💧 0.0 mm</span>
-                <span class="wind">💨 9 km/h</span>
+                <span class="wind">💨 8 km/h</span>
             </div>
         </div>
 
@@ -1174,7 +1152,7 @@
             <div class="card-desc">Ít mây</div>
             <div class="card-footer">
                 <span class="precip" style="">💧 0.0 mm</span>
-                <span class="wind">💨 6 km/h</span>
+                <span class="wind">💨 7 km/h</span>
             </div>
         </div>
 
@@ -1193,7 +1171,7 @@
                     <span class="temp-max">35°</span>
                 </div>
             </div>
-            <div class="card-desc">Có mây</div>
+            <div class="card-desc">Nhiều mây</div>
             <div class="card-footer">
                 <span class="precip" style="">💧 0.0 mm</span>
                 <span class="wind">💨 7 km/h</span>
@@ -1259,7 +1237,7 @@
                     <span class="temp-max">34°</span>
                 </div>
             </div>
-            <div class="card-desc">Có mây</div>
+            <div class="card-desc">Nhiều mây</div>
             <div class="card-footer">
                 <span class="precip" style="">💧 0.0 mm</span>
                 <span class="wind">💨 7 km/h</span>
@@ -1284,7 +1262,7 @@
             <div class="card-desc">Mưa phùn nhẹ</div>
             <div class="card-footer">
                 <span class="precip" style="color: #0284c7; font-weight: 700;">💧 0.1 mm</span>
-                <span class="wind">💨 10 km/h</span>
+                <span class="wind">💨 12 km/h</span>
             </div>
         </div>
 
@@ -1325,10 +1303,10 @@
                     <span class="temp-max">35°</span>
                 </div>
             </div>
-            <div class="card-desc">Có mây</div>
+            <div class="card-desc">Nhiều mây</div>
             <div class="card-footer">
                 <span class="precip" style="">💧 0.0 mm</span>
-                <span class="wind">💨 8 km/h</span>
+                <span class="wind">💨 9 km/h</span>
             </div>
         </div>
 
@@ -1391,7 +1369,7 @@
                     <span class="temp-max">33°</span>
                 </div>
             </div>
-            <div class="card-desc">Trời quang</div>
+            <div class="card-desc">Ít mây</div>
             <div class="card-footer">
                 <span class="precip" style="">💧 0.0 mm</span>
                 <span class="wind">💨 5 km/h</span>
@@ -1416,7 +1394,7 @@
             <div class="card-desc">Ít mây</div>
             <div class="card-footer">
                 <span class="precip" style="">💧 0.0 mm</span>
-                <span class="wind">💨 12 km/h</span>
+                <span class="wind">💨 14 km/h</span>
             </div>
         </div>
 
@@ -1435,10 +1413,10 @@
                     <span class="temp-max">34°</span>
                 </div>
             </div>
-            <div class="card-desc">Ít mây</div>
+            <div class="card-desc">Trời quang</div>
             <div class="card-footer">
                 <span class="precip" style="">💧 0.0 mm</span>
-                <span class="wind">💨 11 km/h</span>
+                <span class="wind">💨 12 km/h</span>
             </div>
         </div>
 
@@ -1504,7 +1482,7 @@
             <div class="card-desc">Nhiều mây</div>
             <div class="card-footer">
                 <span class="precip" style="">💧 0.0 mm</span>
-                <span class="wind">💨 9 km/h</span>
+                <span class="wind">💨 10 km/h</span>
             </div>
         </div>
 
@@ -1545,7 +1523,7 @@
                     <span class="temp-max">34°</span>
                 </div>
             </div>
-            <div class="card-desc">Có mây</div>
+            <div class="card-desc">Nhiều mây</div>
             <div class="card-footer">
                 <span class="precip" style="">💧 0.0 mm</span>
                 <span class="wind">💨 7 km/h</span>
@@ -1636,7 +1614,7 @@
             <div class="card-desc">Nhiều mây</div>
             <div class="card-footer">
                 <span class="precip" style="">💧 0.0 mm</span>
-                <span class="wind">💨 7 km/h</span>
+                <span class="wind">💨 8 km/h</span>
             </div>
         </div>
 
@@ -1658,7 +1636,7 @@
             <div class="card-desc">Mưa phùn</div>
             <div class="card-footer">
                 <span class="precip" style="color: #0284c7; font-weight: 700;">💧 0.2 mm</span>
-                <span class="wind">💨 8 km/h</span>
+                <span class="wind">💨 9 km/h</span>
             </div>
         </div>
 
@@ -1677,7 +1655,7 @@
                     <span class="temp-max">35°</span>
                 </div>
             </div>
-            <div class="card-desc">Có mây</div>
+            <div class="card-desc">Nhiều mây</div>
             <div class="card-footer">
                 <span class="precip" style="">💧 0.0 mm</span>
                 <span class="wind">💨 2 km/h</span>
@@ -1737,13 +1715,13 @@
                 <span class="star">☆</span>
             </div>
             <div class="card-body">
-                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/><path d="M18 38 Q14 36 14 31 Q14 26 19 25 Q20 21 26 21 Q32 21 33 26 Q37 26 37 31 Q37 36 33 38Z" fill="#a8c4dc"/></svg></div>
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/><line x1="9" y1="9" x2="13.5" y2="13.5"/><line x1="34.5" y1="34.5" x2="39" y2="39"/><line x1="39" y1="9" x2="34.5" y2="13.5"/><line x1="13.5" y1="34.5" x2="9" y2="39"/></g></svg></div>
                 <div class="temps">
                     <span class="temp-min">26°</span>
                     <span class="temp-max">34°</span>
                 </div>
             </div>
-            <div class="card-desc">Có mây</div>
+            <div class="card-desc">Ít mây</div>
             <div class="card-footer">
                 <span class="precip" style="">💧 0.0 mm</span>
                 <span class="wind">💨 5 km/h</span>
@@ -1812,7 +1790,7 @@
             <div class="card-desc">Giông</div>
             <div class="card-footer">
                 <span class="precip" style="">💧 0.0 mm</span>
-                <span class="wind">💨 6 km/h</span>
+                <span class="wind">💨 5 km/h</span>
             </div>
         </div>
 
@@ -1834,7 +1812,7 @@
             <div class="card-desc">Giông</div>
             <div class="card-footer">
                 <span class="precip" style="">💧 0.0 mm</span>
-                <span class="wind">💨 6 km/h</span>
+                <span class="wind">💨 5 km/h</span>
             </div>
         </div>
 
@@ -1856,7 +1834,7 @@
             <div class="card-desc">Giông</div>
             <div class="card-footer">
                 <span class="precip" style="">💧 0.0 mm</span>
-                <span class="wind">💨 5 km/h</span>
+                <span class="wind">💨 4 km/h</span>
             </div>
         </div>
 
@@ -1935,16 +1913,16 @@
                 <span class="star">☆</span>
             </div>
             <div class="card-body">
-                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><path d="M12 34 Q7 31 7 25 Q7 17 15 15 Q15 8 23 8 Q31 8 33 15 Q39 15 39 24 Q39 31 33 34Z" fill="#8bacc8"/><path d="M18 38 Q14 36 14 31 Q14 26 19 25 Q20 21 26 21 Q32 21 33 26 Q37 26 37 31 Q37 36 33 38Z" fill="#a8c4dc"/></svg></div>
+                <div class="icon-wrap"><svg viewBox="0 0 48 48" class="weather-icon"><circle cx="24" cy="24" r="10" fill="#FFB800"/><g stroke="#FFB800" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/><line x1="9" y1="9" x2="13.5" y2="13.5"/><line x1="34.5" y1="34.5" x2="39" y2="39"/><line x1="39" y1="9" x2="34.5" y2="13.5"/><line x1="13.5" y1="34.5" x2="9" y2="39"/></g></svg></div>
                 <div class="temps">
                     <span class="temp-min">28°</span>
                     <span class="temp-max">33°</span>
                 </div>
             </div>
-            <div class="card-desc">Có mây</div>
+            <div class="card-desc">Ít mây</div>
             <div class="card-footer">
                 <span class="precip" style="">💧 0.0 mm</span>
-                <span class="wind">💨 10 km/h</span>
+                <span class="wind">💨 11 km/h</span>
             </div>
         </div>
 
@@ -1988,7 +1966,7 @@
             <div class="card-desc">Nhiều mây</div>
             <div class="card-footer">
                 <span class="precip" style="">💧 0.0 mm</span>
-                <span class="wind">💨 6 km/h</span>
+                <span class="wind">💨 5 km/h</span>
             </div>
         </div>
 
@@ -2054,7 +2032,7 @@
             <div class="card-desc">Nhiều mây</div>
             <div class="card-footer">
                 <span class="precip" style="">💧 0.0 mm</span>
-                <span class="wind">💨 3 km/h</span>
+                <span class="wind">💨 4 km/h</span>
             </div>
         </div>
 
@@ -2139,10 +2117,10 @@
                     <span class="temp-max">34°</span>
                 </div>
             </div>
-            <div class="card-desc">Có mây</div>
+            <div class="card-desc">Nhiều mây</div>
             <div class="card-footer">
                 <span class="precip" style="">💧 0.0 mm</span>
-                <span class="wind">💨 6 km/h</span>
+                <span class="wind">💨 5 km/h</span>
             </div>
         </div>
 
@@ -2164,7 +2142,7 @@
             <div class="card-desc">Mưa phùn</div>
             <div class="card-footer">
                 <span class="precip" style="color: #0284c7; font-weight: 700;">💧 0.2 mm</span>
-                <span class="wind">💨 8 km/h</span>
+                <span class="wind">💨 9 km/h</span>
             </div>
         </div>
 
@@ -2182,19 +2160,6 @@
     <span style="margin-left:auto;font-size:12px;color:#94a3b8">Click vào marker để xem dự báo chi tiết</span>
   </div>
   <div id="stationMap"></div>
-</div>
-
-<!-- PANEL WEATHERPLUS -->
-<div id="weatherplusPanel">
-  <div style="padding:24px 0 12px 0; text-align:center;">
-    <p style="font-size:14px;color:#64748b;margin-bottom:16px;">
-      ⚠️ WeatherPlus không hỗ trợ nhúng iframe. Bấm nút bên dưới để mở trong cửa sổ mới.
-    </p>
-    <a href="https://www.weatherplus.vn/du-bao-thoi-tiet-ho-chi-minh.html" target="_blank" rel="noopener"
-      style="display:inline-flex;align-items:center;gap:8px;padding:12px 28px;background:linear-gradient(135deg,#1e3a8a,#2563eb);color:white;border-radius:12px;font-size:15px;font-weight:700;text-decoration:none;box-shadow:0 4px 16px rgba(37,99,235,0.35);">
-      🌦️ Mở WeatherPlus.vn ↗
-    </a>
-  </div>
 </div>
 
 <div id="hourlyModal" class="modal" onclick="closeHourlyModal(event)">  <div class="modal-content" onclick="event.stopPropagation()">
@@ -2259,7 +2224,7 @@ let currentSelectedProvince = 'all';
 // =============================================
 // BẢN ĐỒ VỊ TRÍ TRẠM - LEAFLET
 // =============================================
-const STATION_DATA = [{"name": "An Lộc", "province": "Đồng Nai", "lat": 11.70209228, "lon": 106.5819982, "temp_current": 33, "temp_max": 33, "temp_min": 25, "precipitation": 0.0, "wind_speed": 8, "weather_code": 95, "description": "Giông"}, {"name": "An Phước", "province": "Đồng Nai", "lat": 10.81797212, "lon": 106.9260746, "temp_current": 34, "temp_max": 35, "temp_min": 26, "precipitation": 0.0, "wind_speed": 8, "weather_code": 3, "description": "Nhiều mây"}, {"name": "An Viễn", "province": "Đồng Nai", "lat": 10.90103226, "lon": 107.0154427, "temp_current": 34, "temp_max": 35, "temp_min": 26, "precipitation": 0.0, "wind_speed": 8, "weather_code": 3, "description": "Nhiều mây"}, {"name": "Bảo Vinh", "province": "Đồng Nai", "lat": 10.96831698, "lon": 107.2779605, "temp_current": 33, "temp_max": 34, "temp_min": 24, "precipitation": 0.1, "wind_speed": 6, "weather_code": 51, "description": "Mưa phùn nhẹ"}, {"name": "Bàu Hàm", "province": "Đồng Nai", "lat": 11.02553433, "lon": 107.0847547, "temp_current": 34, "temp_max": 34, "temp_min": 25, "precipitation": 0.0, "wind_speed": 7, "weather_code": 3, "description": "Nhiều mây"}, {"name": "Trừ Văn Thố", "province": "TP. Hồ Chí Minh", "lat": 11.34264218, "lon": 106.588297, "temp_current": 33, "temp_max": 33, "temp_min": 26, "precipitation": 0.0, "wind_speed": 6, "weather_code": 95, "description": "Giông"}, {"name": "Trung Mỹ Tây", "province": "TP. Hồ Chí Minh", "lat": 10.86013887, "lon": 106.6224316, "temp_current": 35, "temp_max": 35, "temp_min": 26, "precipitation": 0.0, "wind_speed": 6, "weather_code": 3, "description": "Nhiều mây"}, {"name": "Vĩnh Hội", "province": "TP. Hồ Chí Minh", "lat": 10.75528435, "lon": 106.6963633, "temp_current": 35, "temp_max": 35, "temp_min": 26, "precipitation": 0.0, "wind_speed": 8, "weather_code": 3, "description": "Nhiều mây"}, {"name": "Vĩnh Lộc", "province": "Cà Mau", "lat": 9.570583795, "lon": 105.3567666, "temp_current": 35, "temp_max": 35, "temp_min": 26, "precipitation": 0.0, "wind_speed": 3, "weather_code": 3, "description": "Nhiều mây"}, {"name": "Vĩnh Tân", "province": "TP. Hồ Chí Minh", "lat": 11.14661735, "lon": 106.7127387, "temp_current": 34, "temp_max": 34, "temp_min": 26, "precipitation": 0.0, "wind_speed": 6, "weather_code": 95, "description": "Giông"}, {"name": "Vũng Tàu", "province": "TP. Hồ Chí Minh", "lat": 10.35646546, "lon": 107.0756028, "temp_current": 33, "temp_max": 33, "temp_min": 28, "precipitation": 0.0, "wind_speed": 14, "weather_code": 2, "description": "Có mây"}, {"name": "Vườn Lài", "province": "TP. Hồ Chí Minh", "lat": 10.76665852, "lon": 106.6738439, "temp_current": 34, "temp_max": 35, "temp_min": 26, "precipitation": 0.0, "wind_speed": 6, "weather_code": 3, "description": "Nhiều mây"}, {"name": "Xóm Chiếu", "province": "TP. Hồ Chí Minh", "lat": 10.76019936, "lon": 106.7120223, "temp_current": 34, "temp_max": 35, "temp_min": 26, "precipitation": 0.0, "wind_speed": 6, "weather_code": 3, "description": "Nhiều mây"}, {"name": "Xuân Hòa", "province": "TP. Hồ Chí Minh", "lat": 10.78273272, "lon": 106.688269, "temp_current": 34, "temp_max": 35, "temp_min": 26, "precipitation": 0.0, "wind_speed": 6, "weather_code": 3, "description": "Nhiều mây"}, {"name": "Xuân Sơn", "province": "TP. Hồ Chí Minh", "lat": 10.61853369, "lon": 107.3314952, "temp_current": 34, "temp_max": 34, "temp_min": 25, "precipitation": 0.0, "wind_speed": 10, "weather_code": 3, "description": "Nhiều mây"}, {"name": "Xuân Thới Sơn", "province": "TP. Hồ Chí Minh", "lat": 10.89002652, "lon": 106.5566761, "temp_current": 35, "temp_max": 35, "temp_min": 26, "precipitation": 0.0, "wind_speed": 7, "weather_code": 3, "description": "Nhiều mây"}, {"name": "Xuyên Mộc", "province": "TP. Hồ Chí Minh", "lat": 10.54903749, "lon": 107.4660259, "temp_current": 34, "temp_max": 34, "temp_min": 26, "precipitation": 0.0, "wind_speed": 15, "weather_code": 3, "description": "Nhiều mây"}, {"name": "An Lục Long", "province": "Tây Ninh", "lat": 10.42410172, "lon": 106.4626503, "temp_current": 34, "temp_max": 34, "temp_min": 26, "precipitation": 0.0, "wind_speed": 6, "weather_code": 1, "description": "Ít mây"}, {"name": "An Ninh", "province": "Cần Thơ", "lat": 9.631031192, "lon": 105.9111724, "temp_current": 34, "temp_max": 34, "temp_min": 27, "precipitation": 0.0, "wind_speed": 5, "weather_code": 3, "description": "Nhiều mây"}, {"name": "An Tịnh", "province": "Tây Ninh", "lat": 11.06192302, "lon": 106.3881972, "temp_current": 34, "temp_max": 35, "temp_min": 26, "precipitation": 0.0, "wind_speed": 6, "weather_code": 3, "description": "Nhiều mây"}, {"name": "Bến Cầu", "province": "Tây Ninh", "lat": 11.10965148, "lon": 106.1945596, "temp_current": 34, "temp_max": 35, "temp_min": 26, "precipitation": 0.0, "wind_speed": 7, "weather_code": 3, "description": "Nhiều mây"}, {"name": "Bến Lức", "province": "Tây Ninh", "lat": 10.66178425, "lon": 106.4831311, "temp_current": 34, "temp_max": 34, "temp_min": 26, "precipitation": 0.0, "wind_speed": 8, "weather_code": 2, "description": "Có mây"}, {"name": "Tháp Mười", "province": "Đồng Tháp", "lat": 10.54536897, "lon": 105.8347125, "temp_current": 34, "temp_max": 35, "temp_min": 26, "precipitation": 0.0, "wind_speed": 8, "weather_code": 95, "description": "Giông"}, {"name": "Thới Sơn", "province": "Đồng Tháp", "lat": 10.33736529, "lon": 106.3304122, "temp_current": 34, "temp_max": 34, "temp_min": 26, "precipitation": 0.0, "wind_speed": 8, "weather_code": 1, "description": "Ít mây"}, {"name": "Thường Lạc", "province": "Đồng Tháp", "lat": 10.85519618, "lon": 105.3022313, "temp_current": 34, "temp_max": 34, "temp_min": 27, "precipitation": 0.0, "wind_speed": 8, "weather_code": 95, "description": "Giông"}, {"name": "Thường Phước", "province": "Đồng Tháp", "lat": 10.85233627, "lon": 105.2409306, "temp_current": 34, "temp_max": 34, "temp_min": 27, "precipitation": 0.0, "wind_speed": 8, "weather_code": 95, "description": "Giông"}, {"name": "Tràm Chim", "province": "Đồng Tháp", "lat": 10.73652016, "lon": 105.5906969, "temp_current": 34, "temp_max": 34, "temp_min": 26, "precipitation": 0.0, "wind_speed": 9, "weather_code": 95, "description": "Giông"}, {"name": "Trung An", "province": "Đồng Tháp", "lat": 10.36961039, "lon": 106.3241239, "temp_current": 34, "temp_max": 34, "temp_min": 26, "precipitation": 0.0, "wind_speed": 8, "weather_code": 1, "description": "Ít mây"}, {"name": "Trường Xuân", "province": "Đồng Tháp", "lat": 10.65777339, "lon": 105.7440821, "temp_current": 35, "temp_max": 36, "temp_min": 26, "precipitation": 0.0, "wind_speed": 9, "weather_code": 2, "description": "Có mây"}, {"name": "Vĩnh Bình", "province": "Đồng Tháp", "lat": 10.34665436, "lon": 106.5736307, "temp_current": 34, "temp_max": 34, "temp_min": 26, "precipitation": 0.0, "wind_speed": 6, "weather_code": 1, "description": "Ít mây"}, {"name": "Vĩnh Hựu", "province": "Đồng Tháp", "lat": 10.30871107, "lon": 106.5823646, "temp_current": 34, "temp_max": 35, "temp_min": 26, "precipitation": 0.0, "wind_speed": 7, "weather_code": 2, "description": "Có mây"}, {"name": "Vĩnh Kim", "province": "Đồng Tháp", "lat": 10.34621987, "lon": 106.2145399, "temp_current": 34, "temp_max": 34, "temp_min": 26, "precipitation": 0.0, "wind_speed": 8, "weather_code": 1, "description": "Ít mây"}, {"name": "An Bình", "province": "Cần Thơ", "lat": 10.00437527, "lon": 105.7181708, "temp_current": 34, "temp_max": 34, "temp_min": 26, "precipitation": 0.0, "wind_speed": 6, "weather_code": 95, "description": "Giông"}, {"name": "An Định", "province": "Vĩnh Long", "lat": 10.06700248, "lon": 106.3952369, "temp_current": 34, "temp_max": 34, "temp_min": 26, "precipitation": 0.0, "wind_speed": 7, "weather_code": 2, "description": "Có mây"}, {"name": "An Hiệp", "province": "Vĩnh Long", "lat": 10.0372626, "lon": 106.5213781, "temp_current": 34, "temp_max": 34, "temp_min": 27, "precipitation": 0.1, "wind_speed": 10, "weather_code": 51, "description": "Mưa phùn nhẹ"}, {"name": "An Hội", "province": "Vĩnh Long", "lat": 10.20132536, "lon": 106.3772085, "temp_current": 34, "temp_max": 34, "temp_min": 26, "precipitation": 0.0, "wind_speed": 7, "weather_code": 1, "description": "Ít mây"}, {"name": "An Ngãi Trung", "province": "Vĩnh Long", "lat": 10.09075261, "lon": 106.5462637, "temp_current": 35, "temp_max": 35, "temp_min": 27, "precipitation": 0.0, "wind_speed": 8, "weather_code": 2, "description": "Có mây"}, {"name": "An Phú Tân", "province": "Vĩnh Long", "lat": 9.863173197, "lon": 106.0200228, "temp_current": 34, "temp_max": 34, "temp_min": 26, "precipitation": 0.0, "wind_speed": 5, "weather_code": 1, "description": "Ít mây"}, {"name": "An Qui", "province": "Vĩnh Long", "lat": 9.895461451, "lon": 106.5604956, "temp_current": 32, "temp_max": 33, "temp_min": 28, "precipitation": 0.5, "wind_speed": 12, "weather_code": 80, "description": "Mưa rào nhẹ"}, {"name": "An Trường", "province": "Vĩnh Long", "lat": 9.954555938, "lon": 106.1647183, "temp_current": 33, "temp_max": 33, "temp_min": 26, "precipitation": 0.0, "wind_speed": 5, "weather_code": 0, "description": "Trời quang"}, {"name": "Ba Tri", "province": "Vĩnh Long", "lat": 10.03907567, "lon": 106.5895553, "temp_current": 34, "temp_max": 34, "temp_min": 27, "precipitation": 0.0, "wind_speed": 12, "weather_code": 1, "description": "Ít mây"}, {"name": "Bảo Thạnh", "province": "Vĩnh Long", "lat": 10.06149275, "lon": 106.6660598, "temp_current": 34, "temp_max": 34, "temp_min": 27, "precipitation": 0.0, "wind_speed": 11, "weather_code": 1, "description": "Ít mây"}, {"name": "Bến Tre", "province": "Vĩnh Long", "lat": 10.23763981, "lon": 106.3241554, "temp_current": 34, "temp_max": 34, "temp_min": 26, "precipitation": 0.0, "wind_speed": 7, "weather_code": 1, "description": "Ít mây"}, {"name": "Vĩnh Hậu", "province": "Cà Mau", "lat": 9.204258036, "lon": 105.6486101, "temp_current": 32, "temp_max": 33, "temp_min": 28, "precipitation": 0.2, "wind_speed": 8, "weather_code": 53, "description": "Mưa phùn"}, {"name": "Vĩnh Hòa", "province": "An Giang", "lat": 9.69580915, "lon": 105.1690176, "temp_current": 33, "temp_max": 34, "temp_min": 26, "precipitation": 0.0, "wind_speed": 9, "weather_code": 3, "description": "Nhiều mây"}, {"name": "Vĩnh Hòa Hưng", "province": "An Giang", "lat": 9.777057096, "lon": 105.3730951, "temp_current": 33, "temp_max": 33, "temp_min": 26, "precipitation": 0.0, "wind_speed": 2, "weather_code": 95, "description": "Giông"}, {"name": "Vĩnh Phong", "province": "An Giang", "lat": 9.468985924, "lon": 105.2670703, "temp_current": 34, "temp_max": 34, "temp_min": 27, "precipitation": 0.0, "wind_speed": 7, "weather_code": 2, "description": "Có mây"}, {"name": "Vĩnh Tế", "province": "An Giang", "lat": 10.65998541, "lon": 105.069153, "temp_current": 34, "temp_max": 35, "temp_min": 27, "precipitation": 0.0, "wind_speed": 7, "weather_code": 95, "description": "Giông"}, {"name": "Vĩnh Thạnh Trung", "province": "An Giang", "lat": 10.60142899, "lon": 105.189981, "temp_current": 34, "temp_max": 35, "temp_min": 27, "precipitation": 0.0, "wind_speed": 6, "weather_code": 95, "description": "Giông"}, {"name": "Vĩnh Thông", "province": "An Giang", "lat": 10.06844297, "lon": 105.0899708, "temp_current": 32, "temp_max": 32, "temp_min": 29, "precipitation": 0.0, "wind_speed": 15, "weather_code": 0, "description": "Trời quang"}, {"name": "Vĩnh Thuận", "province": "An Giang", "lat": 9.50680594, "lon": 105.1927767, "temp_current": 33, "temp_max": 34, "temp_min": 26, "precipitation": 0.0, "wind_speed": 7, "weather_code": 3, "description": "Nhiều mây"}, {"name": "Vĩnh Trạch", "province": "Cà Mau", "lat": 9.297287689, "lon": 105.7735913, "temp_current": 33, "temp_max": 33, "temp_min": 28, "precipitation": 0.2, "wind_speed": 8, "weather_code": 53, "description": "Mưa phùn"}, {"name": "Vĩnh Tuy", "province": "An Giang", "lat": 9.656912156, "lon": 105.3231786, "temp_current": 35, "temp_max": 35, "temp_min": 26, "precipitation": 0.0, "wind_speed": 2, "weather_code": 2, "description": "Có mây"}, {"name": "Vĩnh Xương", "province": "An Giang", "lat": 10.87371038, "lon": 105.1736166, "temp_current": 34, "temp_max": 34, "temp_min": 27, "precipitation": 0.0, "wind_speed": 8, "weather_code": 95, "description": "Giông"}, {"name": "An Bình", "province": "Cần Thơ", "lat": 10.00437527, "lon": 105.7181708, "temp_current": 34, "temp_max": 34, "temp_min": 26, "precipitation": 0.0, "wind_speed": 6, "weather_code": 95, "description": "Giông"}, {"name": "An Lạc Thôn", "province": "Cần Thơ", "lat": 9.873777173, "lon": 105.9117309, "temp_current": 34, "temp_max": 34, "temp_min": 26, "precipitation": 0.0, "wind_speed": 5, "weather_code": 2, "description": "Có mây"}, {"name": "An Ninh", "province": "Cần Thơ", "lat": 9.631031192, "lon": 105.9111724, "temp_current": 34, "temp_max": 34, "temp_min": 27, "precipitation": 0.0, "wind_speed": 5, "weather_code": 3, "description": "Nhiều mây"}, {"name": "An Thạnh", "province": "Cần Thơ", "lat": 9.684591713, "lon": 106.1481256, "temp_current": 34, "temp_max": 34, "temp_min": 27, "precipitation": 0.0, "wind_speed": 8, "weather_code": 2, "description": "Có mây"}, {"name": "Bình Thủy", "province": "Cần Thơ", "lat": 10.0712402, "lon": 105.7516802, "temp_current": 33, "temp_max": 34, "temp_min": 27, "precipitation": 0.0, "wind_speed": 6, "weather_code": 95, "description": "Giông"}, {"name": "Cái Khế", "province": "Cần Thơ", "lat": 10.05169448, "lon": 105.7814741, "temp_current": 33, "temp_max": 34, "temp_min": 27, "precipitation": 0.0, "wind_speed": 6, "weather_code": 95, "description": "Giông"}, {"name": "Cái Răng", "province": "Cần Thơ", "lat": 9.987435245, "lon": 105.7613586, "temp_current": 34, "temp_max": 34, "temp_min": 26, "precipitation": 0.0, "wind_speed": 5, "weather_code": 95, "description": "Giông"}, {"name": "Châu Thành", "province": "Cần Thơ", "lat": 9.942515381, "lon": 105.836257, "temp_current": 33, "temp_max": 34, "temp_min": 26, "precipitation": 0.0, "wind_speed": 4, "weather_code": 95, "description": "Giông"}, {"name": "Cờ Đỏ", "province": "Cần Thơ", "lat": 10.06783646, "lon": 105.415743, "temp_current": 33, "temp_max": 33, "temp_min": 26, "precipitation": 0.0, "wind_speed": 9, "weather_code": 95, "description": "Giông"}, {"name": "Cù Lao Dung", "province": "Cần Thơ", "lat": 9.575043319, "lon": 106.2250343, "temp_current": 33, "temp_max": 34, "temp_min": 27, "precipitation": 0.3, "wind_speed": 10, "weather_code": 55, "description": "Mưa phùn dày"}, {"name": "Trần Phán", "province": "Cà Mau", "lat": 9.008089537, "lon": 105.1424919, "temp_current": 32, "temp_max": 33, "temp_min": 28, "precipitation": 0.0, "wind_speed": 10, "weather_code": 2, "description": "Có mây"}, {"name": "Trần Văn Thời", "province": "Cà Mau", "lat": 9.085739349, "lon": 104.950579, "temp_current": 31, "temp_max": 33, "temp_min": 26, "precipitation": 0.6, "wind_speed": 11, "weather_code": 80, "description": "Mưa rào nhẹ"}, {"name": "Trí Phải", "province": "Cà Mau", "lat": 9.399547259, "lon": 105.1924926, "temp_current": 34, "temp_max": 34, "temp_min": 27, "precipitation": 0.0, "wind_speed": 6, "weather_code": 3, "description": "Nhiều mây"}, {"name": "U Minh", "province": "Cà Mau", "lat": 9.435250375, "lon": 104.8747195, "temp_current": 32, "temp_max": 32, "temp_min": 27, "precipitation": 0.0, "wind_speed": 10, "weather_code": 2, "description": "Có mây"}, {"name": "Vĩnh Hậu", "province": "Cà Mau", "lat": 9.204258036, "lon": 105.6486101, "temp_current": 32, "temp_max": 33, "temp_min": 28, "precipitation": 0.2, "wind_speed": 8, "weather_code": 53, "description": "Mưa phùn"}, {"name": "Vĩnh Lộc", "province": "Cà Mau", "lat": 9.570583795, "lon": 105.3567666, "temp_current": 35, "temp_max": 35, "temp_min": 26, "precipitation": 0.0, "wind_speed": 3, "weather_code": 3, "description": "Nhiều mây"}, {"name": "Vĩnh Lợi", "province": "Cà Mau", "lat": 9.36717121, "lon": 105.7373639, "temp_current": 33, "temp_max": 33, "temp_min": 27, "precipitation": 0.1, "wind_speed": 5, "weather_code": 51, "description": "Mưa phùn nhẹ"}, {"name": "Vĩnh Mỹ", "province": "Cà Mau", "lat": 9.318517159, "lon": 105.5760294, "temp_current": 34, "temp_max": 34, "temp_min": 27, "precipitation": 0.0, "wind_speed": 6, "weather_code": 3, "description": "Nhiều mây"}, {"name": "Vĩnh Phước", "province": "Cà Mau", "lat": 9.398907014, "lon": 105.4096728, "temp_current": 34, "temp_max": 34, "temp_min": 28, "precipitation": 0.0, "wind_speed": 6, "weather_code": 0, "description": "Trời quang"}, {"name": "Vĩnh Thanh", "province": "Cà Mau", "lat": 9.379612642, "lon": 105.5171329, "temp_current": 34, "temp_max": 34, "temp_min": 27, "precipitation": 0.0, "wind_speed": 6, "weather_code": 2, "description": "Có mây"}, {"name": "Vĩnh Trạch", "province": "Cà Mau", "lat": 9.297287689, "lon": 105.7735913, "temp_current": 33, "temp_max": 33, "temp_min": 28, "precipitation": 0.2, "wind_speed": 8, "weather_code": 53, "description": "Mưa phùn"}];
+const STATION_DATA = [{"name": "An Lộc", "province": "Đồng Nai", "lat": 11.70209228, "lon": 106.5819982, "temp_current": 33, "temp_max": 33, "temp_min": 25, "precipitation": 0.0, "wind_speed": 8, "weather_code": 95, "description": "Giông"}, {"name": "An Phước", "province": "Đồng Nai", "lat": 10.81797212, "lon": 106.9260746, "temp_current": 35, "temp_max": 35, "temp_min": 26, "precipitation": 0.0, "wind_speed": 8, "weather_code": 3, "description": "Nhiều mây"}, {"name": "An Viễn", "province": "Đồng Nai", "lat": 10.90103226, "lon": 107.0154427, "temp_current": 34, "temp_max": 35, "temp_min": 26, "precipitation": 0.0, "wind_speed": 8, "weather_code": 3, "description": "Nhiều mây"}, {"name": "Bảo Vinh", "province": "Đồng Nai", "lat": 10.96831698, "lon": 107.2779605, "temp_current": 34, "temp_max": 34, "temp_min": 24, "precipitation": 0.1, "wind_speed": 6, "weather_code": 51, "description": "Mưa phùn nhẹ"}, {"name": "Bàu Hàm", "province": "Đồng Nai", "lat": 11.02553433, "lon": 107.0847547, "temp_current": 34, "temp_max": 34, "temp_min": 25, "precipitation": 0.0, "wind_speed": 8, "weather_code": 3, "description": "Nhiều mây"}, {"name": "Trừ Văn Thố", "province": "TP. Hồ Chí Minh", "lat": 11.34264218, "lon": 106.588297, "temp_current": 33, "temp_max": 33, "temp_min": 26, "precipitation": 0.0, "wind_speed": 7, "weather_code": 95, "description": "Giông"}, {"name": "Trung Mỹ Tây", "province": "TP. Hồ Chí Minh", "lat": 10.86013887, "lon": 106.6224316, "temp_current": 35, "temp_max": 35, "temp_min": 26, "precipitation": 0.0, "wind_speed": 6, "weather_code": 3, "description": "Nhiều mây"}, {"name": "Vĩnh Hội", "province": "TP. Hồ Chí Minh", "lat": 10.75528435, "lon": 106.6963633, "temp_current": 35, "temp_max": 35, "temp_min": 26, "precipitation": 0.0, "wind_speed": 8, "weather_code": 3, "description": "Nhiều mây"}, {"name": "Vĩnh Lộc", "province": "Cà Mau", "lat": 9.570583795, "lon": 105.3567666, "temp_current": 35, "temp_max": 35, "temp_min": 26, "precipitation": 0.0, "wind_speed": 4, "weather_code": 3, "description": "Nhiều mây"}, {"name": "Vĩnh Tân", "province": "TP. Hồ Chí Minh", "lat": 11.14661735, "lon": 106.7127387, "temp_current": 34, "temp_max": 34, "temp_min": 26, "precipitation": 0.0, "wind_speed": 6, "weather_code": 95, "description": "Giông"}, {"name": "Vũng Tàu", "province": "TP. Hồ Chí Minh", "lat": 10.35646546, "lon": 107.0756028, "temp_current": 33, "temp_max": 33, "temp_min": 28, "precipitation": 0.0, "wind_speed": 14, "weather_code": 2, "description": "Có mây"}, {"name": "Vườn Lài", "province": "TP. Hồ Chí Minh", "lat": 10.76665852, "lon": 106.6738439, "temp_current": 34, "temp_max": 35, "temp_min": 26, "precipitation": 0.0, "wind_speed": 6, "weather_code": 3, "description": "Nhiều mây"}, {"name": "Xóm Chiếu", "province": "TP. Hồ Chí Minh", "lat": 10.76019936, "lon": 106.7120223, "temp_current": 34, "temp_max": 35, "temp_min": 26, "precipitation": 0.0, "wind_speed": 6, "weather_code": 3, "description": "Nhiều mây"}, {"name": "Xuân Hòa", "province": "TP. Hồ Chí Minh", "lat": 10.78273272, "lon": 106.688269, "temp_current": 34, "temp_max": 35, "temp_min": 26, "precipitation": 0.0, "wind_speed": 6, "weather_code": 3, "description": "Nhiều mây"}, {"name": "Xuân Sơn", "province": "TP. Hồ Chí Minh", "lat": 10.61853369, "lon": 107.3314952, "temp_current": 34, "temp_max": 34, "temp_min": 25, "precipitation": 0.0, "wind_speed": 10, "weather_code": 3, "description": "Nhiều mây"}, {"name": "Xuân Thới Sơn", "province": "TP. Hồ Chí Minh", "lat": 10.89002652, "lon": 106.5566761, "temp_current": 35, "temp_max": 35, "temp_min": 26, "precipitation": 0.0, "wind_speed": 7, "weather_code": 3, "description": "Nhiều mây"}, {"name": "Xuyên Mộc", "province": "TP. Hồ Chí Minh", "lat": 10.54903749, "lon": 107.4660259, "temp_current": 34, "temp_max": 34, "temp_min": 26, "precipitation": 0.0, "wind_speed": 15, "weather_code": 3, "description": "Nhiều mây"}, {"name": "An Lục Long", "province": "Tây Ninh", "lat": 10.42410172, "lon": 106.4626503, "temp_current": 34, "temp_max": 34, "temp_min": 26, "precipitation": 0.0, "wind_speed": 6, "weather_code": 1, "description": "Ít mây"}, {"name": "An Ninh", "province": "Cần Thơ", "lat": 9.631031192, "lon": 105.9111724, "temp_current": 34, "temp_max": 34, "temp_min": 27, "precipitation": 0.0, "wind_speed": 5, "weather_code": 3, "description": "Nhiều mây"}, {"name": "An Tịnh", "province": "Tây Ninh", "lat": 11.06192302, "lon": 106.3881972, "temp_current": 34, "temp_max": 35, "temp_min": 26, "precipitation": 0.0, "wind_speed": 5, "weather_code": 3, "description": "Nhiều mây"}, {"name": "Bến Cầu", "province": "Tây Ninh", "lat": 11.10965148, "lon": 106.1945596, "temp_current": 35, "temp_max": 35, "temp_min": 26, "precipitation": 0.0, "wind_speed": 7, "weather_code": 3, "description": "Nhiều mây"}, {"name": "Bến Lức", "province": "Tây Ninh", "lat": 10.66178425, "lon": 106.4831311, "temp_current": 34, "temp_max": 34, "temp_min": 26, "precipitation": 0.0, "wind_speed": 9, "weather_code": 2, "description": "Có mây"}, {"name": "Tháp Mười", "province": "Đồng Tháp", "lat": 10.54536897, "lon": 105.8347125, "temp_current": 35, "temp_max": 35, "temp_min": 26, "precipitation": 0.0, "wind_speed": 8, "weather_code": 95, "description": "Giông"}, {"name": "Thới Sơn", "province": "Đồng Tháp", "lat": 10.33736529, "lon": 106.3304122, "temp_current": 34, "temp_max": 34, "temp_min": 26, "precipitation": 0.0, "wind_speed": 8, "weather_code": 1, "description": "Ít mây"}, {"name": "Thường Lạc", "province": "Đồng Tháp", "lat": 10.85519618, "lon": 105.3022313, "temp_current": 34, "temp_max": 34, "temp_min": 27, "precipitation": 0.0, "wind_speed": 8, "weather_code": 95, "description": "Giông"}, {"name": "Thường Phước", "province": "Đồng Tháp", "lat": 10.85233627, "lon": 105.2409306, "temp_current": 34, "temp_max": 34, "temp_min": 27, "precipitation": 0.0, "wind_speed": 8, "weather_code": 95, "description": "Giông"}, {"name": "Tràm Chim", "province": "Đồng Tháp", "lat": 10.73652016, "lon": 105.5906969, "temp_current": 34, "temp_max": 34, "temp_min": 26, "precipitation": 0.0, "wind_speed": 8, "weather_code": 95, "description": "Giông"}, {"name": "Trung An", "province": "Đồng Tháp", "lat": 10.36961039, "lon": 106.3241239, "temp_current": 34, "temp_max": 34, "temp_min": 26, "precipitation": 0.0, "wind_speed": 8, "weather_code": 1, "description": "Ít mây"}, {"name": "Trường Xuân", "province": "Đồng Tháp", "lat": 10.65777339, "lon": 105.7440821, "temp_current": 35, "temp_max": 36, "temp_min": 26, "precipitation": 0.0, "wind_speed": 8, "weather_code": 2, "description": "Có mây"}, {"name": "Vĩnh Bình", "province": "Đồng Tháp", "lat": 10.34665436, "lon": 106.5736307, "temp_current": 34, "temp_max": 34, "temp_min": 26, "precipitation": 0.0, "wind_speed": 7, "weather_code": 1, "description": "Ít mây"}, {"name": "Vĩnh Hựu", "province": "Đồng Tháp", "lat": 10.30871107, "lon": 106.5823646, "temp_current": 34, "temp_max": 35, "temp_min": 26, "precipitation": 0.0, "wind_speed": 7, "weather_code": 3, "description": "Nhiều mây"}, {"name": "Vĩnh Kim", "province": "Đồng Tháp", "lat": 10.34621987, "lon": 106.2145399, "temp_current": 34, "temp_max": 34, "temp_min": 26, "precipitation": 0.0, "wind_speed": 8, "weather_code": 1, "description": "Ít mây"}, {"name": "An Bình", "province": "Cần Thơ", "lat": 10.00437527, "lon": 105.7181708, "temp_current": 34, "temp_max": 34, "temp_min": 26, "precipitation": 0.0, "wind_speed": 6, "weather_code": 95, "description": "Giông"}, {"name": "An Định", "province": "Vĩnh Long", "lat": 10.06700248, "lon": 106.3952369, "temp_current": 34, "temp_max": 34, "temp_min": 26, "precipitation": 0.0, "wind_speed": 7, "weather_code": 3, "description": "Nhiều mây"}, {"name": "An Hiệp", "province": "Vĩnh Long", "lat": 10.0372626, "lon": 106.5213781, "temp_current": 33, "temp_max": 34, "temp_min": 27, "precipitation": 0.1, "wind_speed": 12, "weather_code": 51, "description": "Mưa phùn nhẹ"}, {"name": "An Hội", "province": "Vĩnh Long", "lat": 10.20132536, "lon": 106.3772085, "temp_current": 34, "temp_max": 34, "temp_min": 26, "precipitation": 0.0, "wind_speed": 7, "weather_code": 1, "description": "Ít mây"}, {"name": "An Ngãi Trung", "province": "Vĩnh Long", "lat": 10.09075261, "lon": 106.5462637, "temp_current": 35, "temp_max": 35, "temp_min": 27, "precipitation": 0.0, "wind_speed": 9, "weather_code": 3, "description": "Nhiều mây"}, {"name": "An Phú Tân", "province": "Vĩnh Long", "lat": 9.863173197, "lon": 106.0200228, "temp_current": 34, "temp_max": 34, "temp_min": 26, "precipitation": 0.0, "wind_speed": 5, "weather_code": 1, "description": "Ít mây"}, {"name": "An Qui", "province": "Vĩnh Long", "lat": 9.895461451, "lon": 106.5604956, "temp_current": 32, "temp_max": 33, "temp_min": 28, "precipitation": 0.5, "wind_speed": 12, "weather_code": 80, "description": "Mưa rào nhẹ"}, {"name": "An Trường", "province": "Vĩnh Long", "lat": 9.954555938, "lon": 106.1647183, "temp_current": 33, "temp_max": 33, "temp_min": 26, "precipitation": 0.0, "wind_speed": 5, "weather_code": 1, "description": "Ít mây"}, {"name": "Ba Tri", "province": "Vĩnh Long", "lat": 10.03907567, "lon": 106.5895553, "temp_current": 33, "temp_max": 34, "temp_min": 27, "precipitation": 0.0, "wind_speed": 14, "weather_code": 1, "description": "Ít mây"}, {"name": "Bảo Thạnh", "province": "Vĩnh Long", "lat": 10.06149275, "lon": 106.6660598, "temp_current": 34, "temp_max": 34, "temp_min": 27, "precipitation": 0.0, "wind_speed": 12, "weather_code": 0, "description": "Trời quang"}, {"name": "Bến Tre", "province": "Vĩnh Long", "lat": 10.23763981, "lon": 106.3241554, "temp_current": 34, "temp_max": 34, "temp_min": 26, "precipitation": 0.0, "wind_speed": 7, "weather_code": 1, "description": "Ít mây"}, {"name": "Vĩnh Hậu", "province": "Cà Mau", "lat": 9.204258036, "lon": 105.6486101, "temp_current": 33, "temp_max": 33, "temp_min": 28, "precipitation": 0.2, "wind_speed": 8, "weather_code": 53, "description": "Mưa phùn"}, {"name": "Vĩnh Hòa", "province": "An Giang", "lat": 9.69580915, "lon": 105.1690176, "temp_current": 32, "temp_max": 34, "temp_min": 26, "precipitation": 0.0, "wind_speed": 10, "weather_code": 3, "description": "Nhiều mây"}, {"name": "Vĩnh Hòa Hưng", "province": "An Giang", "lat": 9.777057096, "lon": 105.3730951, "temp_current": 34, "temp_max": 33, "temp_min": 26, "precipitation": 0.0, "wind_speed": 2, "weather_code": 95, "description": "Giông"}, {"name": "Vĩnh Phong", "province": "An Giang", "lat": 9.468985924, "lon": 105.2670703, "temp_current": 34, "temp_max": 34, "temp_min": 27, "precipitation": 0.0, "wind_speed": 7, "weather_code": 3, "description": "Nhiều mây"}, {"name": "Vĩnh Tế", "province": "An Giang", "lat": 10.65998541, "lon": 105.069153, "temp_current": 34, "temp_max": 35, "temp_min": 27, "precipitation": 0.0, "wind_speed": 7, "weather_code": 95, "description": "Giông"}, {"name": "Vĩnh Thạnh Trung", "province": "An Giang", "lat": 10.60142899, "lon": 105.189981, "temp_current": 35, "temp_max": 35, "temp_min": 27, "precipitation": 0.0, "wind_speed": 6, "weather_code": 95, "description": "Giông"}, {"name": "Vĩnh Thông", "province": "An Giang", "lat": 10.06844297, "lon": 105.0899708, "temp_current": 32, "temp_max": 32, "temp_min": 29, "precipitation": 0.0, "wind_speed": 15, "weather_code": 0, "description": "Trời quang"}, {"name": "Vĩnh Thuận", "province": "An Giang", "lat": 9.50680594, "lon": 105.1927767, "temp_current": 32, "temp_max": 34, "temp_min": 26, "precipitation": 0.0, "wind_speed": 8, "weather_code": 3, "description": "Nhiều mây"}, {"name": "Vĩnh Trạch", "province": "Cà Mau", "lat": 9.297287689, "lon": 105.7735913, "temp_current": 33, "temp_max": 33, "temp_min": 28, "precipitation": 0.2, "wind_speed": 9, "weather_code": 53, "description": "Mưa phùn"}, {"name": "Vĩnh Tuy", "province": "An Giang", "lat": 9.656912156, "lon": 105.3231786, "temp_current": 35, "temp_max": 35, "temp_min": 26, "precipitation": 0.0, "wind_speed": 2, "weather_code": 3, "description": "Nhiều mây"}, {"name": "Vĩnh Xương", "province": "An Giang", "lat": 10.87371038, "lon": 105.1736166, "temp_current": 34, "temp_max": 34, "temp_min": 27, "precipitation": 0.0, "wind_speed": 8, "weather_code": 95, "description": "Giông"}, {"name": "An Bình", "province": "Cần Thơ", "lat": 10.00437527, "lon": 105.7181708, "temp_current": 34, "temp_max": 34, "temp_min": 26, "precipitation": 0.0, "wind_speed": 6, "weather_code": 95, "description": "Giông"}, {"name": "An Lạc Thôn", "province": "Cần Thơ", "lat": 9.873777173, "lon": 105.9117309, "temp_current": 34, "temp_max": 34, "temp_min": 26, "precipitation": 0.0, "wind_speed": 5, "weather_code": 1, "description": "Ít mây"}, {"name": "An Ninh", "province": "Cần Thơ", "lat": 9.631031192, "lon": 105.9111724, "temp_current": 34, "temp_max": 34, "temp_min": 27, "precipitation": 0.0, "wind_speed": 5, "weather_code": 3, "description": "Nhiều mây"}, {"name": "An Thạnh", "province": "Cần Thơ", "lat": 9.684591713, "lon": 106.1481256, "temp_current": 34, "temp_max": 34, "temp_min": 27, "precipitation": 0.0, "wind_speed": 8, "weather_code": 2, "description": "Có mây"}, {"name": "Bình Thủy", "province": "Cần Thơ", "lat": 10.0712402, "lon": 105.7516802, "temp_current": 33, "temp_max": 34, "temp_min": 27, "precipitation": 0.0, "wind_speed": 5, "weather_code": 95, "description": "Giông"}, {"name": "Cái Khế", "province": "Cần Thơ", "lat": 10.05169448, "lon": 105.7814741, "temp_current": 33, "temp_max": 34, "temp_min": 27, "precipitation": 0.0, "wind_speed": 5, "weather_code": 95, "description": "Giông"}, {"name": "Cái Răng", "province": "Cần Thơ", "lat": 9.987435245, "lon": 105.7613586, "temp_current": 34, "temp_max": 34, "temp_min": 26, "precipitation": 0.0, "wind_speed": 4, "weather_code": 95, "description": "Giông"}, {"name": "Châu Thành", "province": "Cần Thơ", "lat": 9.942515381, "lon": 105.836257, "temp_current": 33, "temp_max": 34, "temp_min": 26, "precipitation": 0.0, "wind_speed": 4, "weather_code": 95, "description": "Giông"}, {"name": "Cờ Đỏ", "province": "Cần Thơ", "lat": 10.06783646, "lon": 105.415743, "temp_current": 33, "temp_max": 33, "temp_min": 26, "precipitation": 0.0, "wind_speed": 9, "weather_code": 95, "description": "Giông"}, {"name": "Cù Lao Dung", "province": "Cần Thơ", "lat": 9.575043319, "lon": 106.2250343, "temp_current": 33, "temp_max": 34, "temp_min": 27, "precipitation": 0.3, "wind_speed": 10, "weather_code": 55, "description": "Mưa phùn dày"}, {"name": "Trần Phán", "province": "Cà Mau", "lat": 9.008089537, "lon": 105.1424919, "temp_current": 32, "temp_max": 33, "temp_min": 28, "precipitation": 0.0, "wind_speed": 11, "weather_code": 1, "description": "Ít mây"}, {"name": "Trần Văn Thời", "province": "Cà Mau", "lat": 9.085739349, "lon": 104.950579, "temp_current": 30, "temp_max": 33, "temp_min": 26, "precipitation": 0.6, "wind_speed": 11, "weather_code": 80, "description": "Mưa rào nhẹ"}, {"name": "Trí Phải", "province": "Cà Mau", "lat": 9.399547259, "lon": 105.1924926, "temp_current": 34, "temp_max": 34, "temp_min": 27, "precipitation": 0.0, "wind_speed": 5, "weather_code": 3, "description": "Nhiều mây"}, {"name": "U Minh", "province": "Cà Mau", "lat": 9.435250375, "lon": 104.8747195, "temp_current": 32, "temp_max": 32, "temp_min": 27, "precipitation": 0.0, "wind_speed": 10, "weather_code": 2, "description": "Có mây"}, {"name": "Vĩnh Hậu", "province": "Cà Mau", "lat": 9.204258036, "lon": 105.6486101, "temp_current": 33, "temp_max": 33, "temp_min": 28, "precipitation": 0.2, "wind_speed": 8, "weather_code": 53, "description": "Mưa phùn"}, {"name": "Vĩnh Lộc", "province": "Cà Mau", "lat": 9.570583795, "lon": 105.3567666, "temp_current": 35, "temp_max": 35, "temp_min": 26, "precipitation": 0.0, "wind_speed": 4, "weather_code": 3, "description": "Nhiều mây"}, {"name": "Vĩnh Lợi", "province": "Cà Mau", "lat": 9.36717121, "lon": 105.7373639, "temp_current": 33, "temp_max": 33, "temp_min": 27, "precipitation": 0.1, "wind_speed": 5, "weather_code": 51, "description": "Mưa phùn nhẹ"}, {"name": "Vĩnh Mỹ", "province": "Cà Mau", "lat": 9.318517159, "lon": 105.5760294, "temp_current": 34, "temp_max": 34, "temp_min": 27, "precipitation": 0.0, "wind_speed": 6, "weather_code": 3, "description": "Nhiều mây"}, {"name": "Vĩnh Phước", "province": "Cà Mau", "lat": 9.398907014, "lon": 105.4096728, "temp_current": 34, "temp_max": 34, "temp_min": 28, "precipitation": 0.0, "wind_speed": 6, "weather_code": 0, "description": "Trời quang"}, {"name": "Vĩnh Thanh", "province": "Cà Mau", "lat": 9.379612642, "lon": 105.5171329, "temp_current": 34, "temp_max": 34, "temp_min": 27, "precipitation": 0.0, "wind_speed": 5, "weather_code": 3, "description": "Nhiều mây"}, {"name": "Vĩnh Trạch", "province": "Cà Mau", "lat": 9.297287689, "lon": 105.7735913, "temp_current": 33, "temp_max": 33, "temp_min": 28, "precipitation": 0.2, "wind_speed": 9, "weather_code": 53, "description": "Mưa phùn"}];
 let _leafletMap = null;
 let _mapInitialized = false;
 let _isMapView = false;
@@ -2350,31 +2315,22 @@ function initStationMap() {
 
 function toggleMapView() {
   _isMapView = !_isMapView;
-  const mapPanel   = document.getElementById('mapPanel');
-  const wpPanel    = document.getElementById('weatherplusPanel');
-  const mainGrid   = document.getElementById('grid');
-  const container  = mainGrid.closest('.container');
-  const mapBtn = document.querySelector('.map-tab-btn');
-
-  // Luôn đóng weatherplus panel khi bấm bản đồ
-  wpPanel.classList.remove('visible');
-  document.getElementById('weatherplusTabBtn').classList.remove('active');
+  const mapPanel  = document.getElementById('mapPanel');
+  const mainGrid  = document.getElementById('grid');
+  const container = mainGrid.closest('.container');
+  const mapBtn    = document.querySelector('.map-tab-btn');
 
   if (_isMapView) {
     container.style.display = 'none';
     mapPanel.classList.add('visible');
-    mapBtn.classList.add('active');
-    // Bỏ active khỏi các tab tỉnh
     document.querySelectorAll('.tab-btn:not(.map-tab-btn)').forEach(b => b.classList.remove('active'));
     mapBtn.classList.add('active');
     initStationMap();
-    // Leaflet cần invalidate khi panel hiện ra
     setTimeout(() => { if (_leafletMap) _leafletMap.invalidateSize(); }, 200);
   } else {
     container.style.display = '';
     mapPanel.classList.remove('visible');
     mapBtn.classList.remove('active');
-    // Khôi phục active tab tỉnh
     selectProvince(currentSelectedProvince);
   }
 }
@@ -2620,30 +2576,6 @@ async function openHourlyModal(stationName, provinceName, lat, lon) {
 
   } catch (error) {
     document.getElementById('modalCurrentPanel').innerHTML = `<div class="loading-box" style="color:#fca5a5;">❌ Lỗi kết nối: ${error.message}</div>`;
-  }
-}
-
-function toggleWeatherPlusView() {
-  const wpPanel    = document.getElementById('weatherplusPanel');
-  const mapPanel   = document.getElementById('mapPanel');
-  const container  = document.querySelector('.container');
-  const isVisible  = wpPanel.classList.contains('visible');
-
-  // Reset tất cả panels
-  wpPanel.classList.remove('visible');
-  mapPanel.classList.remove('visible');
-  container.style.display = 'block';
-  _isMapView = false;
-
-  // Bỏ active khỏi mọi tab
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-
-  if (!isVisible) {
-    wpPanel.classList.add('visible');
-    container.style.display = 'none';
-    document.getElementById('weatherplusTabBtn').classList.add('active');
-  } else {
-    document.querySelector('.tab-btn:first-child').classList.add('active');
   }
 }
 

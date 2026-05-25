@@ -41,6 +41,127 @@
     box-shadow: 0 4px 12px rgba(37,99,235,0.4) !important;
   }
 
+  /* STYLE CHO NÚT RADAR WARNING TAB BUTTON */
+  .radar-warning-tab-btn {
+    background: linear-gradient(135deg, #7c1d0a, #dc2626) !important;
+    color: #fff !important;
+    border-color: #7f1d1d !important;
+    animation: radar-pulse-btn 2s infinite;
+  }
+  @keyframes radar-pulse-btn {
+    0%,100% { box-shadow: 0 0 0 0 rgba(220,38,38,0.5); }
+    50%      { box-shadow: 0 0 0 6px rgba(220,38,38,0); }
+  }
+  .radar-warning-tab-btn:hover { opacity: 0.9; }
+  .radar-warning-tab-btn.active {
+    background: linear-gradient(135deg, #b91c1c, #ef4444) !important;
+    border-color: #ef4444 !important;
+    box-shadow: 0 4px 12px rgba(239,68,68,0.5) !important;
+    animation: none;
+  }
+
+  /* RADAR WARNING PANEL */
+  #radarWarningPanel {
+    display: none;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 0 16px 40px 16px;
+  }
+  #radarWarningPanel.visible { display: block; }
+
+  .radar-warning-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 12px 18px;
+    background: linear-gradient(135deg, #1a0505, #450a0a);
+    border-radius: 14px 14px 0 0;
+    border: 1px solid #7f1d1d;
+    border-bottom: none;
+  }
+  .radar-warning-header .rwh-left {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .rwh-badge {
+    background: #dc2626;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+    animation: blink-badge 1.2s step-start infinite;
+  }
+  @keyframes blink-badge {
+    0%,100% { opacity: 1; } 50% { opacity: 0.35; }
+  }
+  .rwh-title {
+    font-size: 15px; font-weight: 800; color: #fca5a5; letter-spacing: 0.3px;
+  }
+  .rwh-subtitle {
+    font-size: 11px; color: #fca5a5; opacity: 0.7; margin-top: 2px;
+  }
+  .rwh-meta {
+    display: flex; align-items: center; gap: 14px;
+    font-size: 12px; color: #fca5a5; opacity: 0.75;
+  }
+  .rwh-reload-btn {
+    background: rgba(220,38,38,0.25);
+    border: 1px solid #ef4444;
+    color: #fca5a5;
+    padding: 5px 14px;
+    border-radius: 8px;
+    font-size: 12px; font-weight: 700;
+    cursor: pointer; transition: all .2s;
+  }
+  .rwh-reload-btn:hover { background: rgba(220,38,38,0.5); color: #fff; }
+
+  .radar-iframe-wrap {
+    position: relative;
+    background: #07090f;
+    border: 1px solid #7f1d1d;
+    border-top: none;
+    border-radius: 0 0 14px 14px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(220,38,38,0.18);
+  }
+  .radar-warning-iframe {
+    width: 100%; height: 820px;
+    display: block; border: none; background: #07090f;
+  }
+  .radar-iframe-loading {
+    position: absolute; inset: 0;
+    background: #07090f;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 16px; color: #fca5a5;
+    font-size: 15px; font-weight: 600;
+    z-index: 5; pointer-events: none; transition: opacity .4s;
+  }
+  .radar-iframe-loading.hidden { opacity: 0; }
+  .radar-spin {
+    width: 44px; height: 44px;
+    border: 4px solid #450a0a;
+    border-top-color: #ef4444;
+    border-radius: 50%;
+    animation: spin .9s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .radar-source-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 7px 16px;
+    background: #0d0202;
+    border: 1px solid #3f0808; border-top: none;
+    border-radius: 0 0 14px 14px;
+    font-size: 11px; color: #94a3b8;
+  }
+  .radar-source-bar a {
+    color: #f87171; text-decoration: none; font-weight: 600;
+  }
+  .radar-source-bar a:hover { text-decoration: underline; }
+
   /* MAP PANEL */
   #mapPanel {
     display: none;
@@ -510,11 +631,11 @@
 </div>
 
 <div class="tabs-container">
-  <button class="tab-btn active" onclick="selectProvince('all')">🌍 Tất Cả</button><button class="tab-btn map-tab-btn" onclick="toggleMapView()">🗺️ Bản Đồ</button><button class="tab-btn nowcasting-tab-btn" onclick="toggleNowcastingView()">🛰️ Nowcasting Radar</button><button class="tab-btn" onclick="selectProvince('An Giang')">📍 An Giang</button><button class="tab-btn" onclick="selectProvince('Cà Mau')">📍 Cà Mau</button><button class="tab-btn" onclick="selectProvince('Cần Thơ')">📍 Cần Thơ</button><button class="tab-btn" onclick="selectProvince('TP. Hồ Chí Minh')">📍 TP. Hồ Chí Minh</button><button class="tab-btn" onclick="selectProvince('Tây Ninh')">📍 Tây Ninh</button><button class="tab-btn" onclick="selectProvince('Vĩnh Long')">📍 Vĩnh Long</button><button class="tab-btn" onclick="selectProvince('Đồng Nai')">📍 Đồng Nai</button><button class="tab-btn" onclick="selectProvince('Đồng Tháp')">📍 Đồng Tháp</button>
+  <button class="tab-btn active" onclick="selectProvince('all')">🌍 Tất Cả</button><button class="tab-btn map-tab-btn" onclick="toggleMapView()">🗺️ Bản Đồ</button><button class="tab-btn nowcasting-tab-btn" onclick="toggleNowcastingView()">🛰️ Nowcasting Radar</button><button class="tab-btn radar-warning-tab-btn" onclick="toggleRadarWarningView()">⚡ Cảnh Báo Radar</button><button class="tab-btn" onclick="selectProvince('An Giang')">📍 An Giang</button><button class="tab-btn" onclick="selectProvince('Cà Mau')">📍 Cà Mau</button><button class="tab-btn" onclick="selectProvince('Cần Thơ')">📍 Cần Thơ</button><button class="tab-btn" onclick="selectProvince('TP. Hồ Chí Minh')">📍 TP. Hồ Chí Minh</button><button class="tab-btn" onclick="selectProvince('Tây Ninh')">📍 Tây Ninh</button><button class="tab-btn" onclick="selectProvince('Vĩnh Long')">📍 Vĩnh Long</button><button class="tab-btn" onclick="selectProvince('Đồng Nai')">📍 Đồng Nai</button><button class="tab-btn" onclick="selectProvince('Đồng Tháp')">📍 Đồng Tháp</button>
 </div>
 
 <div class="container">
-  <p class="updated-at">Nguồn dữ liệu: Open-Meteo API | Khởi tạo lúc: 25/05/2026 21:51</p>
+  <p class="updated-at">Nguồn dữ liệu: Open-Meteo API | Khởi tạo lúc: 25/05/2026 21:57</p>
   <div class="grid" id="grid">
     
         <div class="card has-rain" data-province="Đồng Nai" data-rain="0.0" data-name="an lộc đồng nai" onclick="openHourlyModal('An Lộc', 'Đồng Nai', 11.70209228, 106.5819982)">
@@ -19307,6 +19428,39 @@
   <iframe id="nowcastingIframe" class="nowcasting-iframe"></iframe>
 </div>
 
+<div id="radarWarningPanel">
+  <div class="radar-warning-header">
+    <div class="rwh-left">
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="rwh-badge">🔴 LIVE</span>
+          <span class="rwh-title">⚡ Cảnh Báo Mưa Dông – Radar Nhà Bè</span>
+        </div>
+        <div class="rwh-subtitle">Nguồn: radar_warning.html · github.com/tinpk85/VERCEL · Tự động cập nhật</div>
+      </div>
+    </div>
+    <div class="rwh-meta">
+      <span id="radarLastLoad">-</span>
+      <button class="rwh-reload-btn" onclick="reloadRadarWarning()">↺ Tải lại</button>
+    </div>
+  </div>
+  <div class="radar-iframe-wrap">
+    <div class="radar-iframe-loading" id="radarLoadingOverlay">
+      <div class="radar-spin"></div>
+      <span>Đang tải dữ liệu radar cảnh báo...</span>
+      <span style="font-size:12px;opacity:0.6">Nguồn: github.com/tinpk85/VERCEL</span>
+    </div>
+    <iframe id="radarWarningIframe" class="radar-warning-iframe"
+      sandbox="allow-scripts allow-same-origin allow-popups"
+      allow="fullscreen"
+    ></iframe>
+  </div>
+  <div class="radar-source-bar">
+    <span>📡 Dữ liệu radar: <a href="http://125.253.123.8/accu/radar/NHB/" target="_blank">Radar Nhà Bè NHB</a> &nbsp;|&nbsp; Cảnh báo: <a href="http://hymetnet.gov.vn/" target="_blank">hymetnet.gov.vn</a></span>
+    <span id="radarFrameStatus" style="color:#4ade80;font-weight:600"></span>
+  </div>
+</div>
+
 <div id="hourlyModal" class="modal" onclick="closeHourlyModal(event)">  <div class="modal-content" onclick="event.stopPropagation()">
     <div class="modal-header" id="modalHeader">
       <div class="modal-header-top">
@@ -19493,6 +19647,11 @@ function toggleNowcastingView() {
     document.getElementById('mapPanel').classList.remove('visible');
     document.querySelector('.map-tab-btn').classList.remove('active');
   }
+  if (_isRadarWarningView) {
+    _isRadarWarningView = false;
+    document.getElementById('radarWarningPanel').classList.remove('visible');
+    document.querySelector('.radar-warning-tab-btn').classList.remove('active');
+  }
 
   const nowcastingPanel = document.getElementById('nowcastingPanel');
   const mainGrid        = document.getElementById('grid');
@@ -19514,6 +19673,117 @@ function toggleNowcastingView() {
     container.style.display = '';
     nowcastingPanel.classList.remove('visible');
     nowcastingBtn.classList.remove('active');
+    selectProvince(currentSelectedProvince);
+  }
+}
+
+/* ========== RADAR WARNING TAB ========== */
+#const RADAR_WARNING_URL = 'https://raw.githubusercontent.com/tinpk85/VERCEL/main/radar_warning.html';
+const RADAR_WARNING_URL = 'https://cdn.jsdelivr.net/gh/tinpk85/VERCEL@main/radar_warning.html';
+let _isRadarWarningView = false;
+let _radarWarningLoaded = false;
+let _radarAutoRefreshTimer = null;
+
+function _hideAllPanels() {
+  const grid = document.getElementById('grid');
+  const container = grid.closest('.container');
+  if (_isMapView) {
+    _isMapView = false;
+    document.getElementById('mapPanel').classList.remove('visible');
+    document.querySelector('.map-tab-btn').classList.remove('active');
+    container.style.display = '';
+  }
+  if (_isNowcastingView) {
+    _isNowcastingView = false;
+    document.getElementById('nowcastingPanel').classList.remove('visible');
+    document.querySelector('.nowcasting-tab-btn').classList.remove('active');
+    container.style.display = '';
+  }
+  if (_isRadarWarningView) {
+    _isRadarWarningView = false;
+    document.getElementById('radarWarningPanel').classList.remove('visible');
+    document.querySelector('.radar-warning-tab-btn').classList.remove('active');
+    container.style.display = '';
+  }
+}
+
+function _loadRadarIframe() {
+  const iframe = document.getElementById('radarWarningIframe');
+  const overlay = document.getElementById('radarLoadingOverlay');
+  const status  = document.getElementById('radarFrameStatus');
+  const lastLoad= document.getElementById('radarLastLoad');
+
+  overlay.classList.remove('hidden');
+  status.textContent = '';
+
+  // Dùng raw GitHub URL với cache-bust
+  const bust = Date.now();
+  iframe.src = RADAR_WARNING_URL + '?t=' + bust;
+
+  iframe.onload = function() {
+    overlay.classList.add('hidden');
+    const now = new Date();
+    const pad = n => String(n).padStart(2,'0');
+    const ts = pad(now.getHours())+':'+pad(now.getMinutes())+':'+pad(now.getSeconds())
+             + '  '+pad(now.getDate())+'/'+pad(now.getMonth()+1);
+    lastLoad.textContent = '⏱ Cập nhật: ' + ts;
+    status.textContent = '✅ Đã tải xong';
+    setTimeout(() => status.textContent = '', 3000);
+    _radarWarningLoaded = true;
+  };
+  iframe.onerror = function() {
+    overlay.classList.add('hidden');
+    status.textContent = '⚠️ Không thể tải – kiểm tra kết nối';
+    status.style.color = '#fca5a5';
+  };
+}
+
+function reloadRadarWarning() {
+  _radarWarningLoaded = false;
+  _loadRadarIframe();
+}
+
+function toggleRadarWarningView() {
+  _isRadarWarningView = !_isRadarWarningView;
+
+  const grid     = document.getElementById('grid');
+  const container= grid.closest('.container');
+  const panel    = document.getElementById('radarWarningPanel');
+  const btn      = document.querySelector('.radar-warning-tab-btn');
+
+  if (_isMapView) {
+    _isMapView = false;
+    document.getElementById('mapPanel').classList.remove('visible');
+    document.querySelector('.map-tab-btn').classList.remove('active');
+  }
+  if (_isNowcastingView) {
+    _isNowcastingView = false;
+    document.getElementById('nowcastingPanel').classList.remove('visible');
+    document.querySelector('.nowcasting-tab-btn').classList.remove('active');
+  }
+
+  if (_isRadarWarningView) {
+    container.style.display = 'none';
+    panel.classList.add('visible');
+    document.querySelectorAll('.tab-btn:not(.radar-warning-tab-btn)').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    // Lazy-load iframe lần đầu
+    if (!_radarWarningLoaded) {
+      _loadRadarIframe();
+    }
+
+    // Auto-refresh mỗi 5 phút
+    if (_radarAutoRefreshTimer) clearInterval(_radarAutoRefreshTimer);
+    _radarAutoRefreshTimer = setInterval(() => {
+      if (_isRadarWarningView) reloadRadarWarning();
+    }, 5 * 60 * 1000);
+
+  } else {
+    container.style.display = '';
+    panel.classList.remove('visible');
+    btn.classList.remove('active');
+    if (_radarAutoRefreshTimer) { clearInterval(_radarAutoRefreshTimer); _radarAutoRefreshTimer = null; }
     selectProvince(currentSelectedProvince);
   }
 }

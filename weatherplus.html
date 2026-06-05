@@ -125,7 +125,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;heigh
     <h1><span>WeatherPlus Nowcasting</span>Bản Đồ Dự Báo Mưa — Nam Bộ</h1>
   </div>
   <div class="meta">
-    <div>Dữ liệu: <b>2026-06-05 14:16</b></div>
+    <div>Dữ liệu: <b>2026-06-05 14:21</b></div>
     <div>
       <b style="color:rgba(255,255,255,0.5)">9</b> tỉnh &nbsp;·&nbsp;
       <b style="color:rgba(255,255,255,0.5)">18</b> bước × 10p
@@ -194,16 +194,17 @@ const WARD_GEOJSON = {"type": "FeatureCollection", "features": [{"type": "Featur
 
 // ── Bảng màu đám mây kiểu Meteoblue (RGBA) ─────────────────────────────
 // Mỗi entry: [ngưỡng_mm, r, g, b, alpha_max]
+// Alpha thấp ở mức nhẹ → dốc nhanh ở mức vừa → đậm ở mức mạnh
 const CLOUD_PALETTE = [
-  [0.05,  80, 200, 255, 0.20],   // mưa rất nhẹ — xanh nhạt mờ
-  [0.15, 100, 180, 255, 0.35],
-  [0.30,  60, 150, 255, 0.50],
-  [0.60,  30, 120, 255, 0.62],
-  [1.00,   0,  90, 220, 0.72],
-  [1.50,   0,  60, 180, 0.80],
-  [2.00, 220, 120,   0, 0.85],   // vừa-mạnh — cam
-  [3.00, 220,  40,   0, 0.90],   // mạnh — đỏ
-  [5.00, 150,   0,   0, 0.95],   // rất mạnh — đỏ đậm
+  [0.30,  80, 190, 255, 0.10],   // mưa nhẹ — rất mờ, gần như không thấy
+  [0.50, 100, 170, 255, 0.22],
+  [0.80,  60, 140, 255, 0.38],
+  [1.20,  30, 110, 255, 0.55],
+  [1.60,   0,  80, 220, 0.70],
+  [2.00,   0,  50, 180, 0.80],
+  [2.50, 220, 120,   0, 0.88],   // vừa-mạnh — cam
+  [3.50, 220,  30,   0, 0.93],   // mạnh — đỏ
+  [5.00, 150,   0,   0, 0.97],   // rất mạnh — đỏ đậm
 ];
 
 function mmToRGBA(mm) {
@@ -402,21 +403,21 @@ const CanvasOverlay = L.Layer.extend({
       this._map.project([0, 0.01], zoom).distanceTo(this._map.project([0, 0], zoom)),
       4
     );
-    const radius = cellPx * 1.6;
+    const radius = cellPx * 1.2;                   // ← giảm từ 1.6 → 1.2, bớt loang
 
     this._data.forEach(([lat, lng, mm]) => {
-      if (mm < 0.05) return;
+      if (mm < 0.30) return;                       // ← bỏ qua mưa quá nhẹ
       const pt = this._map.latLngToContainerPoint([lat, lng]);
       const [r, g, b, aMax] = mmToRGBA(mm);
 
-      // Gradient tròn mờ dần — giống đám mây radar
-      const intensity = Math.min(mm / 4.0, 1.0);
-      const alpha = aMax * (0.5 + 0.5 * intensity);
+      // Gamma curve: alpha tăng nhanh theo cường độ, tránh phủ mờ vùng nhẹ
+      const t = Math.min(mm / 5.0, 1.0);
+      const alpha = aMax * Math.pow(t, 0.55);      // ← power < 1: dốc hơn ở đầu
 
       const grad = octx.createRadialGradient(pt.x, pt.y, 0, pt.x, pt.y, radius);
-      grad.addColorStop(0,   `rgba(${r},${g},${b},${alpha.toFixed(3)})`);
-      grad.addColorStop(0.5, `rgba(${r},${g},${b},${(alpha * 0.6).toFixed(3)})`);
-      grad.addColorStop(1,   `rgba(${r},${g},${b},0)`);
+      grad.addColorStop(0,    `rgba(${r},${g},${b},${alpha.toFixed(3)})`);
+      grad.addColorStop(0.45, `rgba(${r},${g},${b},${(alpha * 0.45).toFixed(3)})`);
+      grad.addColorStop(1,    `rgba(${r},${g},${b},0)`);
 
       octx.globalCompositeOperation = "source-over";
       octx.fillStyle = grad;
@@ -426,18 +427,17 @@ const CanvasOverlay = L.Layer.extend({
     });
 
     // ── Bước 2: Copy sang canvas chính (filter blur để làm mịn) ─────────
-    // blur tỷ lệ nghịch với zoom: zoom thấp = blur nhiều
-    const blurPx = Math.max(3, Math.round(cellPx * 0.9));
+    const blurPx = Math.max(2, Math.round(cellPx * 0.65)); // ← giảm blur
     ctx.filter = `blur(${blurPx}px)`;
     ctx.drawImage(off, 0, 0);
     ctx.filter = "none";
 
-    // ── Bước 3: Vẽ lại lớp mỏng KHÔNG blur lên trên để nét nhân màu ────
-    ctx.globalAlpha = 0.55;
+    // ── Bước 3: Lớp nhân màu không blur chỉ cho mưa vừa-mạnh ────────────
+    ctx.globalAlpha = 0.60;
     const off2  = new OffscreenCanvas(offW, offH);
     const octx2 = off2.getContext("2d");
     this._data.forEach(([lat, lng, mm]) => {
-      if (mm < 0.5) return;
+      if (mm < 1.2) return;                        // ← chỉ vẽ mưa vừa trở lên
       const pt = this._map.latLngToContainerPoint([lat, lng]);
       const [r, g, b] = mmToRGBA(mm);
       const sharpR = cellPx * 0.7;

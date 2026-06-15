@@ -16,14 +16,6 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f0f4f8; min-
 
 #mapPanel { display: none; max-width: 1600px; margin: 0 auto; padding: 0 16px 16px 16px; }
 #mapPanel.visible { display: block; }
-
-.radar-tab-btn { background: linear-gradient(135deg, #1e3a5f, #2563eb) !important; color: #fff !important; border-color: #1e3a5f !important; }
-.radar-tab-btn:hover { opacity: 0.9; }
-.radar-tab-btn.active { background: linear-gradient(135deg, #1d4ed8, #3b82f6) !important; border-color: #3b82f6 !important; box-shadow: 0 4px 12px rgba(59,130,246,0.4) !important; }
-
-#radarPanel { display: none; max-width: 1600px; margin: 0 auto; padding: 0 16px 16px 16px; }
-#radarPanel.visible { display: block; }
-#radarFrame { width: 100%; height: calc(100vh - 230px); min-height: 560px; border: 1px solid #e2e8f0; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.12); }
 #stationMap { width: 100%; height: calc(100vh - 230px); min-height: 420px; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.12); border: 1px solid #e2e8f0; }
 
 .map-legend { display: flex; gap: 20px; align-items: center; padding: 10px 16px; background: white; border-radius: 10px; margin-bottom: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); font-size: 13px; flex-wrap: wrap; }
@@ -193,11 +185,11 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f0f4f8; min-
 </div>
 
 <div class="tabs-container">
-  <button class="tab-btn active" onclick="selectRegion('all')">🌍 Tất Cả</button><button class="tab-btn map-tab-btn" onclick="toggleMapView()">🗺️ Bản Đồ</button><button class="tab-btn radar-tab-btn" onclick="toggleRadarView()">📡 Nowcasting Radar</button><button class="tab-btn" onclick="selectRegion('TP. Hồ Chí Minh')">📍 TP. Hồ Chí Minh</button><button class="tab-btn" onclick="selectRegion('Đồng Nai')">📍 Đồng Nai</button><button class="tab-btn" onclick="selectRegion('Tây Ninh')">📍 Tây Ninh</button><button class="tab-btn" onclick="selectRegion('Đồng Tháp')">📍 Đồng Tháp</button><button class="tab-btn" onclick="selectRegion('Vĩnh Long')">📍 Vĩnh Long</button><button class="tab-btn" onclick="selectRegion('Cần Thơ')">📍 Cần Thơ</button><button class="tab-btn" onclick="selectRegion('Cà Mau')">📍 Cà Mau</button><button class="tab-btn" onclick="selectRegion('An Giang')">📍 An Giang</button>
+  <button class="tab-btn active" onclick="selectRegion('all')">🌍 Tất Cả</button><button class="tab-btn map-tab-btn" onclick="toggleMapView()">🗺️ Bản Đồ</button><button class="tab-btn" onclick="selectRegion('TP. Hồ Chí Minh')">📍 TP. Hồ Chí Minh</button><button class="tab-btn" onclick="selectRegion('Đồng Nai')">📍 Đồng Nai</button><button class="tab-btn" onclick="selectRegion('Tây Ninh')">📍 Tây Ninh</button><button class="tab-btn" onclick="selectRegion('Đồng Tháp')">📍 Đồng Tháp</button><button class="tab-btn" onclick="selectRegion('Vĩnh Long')">📍 Vĩnh Long</button><button class="tab-btn" onclick="selectRegion('Cần Thơ')">📍 Cần Thơ</button><button class="tab-btn" onclick="selectRegion('Cà Mau')">📍 Cà Mau</button><button class="tab-btn" onclick="selectRegion('An Giang')">📍 An Giang</button>
 </div>
 
 <div class="container">
-  <p class="updated-at">Nguồn dữ liệu: Meteoblue (basic-1h + basic-day) | Khởi tạo lúc: 15/06/2026 21:44</p>
+  <p class="updated-at">Nguồn dữ liệu: Meteoblue (basic-1h + basic-day) | Khởi tạo lúc: 15/06/2026 21:47</p>
   <div class="grid" id="grid">
     
         <div class="card has-rain" data-region="TP. Hồ Chí Minh" data-rain="41.6"
@@ -653,12 +645,6 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f0f4f8; min-
   <div id="stationMap"></div>
 </div>
 
-<div id="radarPanel">
-  <iframe id="radarFrame" src="" loading="lazy"
-          referrerpolicy="no-referrer"
-          allow="fullscreen"></iframe>
-</div>
-
 <div id="stationModal" class="modal" onclick="closeStationModal(event)">
   <div class="modal-content" onclick="event.stopPropagation()">
     <div class="modal-header" id="modalHeader">
@@ -855,8 +841,6 @@ let currentSelectedRegion = 'all';
 let _leafletMap = null;
 let _mapInitialized = false;
 let _isMapView = false;
-let _isRadarView = false;
-const NOWCAST_RADAR_URL = "{NOWCAST_RADAR_URL}";
 
 // Tạo phần tử SVG icon từ key (sunny, partly_cloudy, ...)
 function iconSvg(key) {
@@ -968,12 +952,6 @@ function toggleMapView() {
   const mapBtn    = document.querySelector('.map-tab-btn');
 
   if (_isMapView) {
-    // Đóng radar view nếu đang mở
-    if (_isRadarView) {
-      _isRadarView = false;
-      document.getElementById('radarPanel').classList.remove('visible');
-      document.querySelector('.radar-tab-btn').classList.remove('active');
-    }
     container.style.display = 'none';
     mapPanel.classList.add('visible');
     document.querySelectorAll('.tab-btn:not(.map-tab-btn)').forEach(b => b.classList.remove('active'));
@@ -984,35 +962,6 @@ function toggleMapView() {
     container.style.display = '';
     mapPanel.classList.remove('visible');
     mapBtn.classList.remove('active');
-    selectRegion(currentSelectedRegion);
-  }
-}
-
-function toggleRadarView() {
-  _isRadarView = !_isRadarView;
-  const radarPanel = document.getElementById('radarPanel');
-  const radarFrame = document.getElementById('radarFrame');
-  const mainGrid   = document.getElementById('grid');
-  const container  = mainGrid.closest('.container');
-  const radarBtn   = document.querySelector('.radar-tab-btn');
-
-  if (_isRadarView) {
-    // Đóng map view nếu đang mở
-    if (_isMapView) {
-      _isMapView = false;
-      document.getElementById('mapPanel').classList.remove('visible');
-      document.querySelector('.map-tab-btn').classList.remove('active');
-    }
-    container.style.display = 'none';
-    radarPanel.classList.add('visible');
-    document.querySelectorAll('.tab-btn:not(.radar-tab-btn)').forEach(b => b.classList.remove('active'));
-    radarBtn.classList.add('active');
-    // Lazy-load iframe lần đầu mở tab
-    if (!radarFrame.src) radarFrame.src = NOWCAST_RADAR_URL;
-  } else {
-    container.style.display = '';
-    radarPanel.classList.remove('visible');
-    radarBtn.classList.remove('active');
     selectRegion(currentSelectedRegion);
   }
 }
@@ -1038,12 +987,6 @@ function selectRegion(regionName) {
     _isMapView = false;
     document.getElementById('mapPanel').classList.remove('visible');
     document.querySelector('.map-tab-btn').classList.remove('active');
-    document.getElementById('grid').closest('.container').style.display = '';
-  }
-  if (_isRadarView) {
-    _isRadarView = false;
-    document.getElementById('radarPanel').classList.remove('visible');
-    document.querySelector('.radar-tab-btn').classList.remove('active');
     document.getElementById('grid').closest('.container').style.display = '';
   }
 

@@ -234,7 +234,7 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f0f4f8; min-
 </div>
 
 <div class="container">
-  <p class="updated-at">Nguồn dữ liệu: Meteoblue (basic-1h + basic-day) | Khởi tạo lúc: 14/10/2026 21:05</p>
+  <p class="updated-at">Nguồn dữ liệu: Meteoblue (basic-1h + basic-day) | Khởi tạo lúc: 14/10/2026 21:09</p>
   <div class="grid" id="grid">
     
         <div class="card has-rain" data-region="TP. Hồ Chí Minh" data-rain="12.9"
@@ -1020,9 +1020,10 @@ function initStationMap() {
 
   _leafletMap = L.map('stationMap').setView([avgLat, avgLon], 8);
 
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-    maxZoom: 18
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    subdomains: 'abcd',
+    maxZoom: 20
   }).addTo(_leafletMap);
 
   // Offset (px) cho các trạm gần nhau, tránh nhãn chồng lên nhau
@@ -1333,9 +1334,10 @@ function initTideMap() {
   const avgLon = TIDE_GEO.reduce((s, d) => s + d.lon, 0) / TIDE_GEO.length;
   _tideLeafletMap = L.map('tideStationMap').setView([avgLat, avgLon], 9);
 
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-    maxZoom: 18
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    subdomains: 'abcd',
+    maxZoom: 20
   }).addTo(_tideLeafletMap);
 
   TIDE_GEO.forEach(st => {
